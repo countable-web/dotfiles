@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd ~/satchel && git add . && git commit -a -m '(auto) $1' && git pull origin master && git push origin master
+
