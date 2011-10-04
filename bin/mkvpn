@@ -1,0 +1,29 @@
+#!/bin/bash
+
+sudo mkdir /etc/openvpn/easy-rsa/ 
+sudo cp -R /usr/share/doc/openvpn/examples/easy-rsa/2.0/* /etc/openvpn/easy-rsa/
+
+sudo sh -c 'echo \'export KEY_COUNTRY="CA"\' >> /etc/openvpn/easy-rsa/vars'
+sudo sh -c 'echo \'export KEY_PROVINCE="BC"\' >> /etc/openvpn/easy-rsa/vars'
+sudo sh -c 'echo \'export KEY_CITY="Vancouver"\' >> /etc/openvpn/easy-rsa/vars'
+sudo sh -c 'echo \'export KEY_ORG="Countable"\' >> /etc/openvpn/easy-rsa/vars'
+sudo sh -c 'echo \'export KEY_EMAIL="echo85@gmail.com"\' >> /etc/openvpn/easy-rsa/vars'
+
+cd /etc/openvpn/easy-rsa/ ## move to the easy-rsa directory
+sudo chown -R root:admin .  ## make this directory writable by the system administrators
+sudo chmod g+w . ## make this directory writable by the system administrators
+source ./vars ## execute your new vars file
+./clean-all  ## Setup the easy-rsa directory (Deletes all keys)
+./build-dh  ## takes a while consider backgrounding
+./pkitool --initca ## creates ca cert and key
+./pkitool --server server ## creates a server cert and key
+cd keys
+openvpn --genkey --secret ta.key  ## Build a TLS key
+sudo cp server.crt server.key ca.crt dh1024.pem ta.key ../../
+
+# clien stuff
+
+cd /etc/openvpn/easy-rsa/ ## move to the easy-rsa directory
+source ./vars             ## execute the vars file
+./pkitool client          ## create a cert and key named "client"
+

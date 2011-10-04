@@ -1,0 +1,7 @@
+#!/usr/bin/python
+import os,sys
+for l in sys.argv[1:]:
+   l=l.strip()
+   print 'reducing', l
+   print os.popen('reduce-png %s'%l).read()
+
