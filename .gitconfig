@@ -4,3 +4,10 @@
 [github]
 	user = countable
 	token = 9e43dbcf566292a2240a5b30255455f7
+[alias]
+        merges = git merge -s recursive -Xignore-space-change
+        st = status
+        co = checkout
+        ch = checkout
+        cm = commit
+
