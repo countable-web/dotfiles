@@ -2,6 +2,7 @@
 var sys = require("sys");
 var fs = require("fs");
 var spawn = require("child_process").spawn;
+var exec = require("child_process").exec;
 var fileExtensionPattern;
 
 exports.run = run;
@@ -116,22 +117,6 @@ function startProgram (prog, exec) {
 }
 
 var timer = null, counter = -1, mtime = null;
-function crash (oldStat, newStat) {
-  
-  // we only care about modification time, not access time.
-  if (
-    newStat.mtime.getTime() === oldStat.mtime.getTime()
-  ) return;
-
-  if (counter === -1) {
-    timer = setTimeout(stopCrashing, 1000);
-  }
-  counter ++;
-  
-  var child = exports.child;
-  sys.debug("crashing child");
-  process.kill(child.pid);
-}
 
 function stopCrashing () {
   if (counter > 1) throw new Error("Crashing too much, shutting down");
@@ -139,7 +124,31 @@ function stopCrashing () {
 }
 
 function watchGivenFile (watch) {
-  fs.watchFile(watch, crash);
+  fs.watchFile(watch, function crash (oldStat, newStat) {
+    // we only care about modification time, not access time.
+    if (
+      newStat.mtime.getTime() === oldStat.mtime.getTime()
+    ) return;
+  
+    if (counter === -1) {
+      timer = setTimeout(stopCrashing, 1000);
+    }
+    counter ++;
+
+    var child = exports.child;
+    sys.debug("detected change at "+watch);
+    sys.debug("crashing child");
+    if (watch.indexOf(".coffee") !== -1) {
+      exec("coffee -c "+watch,function(err, stderr, stdout) {
+            process.kill(child.pid);
+            if (err) sys.debug(err);
+            if (stderr) sys.debug(stderr);
+            if (stdout) sys.debug(stdout);
+        });
+    } else {
+      process.kill(child.pid);
+    }
+  });
 }
 
 var findAllWatchFiles = function(path, callback) {
