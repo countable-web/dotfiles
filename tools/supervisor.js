@@ -143,7 +143,6 @@ function watchGivenFile (watch) {
     sys.debug("crashing child");
     if (watch.indexOf(".coffee") !== -1) {
       exec("coffee -c "+watch,function(err, stderr, stdout) {
-            if (program !== NO_PROGRAM) process.kill(child.pid);
             if (err) sys.debug(err);
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
