@@ -11,3 +11,5 @@
         ch = checkout
         cm = commit
 
+[core]
+	excludesfile = /Users/clark/satchel/.gitignore
