@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+supervisor -w . $1

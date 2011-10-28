@@ -4,11 +4,13 @@ var fs = require("fs");
 var spawn = require("child_process").spawn;
 var exec = require("child_process").exec;
 var fileExtensionPattern;
+var program;
+var NO_PROGRAM = "none.coffee";
 
 exports.run = run;
 
 function run (args) {
-  var arg, next, watch, program, extensions, executor;
+  var arg, next, watch, extensions, executor;
   while (arg = args.shift()) {
     if (arg === "--help" || arg === "-h" || arg === "-?") {
       return help();
@@ -24,7 +26,8 @@ function run (args) {
     }
   }
   if (!program) {
-    return help();
+    //return help();
+    program = NO_PROGRAM;
   }
   if (!watch) {
     watch = ".";
@@ -55,7 +58,7 @@ function run (args) {
   
   // if we have a program, then run it, and restart when it crashes.
   // if we have a watch folder, then watch the folder for changes and restart the prog
-  startProgram(program, executor);
+  if (program !== NO_PROGRAM) startProgram(program, executor);
   var watchItems = watch.split(',');
   watchItems.forEach(function (watchItem) {
     if (!watchItem.match(/^\/.*/)) { // watch is not an absolute path
@@ -140,13 +143,13 @@ function watchGivenFile (watch) {
     sys.debug("crashing child");
     if (watch.indexOf(".coffee") !== -1) {
       exec("coffee -c "+watch,function(err, stderr, stdout) {
-            process.kill(child.pid);
+            if (program !== NO_PROGRAM) process.kill(child.pid);
             if (err) sys.debug(err);
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
         });
     } else {
-      process.kill(child.pid);
+      if (program !== NO_PROGRAM) process.kill(child.pid);
     }
   });
 }
