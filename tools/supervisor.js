@@ -1,11 +1,13 @@
 
+var stylus = require("stylus");
 var sys = require("sys");
 var fs = require("fs");
 var spawn = require("child_process").spawn;
 var exec = require("child_process").exec;
 var fileExtensionPattern;
 var program;
-var NO_PROGRAM = "none.coffee";
+// A program name which is "impossible" for anyone to choose, which represents no program.
+var NO_PROGRAM = "__none__.coffee";
 
 exports.run = run;
 
@@ -38,11 +40,11 @@ function run (args) {
 
   if (!extensions) {
     // If no extensions passed try to guess from the program
-    extensions = "node|js";
+    extensions = "node|js|styl";
     if (programExt && extensions.indexOf(programExt) == -1)
       extensions += "|" + programExt;
   }
-  fileExtensionPattern = new RegExp(".*\.(" + extensions + ")");
+  fileExtensionPattern = new RegExp(".*\.(" + extensions + ")$");
   
   if (!executor) {
     executor = (programExt === "coffee") ? "coffee" : "node";
@@ -121,6 +123,11 @@ function startProgram (prog, exec) {
 
 var timer = null, counter = -1, mtime = null;
 
+function getExtension(filename) {
+  var programExt = filename.match(/.*\.([^\.]*)$/);
+  return programExt && programExt[1];
+}
+
 function stopCrashing () {
   if (counter > 1) throw new Error("Crashing too much, shutting down");
   else counter = -1;
@@ -140,13 +147,20 @@ function watchGivenFile (watch) {
 
     var child = exports.child;
     sys.debug("detected change at "+watch);
-    sys.debug("crashing child");
-    if (watch.indexOf(".coffee") !== -1) {
+    var extension = getExtension(watch);
+    if ("coffee" === extension) {
+      sys.debug("compiling with coffeescript.");
       exec("coffee -c "+watch,function(err, stderr, stdout) {
             if (err) sys.debug(err);
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
-        });
+      });
+    } else if (extension === "styl") {
+      sys.debug('compiling with stylus.');
+      stylus.render(fs.readFileSync(watch)+'', { filename: watch }, function(err, css){
+        if (err) {sys.debug(err);return;}
+        fs.writeFile(watch.replace("styl","css"),css);
+      });
     } else {
       if (program !== NO_PROGRAM) process.kill(child.pid);
     }
