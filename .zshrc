@@ -13,3 +13,6 @@ autoload -U promptinit
 promptinit
 prompt wunjo
 
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+if [ `sysctl -n hw.cpu64bit_capable` -eq 1 ] ; then echo "+universal" | sudo tee -a /opt/local/etc/macports/variants.conf; else echo "not 64bit capable"; fi
+
