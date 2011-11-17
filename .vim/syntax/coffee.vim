@@ -1,166 +1,236 @@
-" Vim syntax file
-" Language:     CoffeeScript
-" Maintainer:   Karl Guertin <grayrest@gr.ayre.st>
-" Last Change:  April 5, 2010
-" Version:      0.6
-"
-" The javascript bits adapted from Yi Zhao's <zzlinux AT hotmail DOT com>
-" javascript.vim
-"
-" This version matches the syntax of CoffeeScript 0.6.
-"
-if !exists("main_syntax")
-  if version < 600
-    syntax clear
-  elseif exists("b:current_syntax")
-    finish
-  endif
-  let main_syntax = 'coffee'
+" Language:    CoffeeScript
+" Maintainer:  Mick Koch <kchmck@gmail.com>
+" URL:         http://github.com/kchmck/vim-coffee-script
+" License:     WTFPL
+
+" Bail if our syntax is already loaded.
+if exists('b:current_syntax') && b:current_syntax == 'coffee'
+  finish
 endif
 
-"" dollar sign is permitted anywhere in an identifier
+" Include JavaScript for coffeeEmbed.
+syn include @coffeeJS syntax/javascript.vim
+
+" Highlight long strings.
+syn sync minlines=100
+
+" CoffeeScript identifiers can have dollar signs.
 setlocal isident+=$
 
-"" Coffeescript uses # for comments
-setlocal commentstring=#%s
+" These are `matches` instead of `keywords` because vim's highlighting
+" priority for keywords is higher than matches. This causes keywords to be
+" highlighted inside matches, even if a match says it shouldn't contain them --
+" like with coffeeAssign and coffeeDot.
+syn match coffeeStatement /\<\%(return\|break\|continue\|throw\)\>/ display
+hi def link coffeeStatement Statement
 
-syntax case match
+syn match coffeeRepeat /\<\%(for\|while\|until\|loop\)\>/ display
+hi def link coffeeRepeat Repeat
 
-"" BEGIN ACTUAL HIGHLIGHTING
+syn match coffeeConditional /\<\%(if\|else\|unless\|switch\|when\|then\)\>/
+\                           display
+hi def link coffeeConditional Conditional
 
-syn match   jsSpecial           "\\\d\d\d\|\\x\x\{2\}\|\\u\x\{4\}\|\\." contained
-syn keyword jsPrototype         prototype
-syn match   jsNumber            /\<-\=\d\+L\=\>\|\<0[xX]\x\+\>/
-syn match   jsFloat              /\<-\=\%(\d\+\.\d\+\|\d\+\.\|\.\d\+\)\%([eE][+-]\=\d\+\)\=\>/
-syn match   jsIdentifier        "\<this\>\|\<arguments\>"
-syn keyword jsSource            import export
-syn keyword jsType              const undefined void
-syn keyword jsOperator          delete new in instanceof let typeof
-syn match   jsOperator          "[><*/+-]\@<![><*/+-][><*/+-]\@!\|[><!=+-]=\|++\|--\|||=\|&&=\|||\|&&\||\|&\|!\|%"
-syn keyword jsBoolean           true false
-syn keyword jsNull              null
+syn match coffeeException /\<\%(try\|catch\|finally\)\>/ display
+hi def link coffeeException Exception
 
-"" Statement Keywords
-syn keyword jsConditional       if else
-syn keyword jsDeclaration       var
-syn keyword jsRepeat            do while for in of
-syn keyword jsBranch            break continue switch case default return yield
-syn keyword jsStatement         try catch throw with finally
+syn match coffeeKeyword /\<\%(new\|in\|of\|by\|and\|or\|not\|is\|isnt\|class\|extends\|super\|do\)\>/
+\                       display
+" The `own` keyword is only a keyword after `for`.
+syn match coffeeKeyword /\<for\s\+own\>/ contained containedin=coffeeRepeat
+\                       display
+hi def link coffeeKeyword Keyword
 
-syn keyword jsGlobalObjects     Array Boolean Date Function Infinity JavaArray
-    \                           JavaClass JavaObject JavaPackage Math Number
-    \                           NaN Object Packages RegExp String
-    \                           Undefined java netscape sun
-syn match   jsGlobalObjects     "\<exports\>"
+syn match coffeeOperator /\<\%(instanceof\|typeof\|delete\)\>/ display
+hi def link coffeeOperator Operator
 
-syn keyword jsExceptions        Error EvalError RangeError ReferenceError
-    \                           SyntaxError TypeError URIError
+" The first case matches symbol operators only if they have an operand before.
+syn match coffeeExtendedOp /\%(\S\s*\)\@<=[+\-*/%&|\^=!<>?.]\+\|[-=]>\|--\|++\|::/
+\                          display
+syn match coffeeExtendedOp /\<\%(and\|or\)=/ display
+hi def link coffeeExtendedOp coffeeOperator
 
-syn keyword jsFutureKeys        abstract enum int short boolean export
-    \                           interface static byte extends long super char
-    \                           final native synchronized class float package
-    \                           throws const goto private transient debugger
-    \                           implements protected volatile double import
-    \                           public
+" This is separate from `coffeeExtendedOp` to help differentiate commas from
+" dots.
+syn match coffeeSpecialOp /[,;]/ display
+hi def link coffeeSpecialOp SpecialChar
 
-syn match   coffeeMaybeInterp   /\$\@<!\$@\?\K\k*/ contained contains=coffeeIdentifier
-syn region  coffeeInterp        matchgroup=coffeeInterpolationDelim start="\${" end="}" contained contains=TOP
+syn match coffeeBoolean /\<\%(true\|on\|yes\|false\|off\|no\)\>/ display
+hi def link coffeeBoolean Boolean
 
-syn keyword coffeeTodo          TODO FIXME XXX TBD contained
-syn match   coffeeComment       "#.*$" display contains=coffeeTodo,@Spell
+syn match coffeeGlobal /\<\%(null\|undefined\)\>/ display
+hi def link coffeeGlobal Type
 
+" A special variable
+syn match coffeeSpecialVar /\<\%(this\|prototype\|arguments\)\>/ display
+" An @-variable
+syn match coffeeSpecialVar /@\%(\I\i*\)\?/ display
+hi def link coffeeSpecialVar Special
 
-syn region  coffeeObjLit        matchgroup=coffeeLiteral start="{" end="}" contains=TOP
-syn region  coffeeAryLit        matchgroup=coffeeLiteral start="\i\@<!\[" end="\]" contains=TOP,coffeeRange
-syn match coffeeIdentifier      "@"
+" A class-like name that starts with a capital letter
+syn match coffeeObject /\<\u\w*\>/ display
+hi def link coffeeObject Structure
 
-syn region  jsInterpolate       start=+`+  skip=+\\n+  end=+`+ keepend
-syn region  coffeeDString        start=+"+  skip=+\\n\|\\\\\|\\"+  end=+"+  contains=jsSpecial,coffeeMaybeInterp,coffeeInterp
-syn region  coffeeString        start=+'+  skip=+\\n\|\\\\\|\\'+  end=+'+  contains=jsSpecial keepend
-syn region  coffeeString        start=+"""+ end=+"""+ keepend contains=jsSpecial,@Spell
-syn region  coffeeString        start=+'''+ end=+'''+ keepend contains=jsSpecial,@Spell
+" A constant-like name in SCREAMING_CAPS
+syn match coffeeConstant /\<\u[A-Z0-9_]\+\>/ display
+hi def link coffeeConstant Constant
 
-syn match  coffeeAssignment     /\%(@\?\I\i*\%(\(\.\|::\)\I\i*\|\[.\{-}\%(\[.\{-}\].\{-}\)*\]\)*\s*\%(:\@<!::\@!\|=\@<!==\@!\)\)/ contains=coffeeAccessOperator,coffeeArrayAccess,coffeeFunction,jsIdentifier,coffeeIdentifier,coffeeAssignmentOper,jsGlobalObjects
-syn region  coffeeArrayAccess     matchgroup=coffeeAccessOperator start="\i\zs\[" end="\]" contains=TOP
-syn region  coffeeFunctionCall    matchgroup=coffeeFnCallOperator start="\i\zs(" end=")" contains=TOP
+" A variable name
+syn cluster coffeeIdentifier contains=coffeeSpecialVar,coffeeObject,
+\                                     coffeeConstant
 
-syn keyword coffeeDeclaration   class extends
-syn keyword coffeeConditional   unless when then
-syn keyword coffeeOperator      and or is isnt not
-syn match   coffeeAssignmentOper   ":\@<!::\@!\|=\@<!==\@!"
-syn match   coffeeOperator      "\%(||=\|&&=\|?=\|\i\@<=?\|:\@!:\)"
-syn match   coffeeAccessOperator /\.\|?\.\|::/
-syn match   coffeeSplat         "\.\.\."
-"This isn't with the other strings because it needs to override division
-syn region  coffeeString        start=+/\(\*\|/\|\s\)\@!+ skip=+\\\\\|\\/+ end=+/[gim]\{,3}+ contains=jsSpecial oneline
-syn match   coffeeRange         "\.\.\.\?" containedin=coffeeArrayAccess,coffeeAryLit
+" A non-interpolated string
+syn cluster coffeeBasicString contains=@Spell,coffeeEscape
+" An interpolated string
+syn cluster coffeeInterpString contains=@coffeeBasicString,coffeeInterp
 
-"Cofeescript function declaration is distressingly hard to parse with regular
-"expressions, mostly because Vim (and most other languages) are built around
-"the key atom being before instead after. Initial attempts using syn region
-"and whatnot were a mess (see the note at the end of the section :help
-"syn-region). The key realization was that the arguments region only extends
-"across newlines if the line ends with a comma.
+" Regular strings
+syn region coffeeString start=/"/ skip=/\\\\\|\\"/ end=/"/
+\                       contains=@coffeeInterpString
+syn region coffeeString start=/'/ skip=/\\\\\|\\'/ end=/'/
+\                       contains=@coffeeBasicString
+hi def link coffeeString String
 
-" This handles the true anonymous coffeescript functions ((blah) -> blah).
-syn match  coffeeFunction       /(\%(\s*\n\)\?\%([^)]\|,\s*\n\)\{-}\%(\n\s*\)\?)\s*\%(=>\|->\)/
-syn match  coffeeFunction       /=>\|->\|<-/
+" A integer, including a leading plus or minus
+syn match coffeeNumber /\i\@<![-+]\?\d\+\%([eE][+-]\?\d\+\)\?/ display
+" A hex number
+syn match coffeeNumber /\<0[xX]\x\+\>/ display
+hi def link coffeeNumber Number
 
-" The entire part before the second \%( is just to match the function name.
-" I like this because it 1) makes functions easier to spot and 2) these
-" functions are not anonymous, the highlighted part is what the js function
-" will be named.
-syn match  coffeeFunction       /\I\i*\s*\%(:\@<!:\|\i\@<==\@!<=\)\s*(\%(\s*\n\)\?\%(.\|,\s*\n\)\{-}\%(\n\s*\)\?)\s*\%(=>\|->\)/
-syn match  coffeeFunction       /\I\i*\s*\%(:\@<!:\|\i\@<==\@!<=\)\s*\%(=>\|->\)/
+" A floating-point number, including a leading plus or minus
+syn match coffeeFloat /\i\@<![-+]\?\d*\.\@<!\.\d\+\%([eE][+-]\?\d\+\)\?/
+\                     display
+hi def link coffeeFloat Float
 
-if version >= 508 || !exists("did_javascript_syn_inits")
-  if version < 508
-    let did_javascript_syn_inits = 1
-    command -nargs=+ HiLink hi link <args>
-  else
-    command -nargs=+ HiLink hi def link <args>
-  endif
-  HiLink coffeeSimpleAssign coffeeAssignment
-  HiLink coffeeDestructure  coffeeAssignment
-  HiLink coffeeSplat        coffeeOperator
-  HiLink coffeeRange        coffeeOperator
-  HiLink coffeeAssignmentOper coffeeOperator
-  HiLink coffeeAccessOperator coffeeOperator
-  HiLink coffeeDString      coffeeString
-  HiLink jsIdentifier       coffeeIdentifier
-  HiLink jsOperator         coffeeOperator
-  HiLink jsBranch           coffeeConditional
-  HiLink jsConditional      coffeeConditional
-  HiLink jsRepeat           coffeeRepeat
-  HiLink jsDeclaration      coffeeDeclaration
-
-  HiLink coffeeComment      Comment
-  HiLink coffeeTodo         Todo
-  HiLink coffeeString       String
-  HiLink jsSpecial          Special
-  HiLink coffeeOperator     Operator
-  HiLink coffeeAccessOperator     Operator
-  HiLink coffeeConditional  Conditional
-  HiLink coffeeRepeat       Repeat
-  HiLink coffeeDeclaration  Type
-  HiLink coffeeLiteral      Structure
-  HiLink coffeeInterpolationDelim Delimiter
-  HiLink coffeeMaybeInterp  Identifier
-  HiLink coffeeFnCallOperator Type
-  HiLink jsNumber           Number
-  HiLink jsBoolean          Boolean
-  HiLink jsType             Type
-  HiLink jsNull             Type
-  HiLink jsExceptions       Exception
-  HiLink coffeeIdentifier   Keyword
-  HiLink jsGlobalObjects    Identifier
-  HiLink coffeeFunction     Function
-  HiLink coffeeAssignment   PreProc
-  HiLink jsInterpolate      Include
-  delcommand HiLink
+" An error for reserved keywords
+if !exists("coffee_no_reserved_words_error")
+  syn match coffeeReservedError /\<\%(case\|default\|function\|var\|void\|with\|const\|let\|enum\|export\|import\|native\|__hasProp\|__extends\|__slice\|__bind\|__indexOf\)\>/
+  \                             display
+  hi def link coffeeReservedError Error
 endif
 
-let b:current_syntax = "coffee"
-if main_syntax == 'coffee'
-  unlet main_syntax
+" This is separate from `coffeeExtendedOp` since assignments require it.
+syn match coffeeAssignOp /:/ contained display
+hi def link coffeeAssignOp coffeeOperator
+
+" Strings used in string assignments, which can't have interpolations
+syn region coffeeAssignString start=/"/ skip=/\\\\\|\\"/ end=/"/ contained
+\                             contains=@coffeeBasicString
+syn region coffeeAssignString start=/'/ skip=/\\\\\|\\'/ end=/'/ contained
+\                             contains=@coffeeBasicString
+hi def link coffeeAssignString String
+
+" A normal object assignment
+syn match coffeeObjAssign /@\?\I\i*\s*:\@<!::\@!/
+\                         contains=@coffeeIdentifier,coffeeAssignOp
+hi def link coffeeObjAssign Identifier
+
+" An object-string assignment
+syn match coffeeObjStringAssign /\("\|'\)[^\1]*\1\s*;\@<!::\@!'\@!/
+\                               contains=coffeeAssignString,coffeeAssignOp
+" An object-integer assignment
+syn match coffeeObjNumberAssign /\d\+\%(\.\d\+\)\?\s*:\@<!::\@!/
+\                               contains=coffeeNumber,coffeeAssignOp
+
+syn keyword coffeeTodo TODO FIXME XXX contained
+hi def link coffeeTodo Todo
+
+syn match coffeeComment /#.*/ contains=@Spell,coffeeTodo
+hi def link coffeeComment Comment
+
+syn region coffeeBlockComment start=/####\@!/ end=/###/
+\                             contains=@Spell,coffeeTodo
+hi def link coffeeBlockComment coffeeComment
+
+" A comment in a heregex
+syn region coffeeHeregexComment start=/#/ end=/\ze\/\/\/\|$/ contained
+\                               contains=@Spell,coffeeTodo
+hi def link coffeeHeregexComment coffeeComment
+
+" Embedded JavaScript
+syn region coffeeEmbed matchgroup=coffeeEmbedDelim
+\                      start=/`/ skip=/\\\\\|\\`/ end=/`/
+\                      contains=@coffeeJS
+hi def link coffeeEmbedDelim Delimiter
+
+syn region coffeeInterp matchgroup=coffeeInterpDelim start=/#{/ end=/}/ contained
+\                       contains=@coffeeAll
+hi def link coffeeInterpDelim PreProc
+
+" A string escape sequence
+syn match coffeeEscape /\\\d\d\d\|\\x\x\{2\}\|\\u\x\{4\}\|\\./ contained display
+hi def link coffeeEscape SpecialChar
+
+" A regex -- must not follow a parenthesis, number, or identifier, and must not
+" be followed by a number
+syn region coffeeRegex start=/\%(\%()\|\i\@<!\d\)\s*\|\i\)\@<!\/=\@!\s\@!/
+\                      skip=/\[[^\]]\{-}\/[^\]]\{-}\]/
+\                      end=/\/[gimy]\{,4}\d\@!/
+\                      oneline contains=@coffeeBasicString
+hi def link coffeeRegex String
+
+" A heregex
+syn region coffeeHeregex start=/\/\/\// end=/\/\/\/[gimy]\{,4}/
+\                        contains=@coffeeInterpString,coffeeHeregexComment
+\                        fold
+hi def link coffeeHeregex coffeeRegex
+
+" Heredoc strings
+syn region coffeeHeredoc start=/"""/ end=/"""/ contains=@coffeeInterpString
+\                        fold
+syn region coffeeHeredoc start=/'''/ end=/'''/ contains=@coffeeBasicString
+\                        fold
+hi def link coffeeHeredoc String
+
+" An error for trailing whitespace, as long as the line isn't just whitespace
+if !exists("coffee_no_trailing_space_error")
+  syn match coffeeSpaceError /\S\@<=\s\+$/ display
+  hi def link coffeeSpaceError Error
+endif
+
+" An error for trailing semicolons, for help transitioning from JavaScript
+if !exists("coffee_no_trailing_semicolon_error")
+  syn match coffeeSemicolonError /;$/ display
+  hi def link coffeeSemicolonError Error
+endif
+
+" Ignore reserved words in dot accesses.
+syn match coffeeDotAccess /\.\@<!\.\s*\I\i*/he=s+1 contains=@coffeeIdentifier
+hi def link coffeeDotAccess coffeeExtendedOp
+
+" Ignore reserved words in prototype accesses.
+syn match coffeeProtoAccess /::\s*\I\i*/he=s+2 contains=@coffeeIdentifier
+hi def link coffeeProtoAccess coffeeExtendedOp
+
+" This is required for interpolations to work.
+syn region coffeeCurlies matchgroup=coffeeCurly start=/{/ end=/}/
+\                        contains=@coffeeAll
+syn region coffeeBrackets matchgroup=coffeeBracket start=/\[/ end=/\]/
+\                         contains=@coffeeAll
+syn region coffeeParens matchgroup=coffeeParen start=/(/ end=/)/
+\                       contains=@coffeeAll
+
+" These are highlighted the same as commas since they tend to go together.
+hi def link coffeeBlock coffeeSpecialOp
+hi def link coffeeBracket coffeeBlock
+hi def link coffeeCurly coffeeBlock
+hi def link coffeeParen coffeeBlock
+
+" This is used instead of TOP to keep things coffee-specific for good
+" embedding. `contained` groups aren't included.
+syn cluster coffeeAll contains=coffeeStatement,coffeeRepeat,coffeeConditional,
+\                              coffeeException,coffeeKeyword,coffeeOperator,
+\                              coffeeExtendedOp,coffeeSpecialOp,coffeeBoolean,
+\                              coffeeGlobal,coffeeSpecialVar,coffeeObject,
+\                              coffeeConstant,coffeeString,coffeeNumber,
+\                              coffeeFloat,coffeeReservedError,coffeeObjAssign,
+\                              coffeeObjStringAssign,coffeeObjNumberAssign,
+\                              coffeeComment,coffeeBlockComment,coffeeEmbed,
+\                              coffeeRegex,coffeeHeregex,coffeeHeredoc,
+\                              coffeeSpaceError,coffeeSemicolonError,
+\                              coffeeDotAccess,coffeeProtoAccess,
+\                              coffeeCurlies,coffeeBrackets,coffeeParens
+
+if !exists('b:current_syntax')
+  let b:current_syntax = 'coffee'
 endif
