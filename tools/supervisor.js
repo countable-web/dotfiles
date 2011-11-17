@@ -1,6 +1,6 @@
 
-var stylus = require("stylus");
 var sys = require("sys");
+var p = require("path");
 var fs = require("fs");
 var spawn = require("child_process").spawn;
 var exec = require("child_process").exec;
@@ -40,7 +40,7 @@ function run (args) {
 
   if (!extensions) {
     // If no extensions passed try to guess from the program
-    extensions = "node|js|styl";
+    extensions = "node|js|styl|eco";
     if (programExt && extensions.indexOf(programExt) == -1)
       extensions += "|" + programExt;
   }
@@ -141,7 +141,7 @@ function watchGivenFile (watch) {
     ) return;
   
     if (counter === -1) {
-      timer = setTimeout(stopCrashing, 1000);
+      timer = setTimeout(stopCrashing, 400);
     }
     counter ++;
 
@@ -157,10 +157,20 @@ function watchGivenFile (watch) {
       });
     } else if (extension === "styl") {
       sys.debug('compiling with stylus.');
-      stylus.render(fs.readFileSync(watch)+'', { filename: watch }, function(err, css){
-        if (err) {sys.debug(err);return;}
-        fs.writeFile(watch.replace("styl","css"),css);
+      exec("stylus "+watch,function(err, stderr, stdout) {
+            if (err) sys.debug(err);
+            if (stderr) sys.debug(stderr);
+            if (stdout) sys.debug(stdout);
       });
+    } else if (extension === "eco") {
+      sys.debug('compiling with eco.');
+      exec("eco -o "+p.dirname(watch)+" "+watch,function(err, stderr, stdout) {
+            if (err) sys.debug(err);
+            if (stderr) sys.debug(stderr);
+            if (stdout) sys.debug(stdout);
+      });
+
+
     } else {
       if (program !== NO_PROGRAM) process.kill(child.pid);
     }
@@ -185,7 +195,7 @@ var findAllWatchFiles = function(path, callback) {
         });
       } else {
         if (path.match(fileExtensionPattern)) {
-          callback(path);
+          callback(p.normalize(path));
         }
       }
     }
