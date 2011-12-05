@@ -129,7 +129,7 @@ function getExtension(filename) {
 }
 
 function stopCrashing () {
-  if (counter > 1) throw new Error("Crashing too much, shutting down");
+  if (counter > 3) throw new Error("Crashing too much, shutting down");
   else counter = -1;
 }
 
