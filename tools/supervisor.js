@@ -1,13 +1,18 @@
 
 var sys = require("sys");
+var p = require("path");
 var fs = require("fs");
 var spawn = require("child_process").spawn;
+var exec = require("child_process").exec;
 var fileExtensionPattern;
+var program;
+// A program name which is "impossible" for anyone to choose, which represents no program.
+var NO_PROGRAM = "__none__.coffee";
 
 exports.run = run;
 
 function run (args) {
-  var arg, next, watch, program, extensions, executor;
+  var arg, next, watch, extensions, executor;
   while (arg = args.shift()) {
     if (arg === "--help" || arg === "-h" || arg === "-?") {
       return help();
@@ -23,7 +28,8 @@ function run (args) {
     }
   }
   if (!program) {
-    return help();
+    //return help();
+    program = NO_PROGRAM;
   }
   if (!watch) {
     watch = ".";
@@ -34,11 +40,11 @@ function run (args) {
 
   if (!extensions) {
     // If no extensions passed try to guess from the program
-    extensions = "node|js";
+    extensions = "node|js|styl|eco";
     if (programExt && extensions.indexOf(programExt) == -1)
       extensions += "|" + programExt;
   }
-  fileExtensionPattern = new RegExp(".*\.(" + extensions + ")");
+  fileExtensionPattern = new RegExp(".*\.(" + extensions + ")$");
   
   if (!executor) {
     executor = (programExt === "coffee") ? "coffee" : "node";
@@ -54,7 +60,7 @@ function run (args) {
   
   // if we have a program, then run it, and restart when it crashes.
   // if we have a watch folder, then watch the folder for changes and restart the prog
-  startProgram(program, executor);
+  if (program !== NO_PROGRAM) startProgram(program, executor);
   var watchItems = watch.split(',');
   watchItems.forEach(function (watchItem) {
     if (!watchItem.match(/^\/.*/)) { // watch is not an absolute path
@@ -116,30 +122,59 @@ function startProgram (prog, exec) {
 }
 
 var timer = null, counter = -1, mtime = null;
-function crash (oldStat, newStat) {
-  
-  // we only care about modification time, not access time.
-  if (
-    newStat.mtime.getTime() === oldStat.mtime.getTime()
-  ) return;
 
-  if (counter === -1) {
-    timer = setTimeout(stopCrashing, 1000);
-  }
-  counter ++;
-  
-  var child = exports.child;
-  sys.debug("crashing child");
-  process.kill(child.pid);
+function getExtension(filename) {
+  var programExt = filename.match(/.*\.([^\.]*)$/);
+  return programExt && programExt[1];
 }
 
 function stopCrashing () {
-  if (counter > 1) throw new Error("Crashing too much, shutting down");
+  if (counter > 3) throw new Error("Crashing too much, shutting down");
   else counter = -1;
 }
 
 function watchGivenFile (watch) {
-  fs.watchFile(watch, crash);
+  fs.watchFile(watch, function crash (oldStat, newStat) {
+    // we only care about modification time, not access time.
+    if (
+      newStat.mtime.getTime() === oldStat.mtime.getTime()
+    ) return;
+  
+    if (counter === -1) {
+      timer = setTimeout(stopCrashing, 400);
+    }
+    counter ++;
+
+    var child = exports.child;
+    sys.debug("detected change at "+watch);
+    var extension = getExtension(watch);
+    if ("coffee" === extension) {
+      sys.debug("compiling with coffeescript.");
+      exec("coffee -c "+watch,function(err, stderr, stdout) {
+            if (err) sys.debug(err);
+            if (stderr) sys.debug(stderr);
+            if (stdout) sys.debug(stdout);
+      });
+    } else if (extension === "styl") {
+      sys.debug('compiling with stylus.');
+      exec("stylus "+watch,function(err, stderr, stdout) {
+            if (err) sys.debug(err);
+            if (stderr) sys.debug(stderr);
+            if (stdout) sys.debug(stdout);
+      });
+    } else if (extension === "eco") {
+      sys.debug('compiling with eco.');
+      exec("eco -o "+p.dirname(watch)+" "+watch,function(err, stderr, stdout) {
+            if (err) sys.debug(err);
+            if (stderr) sys.debug(stderr);
+            if (stdout) sys.debug(stdout);
+      });
+
+
+    } else {
+      if (program !== NO_PROGRAM) process.kill(child.pid);
+    }
+  });
 }
 
 var findAllWatchFiles = function(path, callback) {
@@ -160,7 +195,7 @@ var findAllWatchFiles = function(path, callback) {
         });
       } else {
         if (path.match(fileExtensionPattern)) {
-          callback(path);
+          callback(p.normalize(path));
         }
       }
     }
