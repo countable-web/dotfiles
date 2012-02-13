@@ -4,7 +4,10 @@ PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_c
 # Customize to your needs...
 export PATH=$HOME/satchel/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 source $HOME/.nvm/nvm.sh
-nvm use v0.4.11
+nvm use v0.6.2
+
+alias ll="ls -l"
+alias djs="python manage.py runserver 0.0.0.0:8080"
 
 fpath=($fpath $HOME/satchel/.zsh/functions)
 typeset -U fpath
