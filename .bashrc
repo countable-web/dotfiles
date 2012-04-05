@@ -84,6 +84,7 @@ alias l='ls -CF'
 alias ra2='sudo /etc/init.d/apache2 restart'
 alias rs="python manage.py runserver 0.0.0.0:8002"
 alias apps='cd /usr/local/apps'
+alias perm='sudo chmod -R g+rw . && sudo chgrp -R dev .'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
