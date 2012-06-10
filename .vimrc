@@ -1,7 +1,6 @@
 
 filetype plugin on
 set ofu=syntaxcomplete#Complete
-set number
 set ruler
 syntax on
 set incsearch
