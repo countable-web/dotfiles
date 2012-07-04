@@ -1,6 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_cnt =5
 let g:netrw_dirhist_1='/Users/clark/src'
 let g:netrw_dirhist_2='/Users/clark/.vim'
 let g:netrw_dirhist_3='/Users/clark/src/spine.todos/.git'
 let g:netrw_dirhist_4='/usr/local/apps/thisfish/tools/smoketest'
+let g:netrw_dirhist_5='/home/clark/nvm'
