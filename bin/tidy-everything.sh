@@ -1,4 +1,4 @@
-TOOL="/usr/local/stage/thisfish/tools/pythontidy.py"
+TOOL="$HOME/satchel/tools/pythontidy.py"
 USAGE="Usage: $0 [directory]\nRuns .py files in [dir] through $TOOL while preserving shebang lines"
 TMP=".py.tmp"
 
@@ -14,6 +14,7 @@ find $1 -name "*.py" | while read FILE; do
 
 	echo -n "Processing $FILE ... " &&
 	$TOOL $FILE > $TMP &&
+  cp $FILE $FILE.bak &&
 	grep -q '#!' $FILE &&
 	if [ $? -eq 0 ]; then
 		echo -n "preserving shebang ... " &&
