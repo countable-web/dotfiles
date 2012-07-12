@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+# Find large files in a git repo history
+# git-find-big.pl 10000
 use 5.10.0;
 use strict;
 use warnings;
