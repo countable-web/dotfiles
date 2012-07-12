@@ -70,6 +70,11 @@ function run (args) {
   
   // if we have a program, then run it, and restart when it crashes.
   // if we have a watch folder, then watch the folder for changes and restart the prog
+  var pwdFiles = fs.readdirSync('.');
+  console.log(pwdFiles)
+  var autoRunFiles = ["app.coffee", "app.js", "manage.py"]
+ 
+
   if (program !== NO_PROGRAM) startProgram(program, executor);
   var watchItems = watch.split(',');
   watchItems.forEach(function (watchItem) {
