@@ -31,7 +31,14 @@ function run (args) {
   }
   if (!program) {
     //return help();
-    program = NO_PROGRAM;
+
+    var pwdFiles = fs.readdirSync('.');
+    var autoRunFiles = ["app.coffee", "app.js", "manage.py"]
+    for(var i = 0; i < autoRunFiles.length; i++) {
+      if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program = autoRunFiles[i];
+    }
+
+    if (!program) program = NO_PROGRAM;
   }
   if (!watch) {
     watch = ".";
@@ -70,11 +77,6 @@ function run (args) {
   
   // if we have a program, then run it, and restart when it crashes.
   // if we have a watch folder, then watch the folder for changes and restart the prog
-  var pwdFiles = fs.readdirSync('.');
-  console.log(pwdFiles)
-  var autoRunFiles = ["app.coffee", "app.js", "manage.py"]
- 
-
   if (program !== NO_PROGRAM) startProgram(program, executor);
   var watchItems = watch.split(',');
   watchItems.forEach(function (watchItem) {
