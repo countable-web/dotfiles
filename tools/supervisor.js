@@ -5,7 +5,7 @@ var fs = require("fs");
 var spawn = require("child_process").spawn;
 var exec = require("child_process").exec;
 var fileExtensionPattern;
-var program;
+var program, port;
 // A program name which is "impossible" for anyone to choose, which represents no program.
 var NO_PROGRAM = "__none__.coffee";
 
@@ -18,6 +18,8 @@ function run (args) {
       return help();
     } else if (arg === "--watch" || arg === "-w") {
       watch = args.shift();
+    } else if (arg === "--port" || arg === "-p") {
+      port = args.shift();
     } else if (arg === "--extensions" || arg === "-e") {
       extensions = args.shift();
     } else if (arg === "--exec" || arg === "-x") {
@@ -29,7 +31,14 @@ function run (args) {
   }
   if (!program) {
     //return help();
-    program = NO_PROGRAM;
+
+    var pwdFiles = fs.readdirSync('.');
+    var autoRunFiles = ["app.coffee", "app.js", "manage.py"]
+    for(var i = 0; i < autoRunFiles.length; i++) {
+      if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program = autoRunFiles[i];
+    }
+
+    if (!program) program = NO_PROGRAM;
   }
   if (!watch) {
     watch = ".";
@@ -40,14 +49,28 @@ function run (args) {
 
   if (!extensions) {
     // If no extensions passed try to guess from the program
+<<<<<<< HEAD
     extensions = "node|js|styl|eco|jade";
     if (programExt && extensions.indexOf(programExt) == -1)
       extensions += "|" + programExt;
+=======
+    extensions = "node|js|styl|eco|coffee";
+    //if (programExt && extensions.indexOf(programExt) == -1)
+    //  extensions += "|" + programExt;
+>>>>>>> 5201577bc44de57de360bb9be308cc306add9de7
   }
   fileExtensionPattern = new RegExp(".*\.(" + extensions + ")$");
   
   if (!executor) {
-    executor = (programExt === "coffee") ? "coffee" : "node";
+    if (programExt === "coffee") {
+      executor = "coffee";
+    } else if (programExt === "py") {
+      executor = "python";
+    } else if (programExt === "js") {
+      executor = "node";
+    } else {
+      throw "Extension `" + programExt + "` not supported.";
+    }
   }
   
   sys.puts("")
@@ -114,8 +137,16 @@ function help () {
 }
 
 function startProgram (prog, exec) {
-  sys.debug("Starting child process with '" + exec + " " + prog + "'");
-  var child = exports.child = spawn(exec, [prog]);
+  var cl_args;
+  if (prog == 'manage.py') {
+    program = NO_PROGRAM
+    // special case for Django program.
+    cl_args = [prog, 'runserver', '0.0.0.0:' + (port || 8000)];
+  } else {
+    cl_args = [prog];
+  }
+  sys.debug("Starting child process with '" + exec + " " + cl_args.join(' ') + "'");
+  var child = exports.child = spawn(exec, cl_args);
   child.stdout.addListener("data", function (chunk) { chunk && sys.print(chunk) });
   child.stderr.addListener("data", function (chunk) { chunk && sys.debug(chunk) });
   child.addListener("exit", function () { startProgram(prog, exec) });
