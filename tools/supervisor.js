@@ -49,15 +49,9 @@ function run (args) {
 
   if (!extensions) {
     // If no extensions passed try to guess from the program
-<<<<<<< HEAD
     extensions = "node|js|styl|eco|jade";
     if (programExt && extensions.indexOf(programExt) == -1)
       extensions += "|" + programExt;
-=======
-    extensions = "node|js|styl|eco|coffee";
-    //if (programExt && extensions.indexOf(programExt) == -1)
-    //  extensions += "|" + programExt;
->>>>>>> 5201577bc44de57de360bb9be308cc306add9de7
   }
   fileExtensionPattern = new RegExp(".*\.(" + extensions + ")$");
   
