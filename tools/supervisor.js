@@ -35,7 +35,10 @@ function run (args) {
     var pwdFiles = fs.readdirSync('.');
     var autoRunFiles = ["app.coffee", "app.js", "manage.py"]
     for(var i = 0; i < autoRunFiles.length; i++) {
-      if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program = autoRunFiles[i];
+      if (pwdFiles.indexOf(autoRunFiles[i]) > -1) {
+        program = autoRunFiles[i];
+        break;
+      }
     }
 
     if (!program) program = NO_PROGRAM;
