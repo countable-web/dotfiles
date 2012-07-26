@@ -52,9 +52,9 @@ function run (args) {
 
   if (!extensions) {
     // If no extensions passed try to guess from the program
-    extensions = "node|js|styl|eco|coffee";
-    //if (programExt && extensions.indexOf(programExt) == -1)
-    //  extensions += "|" + programExt;
+    extensions = "node|js|styl|eco|jade";
+    if (programExt && extensions.indexOf(programExt) == -1)
+      extensions += "|" + programExt;
   }
   fileExtensionPattern = new RegExp(".*\.(" + extensions + ")$");
   
@@ -197,7 +197,13 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-
+    } else if (extension === "jade" && watch.indexOf("client") > -1) {
+      sys.debug('compiling with clientjade wrapper.');
+      exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
+            if (err) sys.debug(err);
+            if (stderr) sys.debug(stderr);
+            if (stdout) sys.debug(stdout);
+      });
 
     } else {
       if (program !== NO_PROGRAM) process.kill(child.pid);

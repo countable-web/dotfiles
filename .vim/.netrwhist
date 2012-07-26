@@ -1,7 +1,27 @@
 let g:netrw_dirhistmax  =10
+<<<<<<< HEAD
+<<<<<<< HEAD
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/Users/clark/src'
+let g:netrw_dirhist_2='/Users/clark/.vim'
+let g:netrw_dirhist_3='/Users/clark/src/spine.todos/.git'
+let g:netrw_dirhist_4='/Users/clark/Desktop/js/cmn/aopjs/.git'
+let g:netrw_dirhist_5='/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8'
+let g:netrw_dirhist_6='/Library/Ruby/Gems/1.8/gems/gitdocs-0.4.10/lib/gitdocs'
+let g:netrw_dirhist_7='/Users/clark/src/htmlcommentbox/hcb/templates'
+=======
 let g:netrw_dirhist_cnt =6
 let g:netrw_dirhist_1='/Users/clark/src'
 let g:netrw_dirhist_2='/Users/clark/.vim'
 let g:netrw_dirhist_3='/Users/clark/src/spine.todos/.git'
 let g:netrw_dirhist_4='/usr/local/apps/thisfish/tools/smoketest'
 let g:netrw_dirhist_5='/home/clark/nvm'
+>>>>>>> 5201577bc44de57de360bb9be308cc306add9de7
+=======
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/clark/src'
+let g:netrw_dirhist_2='/Users/clark/.vim'
+let g:netrw_dirhist_3='/Users/clark/src/spine.todos/.git'
+let g:netrw_dirhist_4='/usr/local/apps/thisfish/tools/smoketest'
+let g:netrw_dirhist_5='/home/clark/nvm'
+>>>>>>> 5201577bc44de57de360bb9be308cc306add9de7
