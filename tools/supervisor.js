@@ -52,7 +52,7 @@ function run (args) {
 
   if (!extensions) {
     // If no extensions passed try to guess from the program
-    extensions = "node|js|styl|eco|jade";
+    extensions = "node|js|styl|eco|coffee|jade";
     if (programExt && extensions.indexOf(programExt) == -1)
       extensions += "|" + programExt;
   }
@@ -228,6 +228,7 @@ var findAllWatchFiles = function(path, callback) {
           }
         });
       } else {
+
         if (path.match(fileExtensionPattern)) {
           callback(p.normalize(path));
         }
