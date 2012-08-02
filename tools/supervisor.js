@@ -52,9 +52,9 @@ function run (args) {
 
   if (!extensions) {
     // If no extensions passed try to guess from the program
-    extensions = "node|js|styl|eco|coffee";
-    //if (programExt && extensions.indexOf(programExt) == -1)
-    //  extensions += "|" + programExt;
+    extensions = "node|js|styl|eco|coffee|jade";
+    if (programExt && extensions.indexOf(programExt) == -1)
+      extensions += "|" + programExt;
   }
   fileExtensionPattern = new RegExp(".*\.(" + extensions + ")$");
   
@@ -80,7 +80,10 @@ function run (args) {
   
   // if we have a program, then run it, and restart when it crashes.
   // if we have a watch folder, then watch the folder for changes and restart the prog
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8230c50e643ba53a9f51092447661de547bb6114
   if (program !== NO_PROGRAM) startProgram(program, executor);
   var watchItems = watch.split(',');
   watchItems.forEach(function (watchItem) {
@@ -198,7 +201,13 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-
+    } else if (extension === "jade" && watch.indexOf("client") > -1) {
+      sys.debug('compiling with clientjade wrapper.');
+      exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
+            if (err) sys.debug(err);
+            if (stderr) sys.debug(stderr);
+            if (stdout) sys.debug(stdout);
+      });
 
     } else {
       if (program !== NO_PROGRAM) process.kill(child.pid);
@@ -223,6 +232,7 @@ var findAllWatchFiles = function(path, callback) {
           }
         });
       } else {
+
         if (path.match(fileExtensionPattern)) {
           callback(p.normalize(path));
         }
