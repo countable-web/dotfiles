@@ -80,10 +80,7 @@ function run (args) {
   
   // if we have a program, then run it, and restart when it crashes.
   // if we have a watch folder, then watch the folder for changes and restart the prog
-<<<<<<< HEAD
 
-=======
->>>>>>> 8230c50e643ba53a9f51092447661de547bb6114
   if (program !== NO_PROGRAM) startProgram(program, executor);
   var watchItems = watch.split(',');
   watchItems.forEach(function (watchItem) {
