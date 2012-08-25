@@ -12,13 +12,13 @@ fi
 
 sudo apt-get install curl g++ libssl-dev
 
-git clone https://github.com/creationix/nvm.git
-. ~/nvm/nvm.sh
+git clone https://github.com/creationix/nvm.git .nvm
+. ~/.nvm/nvm.sh
 
 nvm install $1
 nvm use $1
 
-echo ". $HOME/nvm/nvm.sh" >> $HOME/.bashrc
+echo ". $HOME/.nvm/nvm.sh" >> $HOME/.bashrc
 echo "nvm use $1" >> $HOME/.bashrc
 
 npm install -g coffee-script

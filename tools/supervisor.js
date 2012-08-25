@@ -31,14 +31,17 @@ function run (args) {
   }
   if (!program) {
     //return help();
-
     var pwdFiles = fs.readdirSync('.');
-    var autoRunFiles = ["app.coffee", "app.js", "manage.py"]
-    for(var i = 0; i < autoRunFiles.length; i++) {
-      if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program = autoRunFiles[i];
+    console.log(pwdFiles);
+    var autoRunFiles = ["app.js", "app.coffee", "manage.py"]
+    for (var i = 0; i < autoRunFiles.length; i++) {
+      console.log( autoRunFiles[i], pwdFiles.indexOf(autoRunFiles[i]) )
+      if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program=autoRunFiles[i];
+    }
+    if (!program) {
+      program = NO_PROGRAM;
     }
 
-    if (!program) program = NO_PROGRAM;
   }
   if (!watch) {
     watch = ".";
@@ -49,7 +52,7 @@ function run (args) {
 
   if (!extensions) {
     // If no extensions passed try to guess from the program
-    extensions = "node|js|styl|eco|jade";
+    extensions = "node|js|styl|eco|coffee|jade";
     if (programExt && extensions.indexOf(programExt) == -1)
       extensions += "|" + programExt;
   }
@@ -77,6 +80,7 @@ function run (args) {
   
   // if we have a program, then run it, and restart when it crashes.
   // if we have a watch folder, then watch the folder for changes and restart the prog
+
   if (program !== NO_PROGRAM) startProgram(program, executor);
   var watchItems = watch.split(',');
   watchItems.forEach(function (watchItem) {
@@ -225,6 +229,7 @@ var findAllWatchFiles = function(path, callback) {
           }
         });
       } else {
+
         if (path.match(fileExtensionPattern)) {
           callback(p.normalize(path));
         }
