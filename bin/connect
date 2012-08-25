@@ -1,0 +1,12 @@
+#!/bin/bash
+
+mkdir -p ~/remote/$1
+if [ -z "$2" ]; then
+  echo sshfs $1:/ ~/remote/$1 -oauto_cache,reconnect,defer_permissions
+  sshfs $1:/ ~/remote/$1 -oauto_cache,reconnect,defer_permissions
+else
+  echo sshfs $1:/ ~/remote/$1 -p $2 -oauto_cache,reconnect,defer_permissions
+  sshfs $1:/ ~/remote/$1 -p $2 -oauto_cache,reconnect,defer_permissions
+fi
+
+
