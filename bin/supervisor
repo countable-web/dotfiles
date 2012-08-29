@@ -1,14 +1,11 @@
-#!/usr/bin/env node
-var path = require("path")
-  , args = process.argv.slice(1)
-
-var arg, base;
-do arg = args.shift();
-while ( arg !== __filename
-  && (base = path.basename(arg)) !== "node-supervisor"
-  && base !== "supervisor"
-  && base !== "supervisor.js"
-)
-
-require("../tools/supervisor.js").run(args)
-
+#!/usr/bin/env coffee
+path = require("path")
+args = process.argv.slice(1)
+arg = undefined
+base = undefined
+console.log "what"
+loop
+  arg = args.shift()
+  break unless arg isnt __filename and (base = path.basename(arg)) isnt "node-supervisor" and base isnt "supervisor" and base isnt "supervisor.js"
+console.log "the"
+require("../tools/supervisor").run args

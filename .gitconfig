@@ -13,3 +13,4 @@
 
 [core]
 	excludesfile = /Users/clark/satchel/.gitignore
+	editor = vim

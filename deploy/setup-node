@@ -1,2 +1,29 @@
+#!/bin/bash
 
-#TODO
+# Check for proper number of command line args.
+EXPECTED_ARGS=1
+E_BADARGS=65
+
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  echo "Usage: setup-node <version, like v0.6.14>"
+  exit $E_BADARGS
+fi
+
+sudo apt-get install curl g++ libssl-dev
+
+git clone https://github.com/creationix/nvm.git .nvm
+. ~/.nvm/nvm.sh
+
+nvm install $1
+nvm use $1
+
+echo ". $HOME/.nvm/nvm.sh" >> $HOME/.bashrc
+echo "nvm use $1" >> $HOME/.bashrc
+
+npm install -g coffee-script
+npm install -g stylus
+npm install -g html2jade
+npm install -g shelljs
+npm install -g js2coffee
+
