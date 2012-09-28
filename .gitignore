@@ -2,3 +2,5 @@
 nohup.out
 node_modules
 .vim/.netrwhist
+err.log
+out.log
