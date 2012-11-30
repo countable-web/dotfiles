@@ -6,6 +6,7 @@ export PATH=$HOME/satchel/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
 
 alias ll="ls -l"
 alias djs="python manage.py runserver 0.0.0.0:8080"
+alias stf="ssh -i keys/STF-keypair.pem ubuntu@ec2-50-112-228-89.us-west-2.compute.amazonaws.com"
 alias pias-pizza="ssh -i keys/OAS-Pizza-keypair.pem ubuntu@ec2-50-112-76-219.us-west-2.compute.amazonaws.com"
 fpath=($fpath $HOME/satchel/.zsh/functions)
 typeset -U fpath
