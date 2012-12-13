@@ -1,0 +1,3 @@
+
+alias esdevices="ssh -i $HOME/keys/ESD-Keypair1.pem ubuntu@50.112.119.189"
+
