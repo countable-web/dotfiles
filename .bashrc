@@ -121,5 +121,5 @@ fi
 
 export PATH=$PATH:$HOME/satchel/bin
 
-
+source $HOME/satchel/.aliases
 
