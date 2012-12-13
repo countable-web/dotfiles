@@ -1,0 +1,4 @@
+alias stf="ssh -i keys/STF-keypair.pem ubuntu@ec2-50-112-228-89.us-west-2.compute.amazonaws.com"
+alias pias-pizza="ssh -i keys/OAS-Pizza-keypair.pem ubuntu@ec2-50-112-76-219.us-west-2.compute.amazonaws.com"
+alias esdevices="ssh -i $HOME/keys/ESD-Keypair1.pem ubuntu@50.112.119.189"
+
