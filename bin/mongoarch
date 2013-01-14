@@ -1,0 +1,26 @@
+#!/bin/bash
+
+ARCHIVE_FILE=mongodump-$(date +%Y%m%d-%H%M%S).tar.bz2
+OFFSITE_SERVER=godel.countable.ca
+SITENAME=shared
+ARCHIVE_PATH=/bak/$SITENAME/
+
+mongodump
+echo mkdir -p $ARCHIVE_PATH
+mkdir -p $ACHIVE_PATH
+tar -jcvf $ARCHIVE_PATH$ARCHIVE_FILE dump
+rm -r dump
+
+if [ `date +%H` = '00' ]; then
+    echo "It's midnight so we're copying the backup offsite"
+    scp $ARCHIVE_PATH$ARCHIVE_FILE $offsite:$ARCHIVE_PATH
+else
+    echo "It's not midnight, so we're not copying the backup offsite"
+fi
+
+# remove anything that's not the first of a month, and is at least a month old.
+rm `find $ARCHIVE_PATH* -atime "+30" | grep -v "01\-"`
+
+# remove files older than 2 days that aren't at 10 o'clock
+rm `find $ARCHIVE_PATH* -atime "+2" | grep -v "\-22"`
+
