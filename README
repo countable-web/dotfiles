@@ -1,0 +1,9 @@
+
+This repo contains standard config and scripts used by Countable Web Productions.
+
+To install the default config files, go to your home directory and run "./satchel/deploy/unpack-satchel"
+
+To install nodeJS, run "./satchel/deploy/setup-node"
+
+To setup a standard Countable web server on a fresh ubuntu install, run "./satchel/deploy/setup-web-server"
+
