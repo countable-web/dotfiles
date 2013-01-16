@@ -1,0 +1,11 @@
+
+optdir=/opt
+logdir=/var/log/node
+
+if [ -e "$logdir/$1.forever" ]
+then
+  rm $logdir/$1.forever
+fi
+
+forever start -l $logdir/$1.forever -o $logdir/$1.out -e $logdir/$1.err $optdir/$1/app.js
+
