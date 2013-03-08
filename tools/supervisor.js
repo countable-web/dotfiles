@@ -32,10 +32,8 @@ function run (args) {
   if (!program) {
     //return help();
     var pwdFiles = fs.readdirSync('.');
-    console.log(pwdFiles);
     var autoRunFiles = ["app.js", "app.coffee", "manage.py"]
     for (var i = 0; i < autoRunFiles.length; i++) {
-      console.log( autoRunFiles[i], pwdFiles.indexOf(autoRunFiles[i]) )
       if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program=autoRunFiles[i];
     }
     if (!program) {
@@ -179,7 +177,7 @@ function watchGivenFile (watch) {
     var extension = getExtension(watch);
     if ("coffee" === extension) {
       sys.debug("compiling with coffeescript.");
-      exec("coffee -c "+watch,function(err, stderr, stdout) {
+      exec("coffee -c -m "+watch,function(err, stderr, stdout) {
             if (err) sys.debug(err);
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
