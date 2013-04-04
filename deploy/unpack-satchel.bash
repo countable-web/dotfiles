@@ -6,7 +6,6 @@ echo "source $HOME/satchel/.bashrc" >> .bashrc
 ln -s satchel/.vimrc
 ln -s satchel/.gitconfig
 ln -s satchel/.gitignore
-ln -s satchel/.vim
 source .bashrc
 echo "Done installing satchel."
 
