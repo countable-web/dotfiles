@@ -4,7 +4,6 @@ echo "Satchel is a repository filled with standard unix config and scripts for C
 echo "NOTE: You should probably run this from your home directory."
 echo "source $HOME/satchel/.bashrc" >> .bashrc
 ln -s satchel/.vimrc
-ln -s satchel/.vim
 ln -s satchel/.gitconfig
 ln -s satchel/.gitignore
 source .bashrc
