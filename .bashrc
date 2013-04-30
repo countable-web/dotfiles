@@ -96,7 +96,7 @@ function run {
 }
 
 alias apps='cd /usr/local/apps'
-alias perm='sudo chmod -R g+rw . && sudo chgrp -R dev . && chmod g+s `find repodir -type d`'
+alias perm='sudo chmod -R g+rw . && sudo chgrp -R dev . && chmod g+s `find . -type d`'
 
 
 # Add an "alert" alias for long running commands.  Use like so:
