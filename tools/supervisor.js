@@ -31,17 +31,15 @@ function run (args) {
   }
   if (!program) {
     //return help();
-
     var pwdFiles = fs.readdirSync('.');
-    var autoRunFiles = ["app.coffee", "app.js", "manage.py"]
-    for(var i = 0; i < autoRunFiles.length; i++) {
-      if (pwdFiles.indexOf(autoRunFiles[i]) > -1) {
-        program = autoRunFiles[i];
-        break;
-      }
+    var autoRunFiles = ["app.js", "app.coffee", "manage.py"]
+    for (var i = 0; i < autoRunFiles.length; i++) {
+      if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program=autoRunFiles[i];
+    }
+    if (!program) {
+      program = NO_PROGRAM;
     }
 
-    if (!program) program = NO_PROGRAM;
   }
   if (!watch) {
     watch = ".";
@@ -80,6 +78,7 @@ function run (args) {
   
   // if we have a program, then run it, and restart when it crashes.
   // if we have a watch folder, then watch the folder for changes and restart the prog
+
   if (program !== NO_PROGRAM) startProgram(program, executor);
   var watchItems = watch.split(',');
   watchItems.forEach(function (watchItem) {
@@ -178,7 +177,7 @@ function watchGivenFile (watch) {
     var extension = getExtension(watch);
     if ("coffee" === extension) {
       sys.debug("compiling with coffeescript.");
-      exec("coffee -c "+watch,function(err, stderr, stdout) {
+      exec("coffee -c -m "+watch,function(err, stderr, stdout) {
             if (err) sys.debug(err);
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
