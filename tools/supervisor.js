@@ -8,7 +8,7 @@ var fileExtensionPattern;
 var program, port;
 // A program name which is "impossible" for anyone to choose, which represents no program.
 var NO_PROGRAM = "__none__.coffee";
-
+var programExt;
 exports.run = run;
 
 function run (args) {
@@ -31,20 +31,28 @@ function run (args) {
   }
   if (!program) {
     //return help();
-    program = NO_PROGRAM;
+    var pwdFiles = fs.readdirSync('.');
+    var autoRunFiles = ["app.js", "app.coffee", "manage.py"]
+    for (var i = 0; i < autoRunFiles.length; i++) {
+      if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program=autoRunFiles[i];
+    }
+    if (!program) {
+      program = NO_PROGRAM;
+    }
+
   }
   if (!watch) {
     watch = ".";
   }
 
-  var programExt = program.match(/.*\.(.*)/);
+  programExt = program.match(/.*\.(.*)/);
   programExt = programExt && programExt[1];
 
   if (!extensions) {
     // If no extensions passed try to guess from the program
-    extensions = "node|js|styl|eco|coffee";
-    //if (programExt && extensions.indexOf(programExt) == -1)
-    //  extensions += "|" + programExt;
+    extensions = "node|js|styl|eco|coffee|jade";
+    if (programExt && extensions.indexOf(programExt) == -1)
+      extensions += "|" + programExt;
   }
   fileExtensionPattern = new RegExp(".*\.(" + extensions + ")$");
   
@@ -70,6 +78,7 @@ function run (args) {
   
   // if we have a program, then run it, and restart when it crashes.
   // if we have a watch folder, then watch the folder for changes and restart the prog
+
   if (program !== NO_PROGRAM) startProgram(program, executor);
   var watchItems = watch.split(',');
   watchItems.forEach(function (watchItem) {
@@ -168,11 +177,14 @@ function watchGivenFile (watch) {
     var extension = getExtension(watch);
     if ("coffee" === extension) {
       sys.debug("compiling with coffeescript.");
-      exec("coffee -c "+watch,function(err, stderr, stdout) {
+      exec("coffee -c -m "+watch,function(err, stderr, stdout) {
             if (err) sys.debug(err);
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
+      if (programExt === "coffee") {
+        process.kill(child.pid);
+      }
     } else if (extension === "styl") {
       sys.debug('compiling with stylus.');
       exec("stylus "+watch,function(err, stderr, stdout) {
@@ -187,8 +199,15 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-
-
+    } else if (extension === "jade" && watch.indexOf("client") > -1) {
+      sys.debug('compiling with clientjade wrapper.');
+      exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
+            if (err) sys.debug(err);
+            if (stderr) sys.debug(stderr);
+            if (stdout) sys.debug(stdout);
+      });
+    } else if (extension === "js" && programExt === "coffee") {
+      // Do nothing.
     } else {
       if (program !== NO_PROGRAM) process.kill(child.pid);
     }
@@ -212,6 +231,7 @@ var findAllWatchFiles = function(path, callback) {
           }
         });
       } else {
+
         if (path.match(fileExtensionPattern)) {
           callback(p.normalize(path));
         }

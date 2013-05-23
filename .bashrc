@@ -83,9 +83,22 @@ alias la='ls -A'
 alias l='ls -CF'
 alias dos2unix='fromdos'
 alias ra2='sudo /etc/init.d/apache2 restart'
-alias rs="python manage.py runserver 0.0.0.0:8002"
+
+function rs {
+    if [ -z $1 ]
+      then
+        python manage.py runserver 0.0.0.0:$1
+      else
+        python manage.py runserver 0.0.0.0:8000
+    fi
+}
+function run {
+    sudo /etc/init.d/$1 restart
+}
+
 alias apps='cd /usr/local/apps'
-alias perm='sudo chmod -R g+rw . && sudo chgrp -R dev .'
+alias perm='sudo chmod -R g+rw . && sudo chgrp -R dev . && chmod g+s `find . -type d`'
+
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -109,4 +122,5 @@ fi
 
 export PATH=$PATH:$HOME/satchel/bin
 
+source $HOME/satchel/.aliases
 

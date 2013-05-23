@@ -1,14 +1,7 @@
 #!/bin/bash
-USAGE="Usage: $0 [path]\nRemove a file from all revisions of a repository."
 
-if [ -z "$1" ]; then
-  echo -e $USAGE
-  exit 1
-fi
-echo "refreshing index..."
-git update-index -q --ignore-submodules --refresh
-echo "altering commits..."
-git filter-branch -f --index-filter "git rm -r --cached --ignore-unmatch $1"   --prune-empty --tag-name-filter cat -- --all
-echo "cleaning up old blobs..."
+# remove a file from all revisions of a repository
+
+git filter-branch -f --index-filter 'git rm -r --cached --ignore-unmatch $1'   --prune-empty --tag-name-filter cat -- --all
 git gc
 

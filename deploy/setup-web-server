@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Replace "clark" with your username.
+
+sudo adduser clark
+sudo usermod -a -G admin clark
+sudo groupadd dev
+sudo usermod -a -G dev clark
+sudo su clark
+
+# Install standard web server software
+
+sudo apt-get update
+sudo apt-get install nginx
+sudo apt-get install mongodb
+sudo apt-get install git
+git clone git.countable.ca:/git/satchel
+./satchel/deploy/setup-node v0.8.16
+./satchel/deploy/unpack-satchel
+

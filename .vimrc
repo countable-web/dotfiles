@@ -23,3 +23,10 @@ set pastetoggle=<F3>
 " * or # in normal model is search for text under the cursor
 " . in normal mode is repeat last change
 " F3 to toggle paste mode
+
+"no swap files. they're annoying.
+set nobackup
+set nowritebackup
+set noswapfile
+
+
