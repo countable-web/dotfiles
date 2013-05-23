@@ -81,6 +81,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias dos2unix='fromdos'
 alias ra2='sudo /etc/init.d/apache2 restart'
 alias rs="python manage.py runserver 0.0.0.0:8002"
 alias apps='cd /usr/local/apps'
