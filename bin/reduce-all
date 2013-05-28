@@ -1,10 +1,13 @@
 #!/usr/bin/python
+
 import os,sys
+
 for l in sys.argv[1:]:
-   l=l.strip()
+   l = l.strip()
    print 'reducing', l
    if 'png' in l.lower():
      print os.popen('reduce-png %s'%l).read()
    else:
      print os.popen('reduce-jpg %s'%l).read()
+
 

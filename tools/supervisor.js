@@ -8,7 +8,7 @@ var fileExtensionPattern;
 var program, port;
 // A program name which is "impossible" for anyone to choose, which represents no program.
 var NO_PROGRAM = "__none__.coffee";
-
+var programExt;
 exports.run = run;
 
 function run (args) {
@@ -45,7 +45,7 @@ function run (args) {
     watch = ".";
   }
 
-  var programExt = program.match(/.*\.(.*)/);
+  programExt = program.match(/.*\.(.*)/);
   programExt = programExt && programExt[1];
 
   if (!extensions) {
@@ -182,6 +182,9 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
+      if (programExt === "coffee") {
+        process.kill(child.pid);
+      }
     } else if (extension === "styl") {
       sys.debug('compiling with stylus.');
       exec("stylus "+watch,function(err, stderr, stdout) {
@@ -203,7 +206,8 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-
+    } else if (extension === "js" && programExt === "coffee") {
+      // Do nothing.
     } else {
       if (program !== NO_PROGRAM) process.kill(child.pid);
     }
