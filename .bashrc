@@ -91,8 +91,9 @@ function rs {
         python manage.py runserver 0.0.0.0:$1
     fi
 }
-function forever-run {
-    forever start -l $(pwd)/$(date +'%Y-%m-%d_%H-%M-%S').log -o out.log -e err.log $1
+
+function pull {
+  git pull origin $(git branch | sed "s/\*\s//g")
 }
 
 alias apps='cd /usr/local/apps'
