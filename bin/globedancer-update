@@ -1,0 +1,5 @@
+#!/bin/bash
+cd /var/www/globedancer.com
+python gen.py
+
+
