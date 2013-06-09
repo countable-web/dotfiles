@@ -16,6 +16,8 @@ function run (args) {
   while (arg = args.shift()) {
     if (arg === "--help" || arg === "-h" || arg === "-?") {
       return help();
+    } else if (arg === "--watch-only" || arg === "-o") {
+      program = NO_PROGRAM;
     } else if (arg === "--watch" || arg === "-w") {
       watch = args.shift();
     } else if (arg === "--port" || arg === "-p") {
@@ -34,6 +36,7 @@ function run (args) {
     var pwdFiles = fs.readdirSync('.');
     var autoRunFiles = ["app.js", "app.coffee", "manage.py"]
     for (var i = 0; i < autoRunFiles.length; i++) {
+      if (program) break;
       if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program=autoRunFiles[i];
     }
     if (!program) {
@@ -183,7 +186,7 @@ function watchGivenFile (watch) {
             if (stdout) sys.debug(stdout);
       });
       if (programExt === "coffee") {
-        process.kill(child.pid);
+        if (program !== NO_PROGRAM) process.kill(child.pid);
       }
     } else if (extension === "styl") {
       sys.debug('compiling with stylus.');
@@ -199,13 +202,15 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-    } else if (extension === "jade" && watch.indexOf("client") > -1) {
-      sys.debug('compiling with clientjade wrapper.');
-      exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
-            if (err) sys.debug(err);
-            if (stderr) sys.debug(stderr);
-            if (stdout) sys.debug(stdout);
-      });
+    } else if (extension === "jade") {
+      if (watch.indexOf("client") > -1) {
+        sys.debug('compiling with clientjade wrapper.');
+        exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
+              if (err) sys.debug(err);
+              if (stderr) sys.debug(stderr);
+              if (stdout) sys.debug(stdout);
+        });
+      }
     } else if (extension === "js" && programExt === "coffee") {
       // Do nothing.
     } else {
