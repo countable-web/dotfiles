@@ -81,6 +81,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias dos2unix='fromdos'
 alias ra2='sudo /etc/init.d/apache2 restart'
 
 function rs {
@@ -91,6 +92,16 @@ function rs {
         python manage.py runserver 0.0.0.0:8000
     fi
 }
+
+function push {
+    git push origin $(git branch | sed "s/\*\s//g")
+}
+
+
+function pull {
+  git pull origin $(git branch | sed "s/\*\s//g")
+}
+
 function run {
     sudo /etc/init.d/$1 restart
 }

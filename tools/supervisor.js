@@ -180,7 +180,7 @@ function watchGivenFile (watch) {
     var extension = getExtension(watch);
     if ("coffee" === extension) {
       sys.debug("compiling with coffeescript.");
-      exec("coffee -c -m "+watch,function(err, stderr, stdout) {
+      exec("coffee -c "+watch,function(err, stderr, stdout) {
             if (err) sys.debug(err);
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
