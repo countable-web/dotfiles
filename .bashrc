@@ -94,12 +94,12 @@ function rs {
 }
 
 function push {
-    git push origin $(git branch | sed "s/\*\s//g")
+    git push origin $(git branch | grep "\*" | sed "s/\*\s//g")
 }
 
 
 function pull {
-  git pull origin $(git branch | sed "s/\*\s//g")
+  git pull origin $(git branch | grep "\*" | sed "s/\*\s//g")
 }
 
 function run {
