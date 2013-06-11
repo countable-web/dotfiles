@@ -1,4 +1,5 @@
 
+NODE_ENV=production
 optdir=/opt
 logdir=/var/log/node
 
@@ -7,6 +8,6 @@ then
   rm $logdir/$1.forever
 fi
 
-echo forever start -l $logdir/$1.forever -o $logdir/$1.out -e $logdir/$1.err $optdir/$1/app.js
-forever start -l $logdir/$1.forever -o $logdir/$1.out -e $logdir/$1.err $optdir/$1/app.js
+echo forever start -l $logdir/$1.forever -o $logdir/$1.out -e $logdir/$1.err app.js
+forever start -l $logdir/$1.forever -o $logdir/$1.out -e $logdir/$1.err app.js
 

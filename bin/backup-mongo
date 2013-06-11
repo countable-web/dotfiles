@@ -1,0 +1,19 @@
+
+cd
+mongodump
+tar -jcvf /bak/mongo.$(date +%Y%m%d-%H%M%S).tar.bz2 dump
+rm -r dump
+
+if [ `date +%H` = '00' ]; then
+    echo "It's midnight so we're copying the backup to New West"
+    scp $out godel.countable.ca:/bak/live.countable.ca
+else
+    echo "It's not midnight, so we're not copying the backup to New West"
+fi
+
+# remove anything that's not the first of a month, and is at least a month old.
+rm `find /bak/* -atime "+30" | grep -v "01\-"`
+
+# remove files older than 2 days that aren't at 8 o'clock
+rm `find /bak/* -atime "+2" | grep -v "\-22"`
+

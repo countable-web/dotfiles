@@ -81,6 +81,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias dos2unix='fromdos'
 alias ra2='sudo /etc/init.d/apache2 restart'
 
 function rs {
@@ -91,12 +92,22 @@ function rs {
         python manage.py runserver 0.0.0.0:8000
     fi
 }
+
+function push {
+    git push origin $(git branch | grep "\*" | sed "s/\*\s//g")
+}
+
+
+function pull {
+  git pull origin $(git branch | grep "\*" | sed "s/\*\s//g")
+}
+
 function run {
     sudo /etc/init.d/$1 restart
 }
 
 alias apps='cd /usr/local/apps'
-alias perm='sudo chmod -R g+rw . && sudo chgrp -R dev .'
+alias perm='sudo chmod -R g+rw . && sudo chgrp -R dev . && chmod g+s `find . -type d`'
 
 
 # Add an "alert" alias for long running commands.  Use like so:
