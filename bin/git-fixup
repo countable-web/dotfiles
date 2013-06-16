@@ -1,7 +1,18 @@
 #!/bin/bash
 
+# rebuild the git index (or something)
 git fsck --unreachable
 git reflog expire --expire=0 .all
 git repack -a -d -l
 git prune
+
+# garbage collection
 git gc --aggressive
+
+# dev group should own everything
+chgrp -R dev .
+chmod g+rw -R .
+
+# remove sticky bit
+chmod -t -R .
+

@@ -1,0 +1,10 @@
+#!/usr/bin/python
+
+import os,sys
+
+for i,f in enumerate(sys.argv[1:]):
+  N = "%s"%i
+  N = "0" * (6-len(N)) + N
+  l = '%s.png'%N
+  os.popen('convert %s %s'%(f,l))
+

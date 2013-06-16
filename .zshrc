@@ -20,5 +20,5 @@ if [ `sysctl -n hw.cpu64bit_capable` -eq 1 ] ; then echo "+universal" | sudo tee
 
 source $HOME/satchel/.aliases
 export GIT_EXEC_PATH=/opt/local/libexec/git-core
-. .nvm/nvm.sh
-nvm use v0.8.4
+. $HOME/.nvm/nvm.sh
+nvm use v0.10.5

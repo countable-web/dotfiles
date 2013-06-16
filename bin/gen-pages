@@ -1,0 +1,38 @@
+#!/usr/bin/python
+
+from cmn import *
+import re,time
+
+HDR = rf('hdr.hts')
+FTR = rf('ftr.hts')
+
+site = re.sub(r'.*?www\/(.*?)\/gen\n',r'www.\1',x('pwd')) 
+
+Sitemap='''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+'''
+
+for f in x('ls *.hts').split('\n'):
+  if f not in ('hdr.hts','ftr.hts'):
+    h = HDR.replace('[TITLE]',f[:-4])+rf(f)+FTR
+    wf(f.replace('hts','html'),h)
+    priority = 'index' in f and '0.8' or '0.5'
+    Sitemap += '''   <url>
+      <loc>http://%s/%s</loc>
+      <lastmod>%s</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>%s</priority>
+   </url>
+'''%(site,f,time.strftime('%Y-%m-%d',time.localtime()),priority)
+
+Sitemap+='''</urlset>'''
+
+wf('Sitemap.xml',Sitemap)
+
+x('mv -f *.html ../')
+x('mv -f Sitemap.xml ../')
+
+
+
+
+
