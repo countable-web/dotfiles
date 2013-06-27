@@ -1,6 +1,16 @@
 autoload -U colors && colors
 PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
 
+
+function push {
+    git push origin $(git branch | grep "\*" | sed "s/\* //g")
+}
+
+
+function pull {
+    git pull origin $(git branch | grep "\*" | sed "s/\* //g")
+}
+
 # Customize to your needs...
 export PATH=$HOME/satchel/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 
