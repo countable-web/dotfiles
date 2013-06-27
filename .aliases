@@ -4,4 +4,4 @@ alias esdevices="ssh -i $HOME/keys/ESD-Keypair1.pem ubuntu@50.112.119.189"
 
 # Strip whitespace
 alias wstrip="sed 's/[\n ]//g'"
-
+alias rng="sudo /etc/init.d/nginx restart"
