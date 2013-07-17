@@ -93,10 +93,13 @@ function rs {
     fi
 }
 
+function commit {
+    git commit -a -m "$@"
+}
+
 function push {
     git push origin $(git branch | grep "\*" | sed "s/\*\s//g")
 }
-
 
 function pull {
   git pull origin $(git branch | grep "\*" | sed "s/\*\s//g")
