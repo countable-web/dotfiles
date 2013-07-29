@@ -163,20 +163,40 @@ function stopCrashing () {
   else counter = -1;
 }
 
+var lastEvt = {}; // Hash of all watched files.
+
 function watchGivenFile (watch) {
-  fs.watchFile(watch, function crash (oldStat, newStat) {
+  //fs.watchFile(watch, function crash (oldStat, newStat) {
+  if(lastEvt[watch]) return;
+  lastEvt[watch] = (new Date()).valueOf()
+  fs.watch(watch, function crash (evt, filename) {
     // we only care about modification time, not access time.
-    if (
+    /*if (
       newStat.mtime.getTime() === oldStat.mtime.getTime()
     ) return;
-  
+    */
+    //DEBOUNCE
+    now = (new Date).valueOf();
+    if (lastEvt[watch]) {
+      if (now - lastEvt[watch] < 2000) {
+        return;
+      }
+    }
+    lastEvt[watch] = now;
+    
+
+    // Handle new files. Re-watch parent directory.
+    if (evt === 'rename' &! watch.match(fileExtensionPattern)) {
+      findAllWatchFiles(watch, watchGivenFile);
+    }
+    
     if (counter === -1) {
       timer = setTimeout(stopCrashing, 400);
     }
     counter ++;
 
     var child = exports.child;
-    sys.debug("detected change at "+watch);
+    sys.debug("detected change at "+watch+" - "+evt);
     var extension = getExtension(watch);
     if ("coffee" === extension) {
       sys.debug("compiling with coffeescript.");
@@ -225,13 +245,15 @@ var findAllWatchFiles = function(path, callback) {
       sys.error('Error retrieving stats for file: ' + path);
     } else {
       if (stats.isDirectory()) {
+        callback(p.normalize(path));
         fs.readdir(path, function(err, fileNames) {
           if(err) {
             sys.puts('Error reading path: ' + path);
           }
           else {
             fileNames.forEach(function (fileName) {
-              findAllWatchFiles(path + '/' + fileName, callback);
+              if (fileName.charAt(0) !== '.' && fileName !== 'node_modules')
+                findAllWatchFiles(path + '/' + fileName, callback);
             });
           }
         });
