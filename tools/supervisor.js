@@ -256,6 +256,7 @@ var findAllWatchFiles = function(path, callback) {
                 && fileName !== 'node_modules'
                 && fileName !== 'components'
                 && fileName !== 'bower_components'
+                && fileName !== 'run'
                 )
                 findAllWatchFiles(path + '/' + fileName, callback);
             });
