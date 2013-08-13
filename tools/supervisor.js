@@ -252,7 +252,11 @@ var findAllWatchFiles = function(path, callback) {
           }
           else {
             fileNames.forEach(function (fileName) {
-              if (fileName.charAt(0) !== '.' && fileName !== 'node_modules')
+              if ( fileName.charAt(0) !== '.'
+                && fileName !== 'node_modules'
+                && fileName !== 'components'
+                && fileName !== 'bower_components'
+                )
                 findAllWatchFiles(path + '/' + fileName, callback);
             });
           }
