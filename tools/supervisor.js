@@ -222,7 +222,7 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-    } else if (extension === "jade") {
+    /*} else if (extension === "jade") {
       if (watch.indexOf("client") > -1) {
         sys.debug('compiling with clientjade wrapper.');
         exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
@@ -230,7 +230,7 @@ function watchGivenFile (watch) {
               if (stderr) sys.debug(stderr);
               if (stdout) sys.debug(stdout);
         });
-      }
+      }*/
     } else if (extension === "js" && programExt === "coffee") {
       // Do nothing.
     } else {
@@ -245,7 +245,7 @@ var findAllWatchFiles = function(path, callback) {
       sys.error('Error retrieving stats for file: ' + path);
     } else {
       if (stats.isDirectory()) {
-        callback(p.normalize(path));
+        //callback(p.normalize(path));
         fs.readdir(path, function(err, fileNames) {
           if(err) {
             sys.puts('Error reading path: ' + path);
