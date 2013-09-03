@@ -1,5 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_cnt =4
 let g:netrw_dirhist_1='/opt'
 let g:netrw_dirhist_2='/opt/mrblisted-stage/node_modules'
 let g:netrw_dirhist_3='/Users/clark/apps/craverotica/node_modules/implied'
+let g:netrw_dirhist_4='/Users/clark/apps/elog/node_modules/pouchdb-server'
