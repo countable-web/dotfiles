@@ -215,24 +215,6 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-    } else if (extension === "eco") {
-      sys.debug('compiling with eco.');
-      exec("eco -o "+p.dirname(watch)+" "+watch,function(err, stderr, stdout) {
-            if (err) sys.debug(err);
-            if (stderr) sys.debug(stderr);
-            if (stdout) sys.debug(stdout);
-      });
-    /*} else if (extension === "jade") {
-      if (watch.indexOf("client") > -1) {
-        sys.debug('compiling with clientjade wrapper.');
-        exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
-              if (err) sys.debug(err);
-              if (stderr) sys.debug(stderr);
-              if (stdout) sys.debug(stdout);
-        });
-      }*/
-    } else if (extension === "js" && programExt === "coffee") {
-      // Do nothing.
     } else {
       if (program !== NO_PROGRAM) process.kill(child.pid);
     }
