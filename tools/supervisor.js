@@ -8,7 +8,7 @@ var fileExtensionPattern;
 var program, port;
 // A program name which is "impossible" for anyone to choose, which represents no program.
 var NO_PROGRAM = "__none__.coffee";
-
+var programExt;
 exports.run = run;
 
 function run (args) {
@@ -16,6 +16,8 @@ function run (args) {
   while (arg = args.shift()) {
     if (arg === "--help" || arg === "-h" || arg === "-?") {
       return help();
+    } else if (arg === "--watch-only" || arg === "-o") {
+      program = NO_PROGRAM;
     } else if (arg === "--watch" || arg === "-w") {
       watch = args.shift();
     } else if (arg === "--port" || arg === "-p") {
@@ -32,10 +34,9 @@ function run (args) {
   if (!program) {
     //return help();
     var pwdFiles = fs.readdirSync('.');
-    console.log(pwdFiles);
     var autoRunFiles = ["app.js", "app.coffee", "manage.py"]
     for (var i = 0; i < autoRunFiles.length; i++) {
-      console.log( autoRunFiles[i], pwdFiles.indexOf(autoRunFiles[i]) )
+      if (program) break;
       if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program=autoRunFiles[i];
     }
     if (!program) {
@@ -47,7 +48,7 @@ function run (args) {
     watch = ".";
   }
 
-  var programExt = program.match(/.*\.(.*)/);
+  programExt = program.match(/.*\.(.*)/);
   programExt = programExt && programExt[1];
 
   if (!extensions) {
@@ -162,20 +163,40 @@ function stopCrashing () {
   else counter = -1;
 }
 
+var lastEvt = {}; // Hash of all watched files.
+
 function watchGivenFile (watch) {
-  fs.watchFile(watch, function crash (oldStat, newStat) {
+  //fs.watchFile(watch, function crash (oldStat, newStat) {
+  if(lastEvt[watch]) return;
+  lastEvt[watch] = (new Date()).valueOf()
+  fs.watch(watch, function crash (evt, filename) {
     // we only care about modification time, not access time.
-    if (
+    /*if (
       newStat.mtime.getTime() === oldStat.mtime.getTime()
     ) return;
-  
+    */
+    //DEBOUNCE
+    now = (new Date).valueOf();
+    if (lastEvt[watch]) {
+      if (now - lastEvt[watch] < 2000) {
+        return;
+      }
+    }
+    lastEvt[watch] = now;
+    
+
+    // Handle new files. Re-watch parent directory.
+    if (evt === 'rename' &! watch.match(fileExtensionPattern)) {
+      findAllWatchFiles(watch, watchGivenFile);
+    }
+    
     if (counter === -1) {
       timer = setTimeout(stopCrashing, 400);
     }
     counter ++;
 
     var child = exports.child;
-    sys.debug("detected change at "+watch);
+    sys.debug("detected change at "+watch+" - "+evt);
     var extension = getExtension(watch);
     if ("coffee" === extension) {
       sys.debug("compiling with coffeescript.");
@@ -184,6 +205,9 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
+      if (programExt === "coffee") {
+        if (program !== NO_PROGRAM) process.kill(child.pid);
+      }
     } else if (extension === "styl") {
       sys.debug('compiling with stylus.');
       exec("stylus "+watch,function(err, stderr, stdout) {
@@ -191,21 +215,6 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-    } else if (extension === "eco") {
-      sys.debug('compiling with eco.');
-      exec("eco -o "+p.dirname(watch)+" "+watch,function(err, stderr, stdout) {
-            if (err) sys.debug(err);
-            if (stderr) sys.debug(stderr);
-            if (stdout) sys.debug(stdout);
-      });
-    } else if (extension === "jade" && watch.indexOf("client") > -1) {
-      sys.debug('compiling with clientjade wrapper.');
-      exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
-            if (err) sys.debug(err);
-            if (stderr) sys.debug(stderr);
-            if (stdout) sys.debug(stdout);
-      });
-
     } else {
       if (program !== NO_PROGRAM) process.kill(child.pid);
     }
@@ -218,13 +227,20 @@ var findAllWatchFiles = function(path, callback) {
       sys.error('Error retrieving stats for file: ' + path);
     } else {
       if (stats.isDirectory()) {
+        //callback(p.normalize(path));
         fs.readdir(path, function(err, fileNames) {
           if(err) {
             sys.puts('Error reading path: ' + path);
           }
           else {
             fileNames.forEach(function (fileName) {
-              findAllWatchFiles(path + '/' + fileName, callback);
+              if ( fileName.charAt(0) !== '.'
+                && fileName !== 'node_modules'
+                && fileName !== 'components'
+                && fileName !== 'bower_components'
+                && fileName !== 'run'
+                )
+                findAllWatchFiles(path + '/' + fileName, callback);
             });
           }
         });

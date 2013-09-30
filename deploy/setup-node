@@ -26,4 +26,5 @@ npm install -g stylus
 npm install -g html2jade
 npm install -g shelljs
 npm install -g js2coffee
-
+npm install -g forever
+source $HOME/.bashrc
