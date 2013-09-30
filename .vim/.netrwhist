@@ -1,5 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_cnt =9
 let g:netrw_dirhist_1='/Users/clark/src'
 let g:netrw_dirhist_2='/Users/clark/.vim'
 let g:netrw_dirhist_3='/Users/clark/src/spine.todos/.git'
@@ -8,3 +8,4 @@ let g:netrw_dirhist_5='/home/clark/nvm'
 let g:netrw_dirhist_6='/Library/Ruby/Gems/1.8/gems/gitdocs-0.4.10/lib/gitdocs'
 let g:netrw_dirhist_7='/Users/clark/remote/pr.ecotrust.ca/usr/local/apps/vms_analysis/media'
 let g:netrw_dirhist_8='/Users/clark/remote/f.countable.ca/mnt/mirror/countable/clients/shift-online'
+let g:netrw_dirhist_9='/usr/local/apps/thisforest/core/templatetags'
