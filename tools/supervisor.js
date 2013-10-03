@@ -222,7 +222,8 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-    /*} else if (extension === "jade") {
+    } else if (extension === "jade") {
+      return
       if (watch.indexOf("client") > -1) {
         sys.debug('compiling with clientjade wrapper.');
         exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
@@ -230,7 +231,7 @@ function watchGivenFile (watch) {
               if (stderr) sys.debug(stderr);
               if (stdout) sys.debug(stdout);
         });
-      }*/
+      }
     } else if (extension === "js" && programExt === "coffee") {
       // Do nothing.
     } else {
@@ -253,7 +254,7 @@ var findAllWatchFiles = function(path, callback) {
           else {
             fileNames.forEach(function (fileName) {
               if ( fileName.charAt(0) !== '.'
-                && fileName !== 'node_modules'
+//                && fileName !== 'node_modules'
                 && fileName !== 'components'
                 && fileName !== 'bower_components'
                 && fileName !== 'run'
