@@ -215,6 +215,7 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
+<<<<<<< HEAD
     } else if (extension === "eco") {
       sys.debug('compiling with eco.');
       exec("eco -o "+p.dirname(watch)+" "+watch,function(err, stderr, stdout) {
