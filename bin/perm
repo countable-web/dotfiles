@@ -1,0 +1,6 @@
+#!/bin/sh
+
+sudo chgrp -R dev .
+sudo chmod g+rw -R .
+find . -type d | sudo xargs chmod g+s
+
