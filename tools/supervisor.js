@@ -205,9 +205,11 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-      if (programExt === "coffee") {
-        if (program !== NO_PROGRAM) process.kill(child.pid);
-      }
+      // The JS file update should cause a restart, so don't do it here.
+      /*if (programExt === "coffee") {
+        // Don't restart for client side updates.
+        if (program !== NO_PROGRAM && watch.indexOf('public/') === -1) process.kill(child.pid);
+      }*/
     } else if (extension === "styl") {
       sys.debug('compiling with stylus.');
       exec("stylus "+watch,function(err, stderr, stdout) {
@@ -215,7 +217,6 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-<<<<<<< HEAD
     } else if (extension === "eco") {
       sys.debug('compiling with eco.');
       exec("eco -o "+p.dirname(watch)+" "+watch,function(err, stderr, stdout) {
@@ -234,8 +235,11 @@ function watchGivenFile (watch) {
         });
       }
     } else if (extension === "js" && programExt === "coffee") {
-      // Do nothing.
+      // Do nothing. TODO: why is this here.
+    } else if (extension === "js" && watch.indexOf("public") !== -1) {
+      // JS updates in the client folder don't trigger a restart.
     } else {
+      
       if (program !== NO_PROGRAM) process.kill(child.pid);
     }
   });
