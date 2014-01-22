@@ -5,3 +5,5 @@ alias esdevices="ssh -i $HOME/keys/ESD-Keypair1.pem ubuntu@50.112.119.189"
 # Strip whitespace
 alias wstrip="sed 's/[\n ]//g'"
 
+alais restart-net="sudo ifdown --exclude=lo -a && sudo ifup --exclude=lo -a"
+
