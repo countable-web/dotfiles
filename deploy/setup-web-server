@@ -13,7 +13,10 @@ sudo su clark
 sudo apt-get update
 sudo apt-get install nginx
 sudo apt-get install mongodb
+cd /tmp && git clone https://github.com/TylerBrock/mongo-hacker.git && cd mongo-hacker && make
+
 sudo apt-get install git
+
 git clone git.countable.ca:/git/satchel
 ./satchel/deploy/setup-node v0.8.16
 ./satchel/deploy/unpack-satchel
