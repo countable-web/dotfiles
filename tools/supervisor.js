@@ -196,8 +196,8 @@ function watchGivenFile (watch) {
     counter ++;
 
     var child = exports.child;
-    sys.debug("detected change at "+watch+" - "+evt);
     var extension = getExtension(watch);
+    sys.debug("detected change at "+watch+" - "+evt+" ext:"+extension);
     if ("coffee" === extension) {
       sys.debug("compiling with coffeescript.");
       exec("coffee -c "+watch,function(err, stderr, stdout) {
@@ -225,10 +225,9 @@ function watchGivenFile (watch) {
             if (stdout) sys.debug(stdout);
       });
     } else if (extension === "jade") {
-      return
       if (watch.indexOf("client") > -1) {
         sys.debug('compiling with clientjade wrapper.');
-        exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
+        exec("clientjade.py " + p.dirname(watch) + " ./public",function(err, stderr, stdout) {
               if (err) sys.debug(err);
               if (stderr) sys.debug(stderr);
               if (stdout) sys.debug(stdout);
