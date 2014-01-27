@@ -9,5 +9,5 @@ alias wstrip="sed 's/[\n ]//g'"
 alias fiddle="sudo tcpdump -s 1024 -l -A dst"
 alias rng="sudo /etc/init.d/nginx restart"
 
-alais restart-net="sudo ifdown --exclude=lo -a && sudo ifup --exclude=lo -a"
+alias restart-net="sudo ifdown --exclude=lo -a && sudo ifup --exclude=lo -a"
 
