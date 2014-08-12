@@ -166,16 +166,16 @@ function stopCrashing () {
 var lastEvt = {}; // Hash of all watched files.
 
 function watchGivenFile (watch) {
-  //fs.watchFile(watch, function crash (oldStat, newStat) {
   if(lastEvt[watch]) return;
   lastEvt[watch] = (new Date()).valueOf()
-  fs.watch(watch, function crash (evt, filename) {
+  fs.watchFile(watch, function crash() {
     // we only care about modification time, not access time.
     /*if (
       newStat.mtime.getTime() === oldStat.mtime.getTime()
     ) return;
     */
     //DEBOUNCE
+    filename = watch
     now = (new Date).valueOf();
     if (lastEvt[watch]) {
       if (now - lastEvt[watch] < 2000) {
@@ -186,9 +186,9 @@ function watchGivenFile (watch) {
     
 
     // Handle new files. Re-watch parent directory.
-    if (evt === 'rename' &! watch.match(fileExtensionPattern)) {
+    /*if (evt === 'rename' &! watch.match(fileExtensionPattern)) {
       findAllWatchFiles(watch, watchGivenFile);
-    }
+    }*/
     
     if (counter === -1) {
       timer = setTimeout(stopCrashing, 400);
@@ -197,7 +197,7 @@ function watchGivenFile (watch) {
 
     var child = exports.child;
     var extension = getExtension(watch);
-    sys.debug("detected change at "+watch+" - "+evt+" ext:"+extension);
+    sys.debug("detected change at "+watch+" - ext:"+extension);
     if ("coffee" === extension) {
       sys.debug("compiling with coffeescript.");
       exec("coffee -m -c "+watch,function(err, stderr, stdout) {
