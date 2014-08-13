@@ -215,19 +215,11 @@ function watchGivenFile (watch) {
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-<<<<<<< HEAD
-    } else if (extension === "eco") {
-      sys.debug('compiling with eco.');
-      exec("eco -o "+p.dirname(watch)+" "+watch,function(err, stderr, stdout) {
-            if (err) sys.debug(err);
-            if (stderr) sys.debug(stderr);
-            if (stdout) sys.debug(stdout);
-      });
     } else if (extension === "jade") {
-      return
       if (watch.indexOf("client") > -1) {
         sys.debug('compiling with clientjade wrapper.');
-        exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
+
+        exec("clientjade " + p.dirname(watch) + " > public/templates.js",function(err, stderr, stdout) {
               if (err) sys.debug(err);
               if (stderr) sys.debug(stderr);
               if (stdout) sys.debug(stdout);
