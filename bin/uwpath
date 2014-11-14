@@ -1,0 +1,3 @@
+#!/bin/bash
+UNCVAR=$(echo $1 | sed 's/\//\\/g' | sed 's/\\Volumes/\\\\ecoserver\\/g')
+echo "$UNCVAR"
