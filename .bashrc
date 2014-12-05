@@ -93,25 +93,25 @@ function rs {
     fi
 }
 
+function pg_copy {
+    sudo -u postgres "dropdb $1_dev && createdb $1_dev -O $1 -T template_postgis && pg_dump $1 > /tmp/tmp.sql && psql $1_dev -f /tmp/tmp.sql"
+}
+
 function commit {
     git commit -a -m "$@"
 }
 
+# Does "git push origin <current branch>"
 function push {
     git push origin $(git branch | grep "\*" | sed "s/\*\s//g")
 }
 
+# Does "git pull origin <current branch>"
 function pull {
-  git pull origin $(git branch | grep "\*" | sed "s/\*\s//g")
+    git pull origin $(git branch | grep "\*" | sed "s/\*\s//g")
 }
 
-function run {
-    sudo /etc/init.d/$1 restart
-}
-
-alias apps='cd /usr/local/apps'
 alias perm='sudo chmod -R g+rw . && sudo chgrp -R dev . && find . -type d | sudo xargs chmod g+s'
-
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
