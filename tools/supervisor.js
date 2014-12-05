@@ -34,7 +34,7 @@ function run (args) {
   if (!program) {
     //return help();
     var pwdFiles = fs.readdirSync('.');
-    var autoRunFiles = ["app.js", "app.coffee", "manage.py"]
+    var autoRunFiles = ["app.js", "manage.py"]
     for (var i = 0; i < autoRunFiles.length; i++) {
       if (program) break;
       if (pwdFiles.indexOf(autoRunFiles[i]) > -1) program=autoRunFiles[i];
@@ -166,16 +166,16 @@ function stopCrashing () {
 var lastEvt = {}; // Hash of all watched files.
 
 function watchGivenFile (watch) {
-  //fs.watchFile(watch, function crash (oldStat, newStat) {
   if(lastEvt[watch]) return;
   lastEvt[watch] = (new Date()).valueOf()
-  fs.watch(watch, function crash (evt, filename) {
+  fs.watchFile(watch, function crash() {
     // we only care about modification time, not access time.
     /*if (
       newStat.mtime.getTime() === oldStat.mtime.getTime()
     ) return;
     */
     //DEBOUNCE
+    filename = watch
     now = (new Date).valueOf();
     if (lastEvt[watch]) {
       if (now - lastEvt[watch] < 2000) {
@@ -186,9 +186,9 @@ function watchGivenFile (watch) {
     
 
     // Handle new files. Re-watch parent directory.
-    if (evt === 'rename' &! watch.match(fileExtensionPattern)) {
+    /*if (evt === 'rename' &! watch.match(fileExtensionPattern)) {
       findAllWatchFiles(watch, watchGivenFile);
-    }
+    }*/
     
     if (counter === -1) {
       timer = setTimeout(stopCrashing, 400);
@@ -196,18 +196,20 @@ function watchGivenFile (watch) {
     counter ++;
 
     var child = exports.child;
-    sys.debug("detected change at "+watch+" - "+evt);
     var extension = getExtension(watch);
+    sys.debug("detected change at "+watch+" - ext:"+extension);
     if ("coffee" === extension) {
       sys.debug("compiling with coffeescript.");
-      exec("coffee -c "+watch,function(err, stderr, stdout) {
+      exec("coffee -m -c "+watch,function(err, stderr, stdout) {
             if (err) sys.debug(err);
             if (stderr) sys.debug(stderr);
             if (stdout) sys.debug(stdout);
       });
-      if (programExt === "coffee") {
-        if (program !== NO_PROGRAM) process.kill(child.pid);
-      }
+      // The JS file update should cause a restart, so don't do it here.
+      /*if (programExt === "coffee") {
+        // Don't restart for client side updates.
+        if (program !== NO_PROGRAM && watch.indexOf('public/') === -1) process.kill(child.pid);
+      }*/
     } else if (extension === "styl") {
       sys.debug('compiling with stylus.');
       exec("stylus "+watch,function(err, stderr, stdout) {
@@ -223,18 +225,21 @@ function watchGivenFile (watch) {
             if (stdout) sys.debug(stdout);
       });
     } else if (extension === "jade") {
-      return
       if (watch.indexOf("client") > -1) {
         sys.debug('compiling with clientjade wrapper.');
-        exec("clientjade.py " + p.dirname(watch),function(err, stderr, stdout) {
+
+        exec("clientjade " + p.dirname(watch) + " > public/templates.js",function(err, stderr, stdout) {
               if (err) sys.debug(err);
               if (stderr) sys.debug(stderr);
               if (stdout) sys.debug(stdout);
         });
       }
     } else if (extension === "js" && programExt === "coffee") {
-      // Do nothing.
+      // Do nothing. TODO: why is this here.
+    } else if (extension === "js" && watch.indexOf("public") !== -1) {
+      // JS updates in the client folder don't trigger a restart.
     } else {
+      
       if (program !== NO_PROGRAM) process.kill(child.pid);
     }
   });
