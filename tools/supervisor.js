@@ -260,6 +260,7 @@ var findAllWatchFiles = function(path, callback) {
             fileNames.forEach(function (fileName) {
               if ( fileName.charAt(0) !== '.'
 //                && fileName !== 'node_modules'
+                && fileName !== 'ENV'
                 && fileName !== 'components'
                 && fileName !== 'bower_components'
                 && fileName !== 'run'
