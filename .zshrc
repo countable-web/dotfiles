@@ -32,3 +32,6 @@ source $HOME/satchel/.aliases
 export GIT_EXEC_PATH=/opt/local/libexec/git-core
 . $HOME/.nvm/nvm.sh
 nvm use v0.10.10
+
+ZSH_THEME="agnoster"
+
