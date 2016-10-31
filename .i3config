@@ -178,5 +178,8 @@ bar {
         tray_output primary
 }
 
-exec --no-startup-id /usr/bin/parcellite
+exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-111
+exec --no-startup-id xflux -l 51 -g -123 -k 3000
+exec --no-startup-id /usr/bin/autocutsel
+
 
