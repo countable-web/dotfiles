@@ -20,7 +20,6 @@ typeset -U fpath
 setopt promptsubst
 autoload -U promptinit
 promptinit
-prompt wunjo
 
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # for mac
