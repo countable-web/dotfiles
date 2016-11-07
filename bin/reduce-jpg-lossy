@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "reducing" $1
+
+mv $1 $1.bak
+
+jpegtran -copy none -optimize -perfect $1.bak > $1.bak2
+
+convert -strip -interlace Plane -sampling-factor 4:2:0 -define jpeg:dct-method=float -quality 85% $1.bak2 $1
+
+rm $1.bak2
