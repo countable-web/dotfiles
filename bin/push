@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+git push origin $(git branch | grep "\*" | sed "s/\* //g")
+

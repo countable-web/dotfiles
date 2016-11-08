@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+git pull origin $(git branch | grep "\*" | sed "s/\* //g")
+
