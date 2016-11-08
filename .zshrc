@@ -1,5 +1,6 @@
-autoload -U colors && colors
-PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
+
+#autoload -U colors && colors
+#PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
 
 
 function push {
@@ -14,12 +15,12 @@ function pull {
 # Customize to your needs...
 export PATH=$HOME/satchel/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 
-alias ll="ls -l"
-fpath=($fpath $HOME/satchel/.zsh/functions)
-typeset -U fpath
-setopt promptsubst
-autoload -U promptinit
-promptinit
+#fpath=($fpath $HOME/satchel/.zsh/functions)
+#typeset -U fpath
+#setopt promptsubst
+#autoload -U promptinit
+#promptinit
+#prompt wunjo
 
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # for mac

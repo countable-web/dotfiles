@@ -1,12 +1,7 @@
 
 alias perm="sudo chmod -R g+rw . && sudo chgrp -R dev . && find . -type d | sudo xargs chmod g+s"
-
 # Strip whitespace
 alias wstrip="sed 's/[\n ]//g'"
 alias fiddle="sudo tcpdump -s 1024 -l -A dst"
-alias rng="sudo /etc/init.d/nginx restart"
-
-alias restart-net="sudo ifdown --exclude=lo -a && sudo ifup --exclude=lo -a"
-
-alias dock-node="docker run -it --rm -v $(pwd):/usr/src/app node sh"
+alias dock-node="docker run -p 3000:3000 -it --rm -v $(pwd):/usr/src/app node sh"
 
