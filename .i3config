@@ -13,6 +13,9 @@
 # is used in the bar {} block below.
 font pango:monospace 8
 
+new_window none
+hide_edge_borders both
+
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
@@ -169,6 +172,10 @@ bindsym XF86AudioMute exec --no-startup-id amixer -q -D pulse sset Master toggle
 # Sreen brightness controls
 bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
 bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
+bindsym XF86Calculator exec gnome-calculator
+bindsym XF86Explorer exec google-chrome
+bindsym XF86Search exec google-chrome
+bindsym Print exec scrot '%Y-%m-%d_%T_scrot.png' -e 'mv $f ~/Downloads/'
 
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -178,8 +185,7 @@ bar {
         tray_output primary
 }
 
-exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-111
-exec --no-startup-id xflux -l 51 -g -123 -k 3000
+exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-44
 exec --no-startup-id /usr/bin/autocutsel
-
+exec --no-startup-id xflux -k 3000 -l 51 -g -123 -nofork
 

@@ -3,4 +3,5 @@ alias perm="sudo chmod -R g+rw . && sudo chgrp -R dev . && find . -type d | sudo
 # Strip whitespace
 alias wstrip="sed 's/[\n ]//g'"
 alias fiddle="sudo tcpdump -s 1024 -l -A dst"
+alias dock-node="docker run -p 3000:3000 -it --rm -v $(pwd):/usr/src/app node sh"
 
