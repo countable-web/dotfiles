@@ -1,7 +1,12 @@
 #!/bin/zsh
 
 git add --all .
-git commit -a -m "${1:=unspecified}"
+if [ -z "$1" ]; then
+  git commit -a
+else
+  git commit -a -m "$1"
+fi
+
 pull
 push
 
