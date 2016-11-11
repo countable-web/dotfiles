@@ -1,5 +1,5 @@
 # satchel
-A man-bag (but can be used by anyone of course) of scripts I always want when setting up a new OSX or linux machine.
+A man-bag (but can be used by anyone of course) of scripts I always want when setting up a new computer (most things only work in Ubuntu, some work in Linux more generally, a few work in OSX).
 
 This repo contains standard config and scripts used by Countable Web Productions.
 
