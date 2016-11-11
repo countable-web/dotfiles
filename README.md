@@ -40,7 +40,8 @@ perm
 ```
 _warning_ : This script is recursive, so don't run it in the root directory or anywhere else ridiculous. Use it in your project folders only.
 
-## Disable sudo password checking.
+## Disable sudo password checking
+This is probably doesn't belong here but my god sudo timeouts are annoying.
 ```
 sudo visudo
 ```
