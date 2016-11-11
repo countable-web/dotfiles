@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# git add, commit, pull, push
+
+git add .
+git commit -a -m "(sharing) $1"
+git pull origin master
+git push origin master
+

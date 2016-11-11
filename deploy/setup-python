@@ -1,0 +1,7 @@
+
+sudo apt-get install python-setuptools python-dev build-essential
+sudo easy_install -U pip
+sudo pip install -U virtualenv
+
+echo "To create a new virtual env:"
+echo "% virtualenv --no-site-packages env"

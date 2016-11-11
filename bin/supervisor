@@ -1,0 +1,9 @@
+#!/usr/bin/env coffee
+path = require("path")
+args = process.argv.slice(1)
+arg = undefined
+base = undefined
+loop
+  arg = args.shift()
+  break unless arg isnt __filename and (base = path.basename(arg)) isnt "node-supervisor" and base isnt "supervisor" and base isnt "supervisor.js"
+require("../tools/supervisor").run args

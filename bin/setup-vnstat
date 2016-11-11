@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo apt-get install vnstat
+sudo chmod o+x /usr/bin/vnstat
+sudo chmod o+wx /var/lib/vnstat/
+echo "do something like this to regularly update the vnstat database:"
+echo "sudo echo '17 * * * * clark vnstat -u -i eth0' >> /etc/crontab"

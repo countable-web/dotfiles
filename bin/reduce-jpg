@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "reducing" $1
+mv $1 $1.bak
+jpegtran -copy none -optimize -perfect $1.bak > $1 
+ 
+

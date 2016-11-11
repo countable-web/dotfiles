@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# This script converts line terminations from "mac" to "unix"
+
+###################################################
+
+# definition of functions:
+usage()
+{
+   echo "Usage: `basename $0` filename"
+}
+
+###################################################
+
+argument=$1
+
+###################################################
+
+if [ -z "${argument}" -o x"${argument}" = x"-h" ] ; then
+   usage
+   exit 1
+fi
+
+###################################################
+
+###################################################
+
+# conversions:
+
+cat $argument  |tr '\015' '\012' > ${argument}.tmp
+\cp -f ${argument}.tmp ${argument}
+\rm -f ${argument}.tmp

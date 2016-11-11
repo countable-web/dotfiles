@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mv $1 $1.bak
+pngcrush -rem alla -reduce -brute $1.bak $1
+ 
+
