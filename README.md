@@ -10,6 +10,12 @@ Install git
 sudo apt-get install git
 ```
 
+install oh-my-zsh (recommended)
+```
+sudo apt-get install zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+```
+
 Clone and install satchel.
 ```
 cd
@@ -17,7 +23,24 @@ git clone git.countable.ca:/git/satchel
 ./satchel/deploy/unpack-satchel.bash 
 ```
 
-disable sudo password checking.
+Satchel is installed and "deployed" now. You can make use of the following utils.
+
+### Git sync - does an add, commit, pull, push.
+```
+gsync
+```
+_warning_ : Your default editor will pop up asking for a commit message. At this point, ensure you're not adding any files you don't want. They're listed in the message below where you're typing.
+
+### Fix Permissions
+
+On any shared machine, Countable uses open group permissions for the "dev" group, which all users belong to. The setup script should create this group and add you to it. Once done, there's a catchall command for setting permissions so anyone in our group has full access. This is nearly always what we want, in order to be both simple and relatively secure.
+```
+cd <directory with permission issue>
+perm
+```
+_warning_ : This script is recursive, so don't run it in the root directory or anywhere else ridiculous. Use it in your project folders only.
+
+## Disable sudo password checking.
 ```
 sudo visudo
 ```
@@ -39,12 +62,6 @@ sudo apt-get install i3wm thunar autocutsel
 cd .config/i3
 rm config
 ln -s ../../satchel/.i3config config
-```
-
-install oh-my-zsh
-```
-sudo apt-get install zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
 devel apps - chrome and sublime text (TODO-move this to the i3 deploy script).
