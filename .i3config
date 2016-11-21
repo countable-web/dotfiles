@@ -89,7 +89,7 @@ bindsym Mod4+w layout tabbed
 bindsym Mod4+e layout toggle split
 
 # toggle tiling / floating
-bindsym Mod1+Shift+space floating toggle
+bindsym Mod4+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym Mod1+space focus mode_toggle
@@ -187,5 +187,8 @@ bar {
 
 exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-44
 exec --no-startup-id /usr/bin/autocutsel
-exec --no-startup-id xflux -k 3000 -l 51 -g -123 -nofork
+# xflux has high cpu usage.
+#exec --no-startup-id xflux -k 3000 -l 51 -g -123 -nofork
+exec --no-startup-id reshift &
 
+exec --no-startup-id nitrogen --restore
