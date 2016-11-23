@@ -74,6 +74,9 @@ bindsym Mod4+Shift+Down move down
 bindsym Mod4+Shift+Up move up
 bindsym Mod4+Shift+Right move right
 
+# move the whole workspace to the next output
+bindsym Mod4+x move workspace to output right
+
 # split in horizontal orientation
 bindsym Mod4+h split h
 
