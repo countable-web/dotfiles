@@ -1,5 +1,6 @@
 # satchel
-A man-bag (but can be used by anyone of course) of scripts I always want when setting up a new computer (most things only work in Ubuntu, some work in Linux more generally, a few work in OSX).
+
+A man-bag (but can be used by anyone of course) of scripts I always want when setting up a new computer (most things only work in Ubuntu, some work in Linux more generally, a few work in OSX). This type of repository is often called "dotfiles" by other people.
 
 This repo contains standard config and scripts used by Countable Web Productions.
 
