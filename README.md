@@ -11,17 +11,17 @@ Install git
 sudo apt-get install git
 ```
 
-install oh-my-zsh (recommended)
-```
-sudo apt-get install zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-```
-
 Clone and install satchel.
 ```
 cd
 git clone git.countable.ca:/git/satchel
 ./satchel/deploy/unpack-satchel.bash 
+```
+
+install oh-my-zsh (recommended)
+```
+sudo apt-get install zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
 Satchel is installed and "deployed" now. You can make use of the following utils.
