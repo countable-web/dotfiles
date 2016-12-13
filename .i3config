@@ -38,7 +38,7 @@ set $right semicolon
 floating_modifier Mod4
 
 # start a terminal
-bindsym Mod4+Return exec gnome-terminal
+bindsym Mod4+Return exec terminator
 
 # kill focused window
 bindsym Mod4+Shift+q kill
