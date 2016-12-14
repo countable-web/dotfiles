@@ -185,6 +185,6 @@ bar {
         tray_output primary
 }
 
-exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-44
+exec --no-startup-id synclient PalmDetect=1 MaxSpeed=3.0 VertScrollDelta=-44 ClickPad=1
 exec --no-startup-id /usr/bin/autocutsel
 
