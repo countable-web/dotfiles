@@ -60,7 +60,7 @@ Change to:
 
 install desktop components
 ```
-sudo apt-get install i3wm thunar autocutsel
+sudo apt-get install i3 xfe autocutsel
 cd .config/i3
 rm config
 ln -s ../../satchel/.i3config config
@@ -73,13 +73,13 @@ sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable
 sudo add-apt-repository ppa:webupd8team/sublime-text-3
 sudo apt-get update
 sudo apt-get install google-chrome-stable
-sudo apt-get update\nsudo apt-get install sublime-text-installer
+sudo apt-get install sublime-text-installer
 sudo apt-get install xbacklight
-sudo add-apt-repository ppa:nathan-renniewaldock/flux
-sudo apt-get update
-sudo apt-get install fluxgui
-xflux -l 51 -g -123 -k 3000
 ```
+
+### Terminator Right Click to Paste
+sudo vi /usr/share/terminator/terminatorlib/terminal.py
+search for on_buttonpress, and switch mouse indices
 
 ## Servers
 
