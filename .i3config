@@ -74,9 +74,12 @@ bindsym Mod4+Shift+Down move down
 bindsym Mod4+Shift+Up move up
 bindsym Mod4+Shift+Right move right
 
+<<<<<<< HEAD
 # move the whole workspace to the next output
 bindsym Mod4+x move workspace to output right
 
+=======
+>>>>>>> 8d8ff220f1299436b82ff547115ff94185111570
 # split in horizontal orientation
 bindsym Mod4+h split h
 
@@ -92,7 +95,11 @@ bindsym Mod4+w layout tabbed
 bindsym Mod4+e layout toggle split
 
 # toggle tiling / floating
+<<<<<<< HEAD
 bindsym Mod4+Shift+space floating toggle
+=======
+bindsym Mod1+Shift+space floating toggle
+>>>>>>> 8d8ff220f1299436b82ff547115ff94185111570
 
 # change focus between tiling / floating windows
 bindsym Mod1+space focus mode_toggle
@@ -188,8 +195,14 @@ bar {
         tray_output primary
 }
 
+<<<<<<< HEAD
 exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-44 TapButton3=3
 exec --no-startup-id /usr/bin/autocutsel
 exec --no-startup-id redshift -t 3800:3000 -b 0.8:0.3
 
 exec --no-startup-id nitrogen --restore
+=======
+exec --no-startup-id synclient PalmDetect=1 MaxSpeed=3.0 VertScrollDelta=-44 ClickPad=1
+exec --no-startup-id /usr/bin/autocutsel
+
+>>>>>>> 8d8ff220f1299436b82ff547115ff94185111570

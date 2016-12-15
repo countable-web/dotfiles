@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 alias perm="sudo chmod -R g+rw . && sudo chgrp -R dev . && find . -type d | sudo xargs chmod g+s"
 # Strip whitespace
 alias wstrip="sed 's/[\n ]//g'"
@@ -6,4 +7,14 @@ alias fiddle="sudo tcpdump -s 1024 -l -A dst"
 alias dock-node="docker run -p 3000:3000 -it --rm -v $(pwd):/usr/src/app countable/node-dev bash"
 alias attach-monitor="xrandr --output DP-1 --auto --left-of eDP-1"
 alias detach-monitor="xrandr --output DP-1 --off"
+=======
+alias fiddle="sudo tcpdump -s 1024 -l -A dst"
+
+alias restart-net="sudo ifdown --exclude=lo -a && sudo ifup --exclude=lo -a"
+
+# Strip whitespace
+alias wstrip="sed 's/[\n ]//g'"
+alias fiddle="sudo tcpdump -s 1024 -l -A dst"
+alias dock-node="docker run -p 3000:3000 -it --rm -v $(pwd):/usr/src/app countable/node-dev bash"
+>>>>>>> 8d8ff220f1299436b82ff547115ff94185111570
 
