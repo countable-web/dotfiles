@@ -38,7 +38,7 @@ set $right semicolon
 floating_modifier Mod4
 
 # start a terminal
-bindsym Mod4+Return exec gnome-terminal
+bindsym Mod4+Return exec terminator
 
 # kill focused window
 bindsym Mod4+Shift+q kill
@@ -188,7 +188,7 @@ bar {
         tray_output primary
 }
 
-exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-44
+exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-44 TapButton3=3
 exec --no-startup-id /usr/bin/autocutsel
 exec --no-startup-id redshift -t 3800:3000 -b 0.8:0.3
 
