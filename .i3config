@@ -191,4 +191,5 @@ bar {
 exec --no-startup-id /usr/bin/autocutsel
 exec --no-startup-id redshift -t 3800:3000 -b 0.8:0.3
 exec --no-startup-id nitrogen --restore
-exec --no-startup-id synclient PalmDetect=1 MaxSpeed=3.0 VertScrollDelta=-44 ClickPad=1 TapButton3=3
+# no idea why TapButton indices are reversed...
+exec --no-startup-id synclient PalmDetect=1 MaxSpeed=3.0 VertScrollDelta=-44 ClickPad=1 TapButton2=3 TapButton3=2
