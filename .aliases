@@ -2,8 +2,5 @@
 # Strip whitespace
 alias wstrip="sed 's/[\n ]//g'"
 alias fiddle="sudo tcpdump -s 1024 -l -A dst"
-alias dock-node="docker run -p 3000:3000 -it --rm -v $(pwd):/usr/src/app countable/node-dev bash"
 alias attach-monitor="xrandr --output DP1 --auto --left-of eDP1"
 alias detach-monitor="xrandr --output DP1 --off"
-alias dock-node="docker run -p 3000:3000 -it --rm -v $(pwd):/usr/src/app countable/node-dev bash"
-
