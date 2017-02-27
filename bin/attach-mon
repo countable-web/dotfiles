@@ -1,0 +1,21 @@
+
+available=$(xrandr | egrep -oh "(^\S+\s)connected" | sed "s/\sconnected//" | egrep -v "^eDP1$")
+
+echo "Available external monitors:"
+
+items="
+one two three four
+hello world
+this should work just fine
+"
+
+IFS='
+'
+count=0
+for item in $available
+do
+  count=$((count+1))
+  echo $count $item
+done
+
+

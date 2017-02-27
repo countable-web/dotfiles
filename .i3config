@@ -76,6 +76,7 @@ bindsym Mod4+Shift+Right move right
 
 # move the whole workspace to the next output
 bindsym Mod4+x move workspace to output right
+bindsym Mod4+y move workspace to output right
 
 # split in horizontal orientation
 bindsym Mod4+h split h
@@ -178,6 +179,9 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightnes
 bindsym XF86Calculator exec gnome-calculator
 bindsym XF86Explorer exec google-chrome
 bindsym XF86Search exec google-chrome
+
+bindsym Menu exec detach-monitor
+
 bindsym Print exec scrot '%Y-%m-%d_%T_scrot.png' -e 'mv $f ~/Downloads/'
 
 
@@ -189,8 +193,10 @@ bar {
 }
 
 exec --no-startup-id /usr/bin/autocutsel
-exec --no-startup-id redshift -t 3800:3000 -b 0.8:0.5 -l 49:-123
+exec --no-startup-id redshift
 exec --no-startup-id nitrogen --restore
+exec --no-startup-id imwheel
+
 # no idea why TapButton indices are reversed...
 exec --no-startup-id synclient PalmDetect=1 MaxSpeed=3.0 VertScrollDelta=-44 ClickPad=1 TapButton2=3 TapButton3=2
 exec --no-startup-id synclient HorizTwoFingerScroll=1 HorizScrollDelta=-44 
