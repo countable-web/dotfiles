@@ -26,7 +26,7 @@ fi
 
 if [[ $count -eq 1 ]]; then
   echo "1 found, attaching."
-  xrandr --output $lastdisplay --auto --left-of eDP1 
+  xrandr --output $lastdisplay --auto --${1:-left-of} eDP1 
 fi
 
 if [[ $count -gt 1  ]]; then
