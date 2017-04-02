@@ -1,0 +1,35 @@
+#!/bin/bash
+
+available=$(xrandr | egrep -oh "(^\S+\s)connected" | sed "s/\sconnected//" | egrep -v "^eDP1$")
+
+echo "Available external monitors:"
+
+items="
+one two three four
+hello world
+this should work just fine
+"
+
+IFS='
+'
+count=0
+for item in $available
+do
+  count=$((count+1))
+  echo $count $item
+  lastdisplay=$item
+done
+
+if [[ $count -eq 0 ]]; then
+  echo "0 external displays found."
+fi
+
+if [[ $count -eq 1 ]]; then
+  echo "1 found, attaching."
+  xrandr --output $lastdisplay --auto --${1:-left-of} eDP1 
+fi
+
+if [[ $count -gt 1  ]]; then
+  echo "multiple found, ignoring. specify a display please."
+fi
+
