@@ -60,21 +60,7 @@ Change to:
 
 install desktop components
 ```
-sudo apt-get install i3 xfe autocutsel
-cd .config/i3
-rm config
-ln -s ../../satchel/.i3config config
-```
-
-devel apps - chrome and sublime text (TODO-move this to the i3 deploy script).
-```
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
-sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-sudo add-apt-repository ppa:webupd8team/sublime-text-3
-sudo apt-get update
-sudo apt-get install google-chrome-stable
-sudo apt-get install sublime-text-installer
-sudo apt-get install xbacklight
+./satchel/deploy/setup-workstation
 ```
 
 ### Terminator Right Click to Paste
