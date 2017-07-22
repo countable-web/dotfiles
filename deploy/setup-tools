@@ -1,5 +1,0 @@
-
-# Git wrapper with convenient commands https://github.com/kennethreitz/legit
-sudo pip install legit
-sudo legit install
-
