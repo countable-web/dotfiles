@@ -1,0 +1,41 @@
+"*":
+  "atom-beautify":
+    general:
+      _analyticsUserId: "cb8f1375-c99f-4bbd-b25d-08e45440e674"
+  core:
+    closeDeletedFileTabs: true
+    telemetryConsent: "limited"
+  editor:
+    preferredLineLength: 119
+    scrollSensitivity: 80
+  "exception-reporting":
+    userId: "cfa2a248-ca96-4f6f-a879-dd795c166149"
+  linter: {}
+  "linter-flake8":
+    executablePath: "~/.env/bin/flake8"
+    flakeErrors: true
+    maxLineLength: 119
+    projectConfigFile: [
+      ".flake8"
+    ]
+    pycodestyleErrorsToWarnings: true
+    selectErrors: [
+      "E"
+      "W"
+    ]
+  "linter-js-standard":
+    lintHtmlFiles: true
+  "linter-ui-default":
+    panelHeight: 1349
+    showProviderName: true
+  "prettier-atom":
+    formatOnSaveOptions:
+      enabled: true
+      respectEslintignore: false
+    prettierOptions:
+      printWidth: 119
+    useEslint: true
+  welcome:
+    showOnStartup: false
+"linter-flake8":
+  executablePath: "/home/clark/.env/bin/flake8"

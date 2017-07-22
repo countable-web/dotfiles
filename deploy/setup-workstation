@@ -18,3 +18,9 @@ ln -s ../../satchel/.i3config config
 
 #sudo apt-get install sublime-text-installer
 sudo apt-get install -y xbacklight atom google-chrome-stable terminator
+
+cd $HOME/.atom
+rm config.cson
+ln -s ../satchel/config.cson
+load-atom-packages
+
