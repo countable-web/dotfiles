@@ -35,7 +35,7 @@ ethernet _first_ {
 
 battery 0 {
         format = "⚡ %status %percentage"
-        path = "/sys/class/power_supply/CMB0/uevent"
+        path = "/sys/class/power_supply/BAT0/uevent"
 }
 
 volume master {
