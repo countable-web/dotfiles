@@ -133,7 +133,9 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-export PATH=$PATH:$HOME/satchel/bin
+export PATH=$PATH:$HOME/dotfiles/bin
 
-source $HOME/satchel/.aliases
+source $HOME/dotfiles/.aliases
 
+source /home/clark/dotfiles/.bashrc
+source /home/clark/dotfiles/.bashrc

@@ -13,11 +13,11 @@ sudo apt-get install -y git vim curl zsh
 sudo apt-get install -y i3 xfe autocutsel
 
 mkdir $HOME/.config/i3
-cd $HOME/.config/i3 && rm config && ln -s ../../satchel/.i3config config
+cd $HOME/.config/i3 && rm config && ln -s ../../dotfiles/.i3config config
 
 #sudo apt-get install sublime-text-installer
 sudo apt-get install -y xbacklight atom google-chrome-stable terminator
 
-cd $HOME/.atom && rm config.cson && ln -s ../satchel/config.cson
+cd $HOME/.atom && rm config.cson && ln -s ../dotfiles/config.cson
 load-atom-packages
 

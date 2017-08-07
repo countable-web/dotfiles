@@ -1,4 +1,4 @@
-# satchel
+# dotfiles
 
 A man-bag (but can be used by anyone of course) of scripts I always want when setting up a new computer (most things only work in Ubuntu, some work in Linux more generally, a few work in OSX). This type of repository is often called "dotfiles" by other people.
 
@@ -11,11 +11,11 @@ Install git
 sudo apt-get install git
 ```
 
-Clone and install satchel.
+Clone and install dotfiles.
 ```
 cd
-git clone git.countable.ca:/git/satchel
-./satchel/deploy/unpack-satchel.bash 
+git clone git.countable.ca:/git/dotfiles
+./dotfiles/deploy/unpack-dotfiles.bash 
 ```
 
 install oh-my-zsh (recommended)
@@ -60,7 +60,7 @@ Change to:
 
 install desktop components
 ```
-./satchel/deploy/setup-workstation
+./dotfiles/deploy/setup-workstation
 ```
 
 ### Terminator Right Click to Paste
