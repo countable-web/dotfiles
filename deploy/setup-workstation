@@ -19,5 +19,6 @@ cd $HOME/.config/i3 && rm config && ln -s ../../dotfiles/.i3config config
 sudo apt-get install -y xbacklight atom google-chrome-stable terminator
 
 cd $HOME/.atom && rm config.cson && ln -s ../dotfiles/config.cson
+cd $HOME/.atom && rm styles.less && ln -s ../dotfiles/styles.less
 load-atom-packages
 
