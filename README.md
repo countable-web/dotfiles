@@ -64,7 +64,10 @@ install desktop components
 ```
 
 ### Terminator Right Click to Paste
+```
 sudo vi /usr/share/terminator/terminatorlib/terminal.py
+```
+
 search for on_buttonpress, and switch mouse indices
 
 ## Servers

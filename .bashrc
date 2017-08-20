@@ -137,5 +137,3 @@ export PATH=$PATH:$HOME/dotfiles/bin
 
 source $HOME/dotfiles/.aliases
 
-source /home/clark/dotfiles/.bashrc
-source /home/clark/dotfiles/.bashrc
