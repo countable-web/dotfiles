@@ -20,6 +20,6 @@ atom &
 sleep 5
 
 cd $HOME/.atom && rm config.cson && ln -s ../dotfiles/config.cson
-cd $HOME/.atom && rm styles.less && ln -s ../dotfiles/styles.less
+cd $HOME/.atom && ln -s ../dotfiles/styles.less
 load-atom-packages
 
