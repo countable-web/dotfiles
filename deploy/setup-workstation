@@ -14,7 +14,7 @@ sudo apt-get install -y i3 xfe autocutsel
 mkdir $HOME/.config/i3
 cd $HOME/.config/i3 && rm config && ln -s ../../dotfiles/.i3config config
 
-sudo apt-get install -y xbacklight atom google-chrome-stable terminator redshift
+sudo apt-get install -y xbacklight atom google-chrome-stable terminator redshift nitrogen
 
 atom &
 sleep 5
