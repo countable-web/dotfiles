@@ -1,4 +1,14 @@
 #!/bin/bash
 
+if [ -z "$1" ]
+  then
+    echo "No host supplied"
+fi
+
+if [ -z "$2" ]
+  then
+    echo "No project folder supplied"
+fi
+
 ssh $1 -C "cd $2 && docker-compose exec db pg_dump -U postgres postgres | bzip2" > db.sql.bz2
 bunzip2 db.sql.bz2

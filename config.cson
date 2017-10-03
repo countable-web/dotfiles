@@ -4,8 +4,14 @@
       _analyticsUserId: "cb8f1375-c99f-4bbd-b25d-08e45440e674"
   core:
     closeDeletedFileTabs: true
+    excludeVcsIgnoredPaths: false
     telemetryConsent: "limited"
+  "django-templates":
+    defaultToDjangoTemplatesForFilePathsContaining: [
+      "templates"
+    ]
   editor:
+    invisibles: {}
     preferredLineLength: 119
     scrollSensitivity: 80
     showIndentGuide: true
@@ -15,6 +21,9 @@
   "linter-flake8":
     executablePath: "~/.env/bin/flake8"
     flakeErrors: true
+    ignoreErrors: [
+      "E265"
+    ]
     maxLineLength: 119
     projectConfigFile: [
       ".flake8"
@@ -39,6 +48,9 @@
   "python-autopep8":
     formatOnSave: true
     maxLineLength: 119
+  "tree-view":
+    hideIgnoredNames: true
+    hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
 "linter-flake8":
