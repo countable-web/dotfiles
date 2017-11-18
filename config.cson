@@ -1,14 +1,29 @@
 "*":
   "atom-beautify":
+    css:
+      beautify_on_save: true
     general:
       _analyticsUserId: "cb8f1375-c99f-4bbd-b25d-08e45440e674"
+    html:
+      disabled: true
+    js:
+      beautify_on_save: true
+      indent_level: 2
+      wrap_line_length: 119
+    python:
+      beautify_on_save: true
+      max_line_length: 119
   core:
     closeDeletedFileTabs: true
     telemetryConsent: "limited"
   editor:
+    fontSize: 15
     preferredLineLength: 119
     scrollSensitivity: 80
     showIndentGuide: true
+    "*":
+    invisibles:
+      eol: false
   "exception-reporting":
     userId: "cfa2a248-ca96-4f6f-a879-dd795c166149"
   linter: {}
