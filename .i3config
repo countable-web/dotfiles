@@ -192,8 +192,7 @@ bar {
         tray_output primary
 }
 
-exec --no-startup-id /usr/bin/autocutsel -selection PRIMARY -fork
-exec --no-startup-id /usr/bin/autocutsel -fork
+exec --no-startup-id $HOME/dotfiles/bin/clipster -d
 exec --no-startup-id redshift
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id imwheel
