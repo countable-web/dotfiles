@@ -20,7 +20,7 @@
 	graft = !legit graft \"$@\"
 
 [core]
-	excludesfile = /Users/clark/satchel/.gitignore
+	excludesfile = /Users/clark/dotfiles/.gitignore
 	editor = vim
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
