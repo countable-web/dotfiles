@@ -1,6 +1,8 @@
 
-alias perm="sudo chmod -R g+rw . && sudo chgrp -R dev . && find . -type d | sudo xargs chmod g+s"
 # Strip whitespace
 alias wstrip="sed 's/[\n ]//g'"
 alias fiddle="sudo tcpdump -s 1024 -l -A dst"
-
+alias attach-monitor="xrandr --output DP1 --auto --left-of eDP1"
+alias detach-monitor="xrandr --output DP1 --off"
+alias save-atom-packages="apm list --installed --bare > ~/dotfiles/atom-package.list"
+alias load-atom-packages="apm install --packages-file ~/dotfiles/atom-package.list"

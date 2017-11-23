@@ -4,6 +4,8 @@ sudo wget -O /etc/apt/sources.list.d/newrelic.list http://download.newrelic.com/
 sudo apt-key adv --keyserver hkp://subkeys.pgp.net --recv-keys 548C16BF
 sudo apt-get update
 sudo apt-get install newrelic-sysmond
+sudo nrsysmond-config --set license_key=8028ecaaed7e754a3c3e7463b52d6218914f007c
+sudo /etc/init.d/newrelic-sysmond start
 echo "The following steps are manual."
 echo "sudo nrsysmond-config --set license_key=<key>"
 echo "sudo /etc/init.d/newrelic-sysmond start"

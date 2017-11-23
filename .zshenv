@@ -1,3 +1,3 @@
 
-source $HOME/satchel/.zshrc
+source $HOME/dotfiles/.zshrc
 

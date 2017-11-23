@@ -38,7 +38,7 @@ set $right semicolon
 floating_modifier Mod4
 
 # start a terminal
-bindsym Mod4+Return exec gnome-terminal
+bindsym Mod4+Return exec terminator
 
 # kill focused window
 bindsym Mod4+Shift+q kill
@@ -74,6 +74,10 @@ bindsym Mod4+Shift+Down move down
 bindsym Mod4+Shift+Up move up
 bindsym Mod4+Shift+Right move right
 
+# move the whole workspace to the next output
+bindsym Mod4+x move workspace to output right
+bindsym Mod4+y move workspace to output right
+
 # split in horizontal orientation
 bindsym Mod4+h split h
 
@@ -89,7 +93,7 @@ bindsym Mod4+w layout tabbed
 bindsym Mod4+e layout toggle split
 
 # toggle tiling / floating
-bindsym Mod1+Shift+space floating toggle
+bindsym Mod4+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym Mod1+space focus mode_toggle
@@ -165,8 +169,8 @@ mode "resize" {
 bindsym Mod4+r mode "resize"
 
 # Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse sset Master 10%+ #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse sset Master 10%- #decrease sound volume
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q -D pulse sset Master 5%+ #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q -D pulse sset Master 5%- #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id amixer -q -D pulse sset Master toggle # mute sound
 
 # Sreen brightness controls
@@ -175,6 +179,9 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightnes
 bindsym XF86Calculator exec gnome-calculator
 bindsym XF86Explorer exec google-chrome
 bindsym XF86Search exec google-chrome
+
+bindsym Menu exec detach-monitor
+
 bindsym Print exec scrot '%Y-%m-%d_%T_scrot.png' -e 'mv $f ~/Downloads/'
 
 
@@ -185,7 +192,11 @@ bar {
         tray_output primary
 }
 
-exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-44
-exec --no-startup-id /usr/bin/autocutsel
-exec --no-startup-id xflux -k 3000 -l 51 -g -123 -nofork
+exec --no-startup-id $HOME/dotfiles/bin/clipster -d
+exec --no-startup-id redshift
+exec --no-startup-id nitrogen --restore
+exec --no-startup-id imwheel
 
+# no idea why TapButton indices are reversed...
+exec --no-startup-id synclient PalmDetect=1 MaxSpeed=3.0 VertScrollDelta=-44 ClickPad=1 TapButton2=3 TapButton3=2
+exec --no-startup-id synclient HorizTwoFingerScroll=1 HorizScrollDelta=-44 

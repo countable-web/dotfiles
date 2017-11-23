@@ -2,10 +2,10 @@
 
 echo "Satchel is a repository filled with standard unix config and scripts for Countable Web Productions."
 echo "NOTE: You should probably run this from your home directory."
-echo "source $HOME/satchel/.bashrc" >> .bashrc
-ln -s satchel/.vimrc
-ln -s satchel/.gitconfig
-ln -s satchel/.gitignore
+echo "source $HOME/dotfiles/.bashrc" >> .bashrc
+ln -s dotfiles/.vimrc
+ln -s dotfiles/.gitconfig
+ln -s dotfiles/.gitignore
 source .bashrc
-echo "Done installing satchel."
+echo "Done installing dotfiles."
 

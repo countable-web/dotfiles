@@ -15,7 +15,7 @@ function pull {
 # Customize to your needs...
 export PATH=$HOME/dotfiles/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 
-#fpath=($fpath $HOME/satchel/.zsh/functions)
+#fpath=($fpath $HOME/dotfiles/.zsh/functions)
 #typeset -U fpath
 #setopt promptsubst
 #autoload -U promptinit

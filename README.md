@@ -1,4 +1,4 @@
-# satchel
+# dotfiles
 
 A man-bag (but can be used by anyone of course) of scripts I always want when setting up a new computer (most things only work in Ubuntu, some work in Linux more generally, a few work in OSX). This type of repository is often called "dotfiles" by other people.
 
@@ -11,11 +11,11 @@ Install git
 sudo apt-get install git
 ```
 
-Clone and install satchel.
+Clone and install dotfiles.
 ```
 cd
-git clone git.countable.ca:/git/satchel
-./satchel/deploy/unpack-satchel.bash 
+git clone git.countable.ca:/git/dotfiles
+./dotfiles/deploy/unpack-dotfiles.bash 
 ```
 
 install oh-my-zsh (recommended)
@@ -60,26 +60,15 @@ Change to:
 
 install desktop components
 ```
-sudo apt-get install i3wm thunar autocutsel
-cd .config/i3
-rm config
-ln -s ../../satchel/.i3config config
+./dotfiles/deploy/setup-workstation
 ```
 
-devel apps - chrome and sublime text (TODO-move this to the i3 deploy script).
+### Terminator Right Click to Paste
 ```
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
-sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-sudo add-apt-repository ppa:webupd8team/sublime-text-3
-sudo apt-get update
-sudo apt-get install google-chrome-stable
-sudo apt-get update\nsudo apt-get install sublime-text-installer
-sudo apt-get install xbacklight
-sudo add-apt-repository ppa:nathan-renniewaldock/flux
-sudo apt-get update
-sudo apt-get install fluxgui
-xflux -l 51 -g -123 -k 3000
+sudo vi /usr/share/terminator/terminatorlib/terminal.py
 ```
+
+search for on_buttonpress, and switch mouse indices
 
 ## Servers
 

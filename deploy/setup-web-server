@@ -16,7 +16,7 @@ sudo apt-get install mongodb
 
 sudo apt-get install git
 
-git clone git.countable.ca:/git/satchel
-./satchel/deploy/setup-node v0.8.16
-./satchel/deploy/unpack-satchel
+git clone git.countable.ca:/git/dotfiles
+./dotfiles/deploy/setup-node v0.8.16
+./dotfiles/deploy/unpack-dotfiles
 

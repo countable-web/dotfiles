@@ -1,0 +1,70 @@
+"*":
+  "atom-beautify":
+    css:
+      beautify_on_save: true
+    general:
+      _analyticsUserId: "cb8f1375-c99f-4bbd-b25d-08e45440e674"
+    html:
+      disabled: true
+    js:
+      beautify_on_save: true
+      indent_level: 2
+      wrap_line_length: 119
+    python:
+      beautify_on_save: true
+      max_line_length: 119
+  core:
+    closeDeletedFileTabs: true
+    excludeVcsIgnoredPaths: false
+    telemetryConsent: "limited"
+  "django-templates":
+    defaultToDjangoTemplatesForFilePathsContaining: [
+      "templates"
+    ]
+  editor:
+    fontSize: 15
+    preferredLineLength: 119
+    scrollSensitivity: 80
+    showIndentGuide: true
+    invisibles:
+      eol: false
+    showInvisibles: true
+  "exception-reporting":
+    userId: "cfa2a248-ca96-4f6f-a879-dd795c166149"
+  linter: {}
+  "linter-flake8":
+    executablePath: "~/.env/bin/flake8"
+    flakeErrors: true
+    ignoreErrors: [
+      "E265"
+    ]
+    maxLineLength: 119
+    projectConfigFile: [
+      ".flake8"
+    ]
+    pycodestyleErrorsToWarnings: true
+    selectErrors: [
+      "E"
+      "W"
+    ]
+  "linter-js-standard":
+    lintHtmlFiles: true
+  "linter-ui-default":
+    panelHeight: 1349
+    showProviderName: true
+  "prettier-atom":
+    formatOnSaveOptions:
+      respectEslintignore: false
+    prettierOptions:
+      printWidth: 119
+    useEslint: true
+  "python-autopep8":
+    formatOnSave: true
+    maxLineLength: 119
+  "tree-view":
+    hideIgnoredNames: true
+    hideVcsIgnoredFiles: true
+  welcome:
+    showOnStartup: false
+"linter-flake8":
+  executablePath: "/home/clark/.env/bin/flake8"
