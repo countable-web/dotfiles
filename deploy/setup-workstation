@@ -24,3 +24,12 @@ cd $HOME/.atom && ln -s ../dotfiles/styles.less
 load-atom-packages
 
 cd $HOME && rmdir Desktop/ Documents Pictures Music Public Templates Videos
+
+# performance - remove ubuntu junk
+sudo systemctl disable apparmor.service
+sudo systemctl disable snapd.autoimport.service
+sudo systemctl disable ModemManager.service
+
+# save keystrokes in aptitude.
+echo 'APT::Get::Assume-Yes "true";' | sudo tee -a /etc/apt/apt.conf.d/90forceyes
+echo 'APT::Get::force-yes "true";' | sudo tee -a /etc/apt/apt.conf.d/90forceyes
