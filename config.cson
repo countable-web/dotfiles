@@ -22,12 +22,11 @@
       "templates"
     ]
   editor:
-    fontSize: 15
+    invisibles:
+      eol: false
     preferredLineLength: 119
     scrollSensitivity: 80
     showIndentGuide: true
-    invisibles:
-      eol: false
     showInvisibles: true
   "exception-reporting":
     userId: "cfa2a248-ca96-4f6f-a879-dd795c166149"
