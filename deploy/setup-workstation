@@ -11,6 +11,8 @@ sudo apt-get update
 sudo apt-get install -y git vim curl zsh
 sudo apt-get install -y i3 xfe autocutsel
 
+git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+
 mkdir $HOME/.config/i3
 cd $HOME/.config/i3 && rm config && ln -s ../../dotfiles/.i3config config
 
@@ -33,3 +35,5 @@ sudo systemctl disable ModemManager.service
 # save keystrokes in aptitude.
 echo 'APT::Get::Assume-Yes "true";' | sudo tee -a /etc/apt/apt.conf.d/90forceyes
 echo 'APT::Get::force-yes "true";' | sudo tee -a /etc/apt/apt.conf.d/90forceyes
+
+
