@@ -13,7 +13,7 @@ function pull {
 }
 
 # Customize to your needs...
-export PATH=$HOME/dotfiles/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
+export PATH=$HOME/dotfiles/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:.:$HOME/.local/bin
 
 #fpath=($fpath $HOME/dotfiles/.zsh/functions)
 #typeset -U fpath
