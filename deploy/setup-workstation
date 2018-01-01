@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./setup-core
+
 sudo add-apt-repository ppa:webupd8team/atom
 sudo add-apt-repository ppa:gnome-terminator
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
@@ -8,10 +10,7 @@ sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable
 sudo apt-get update
 
 sudo apt-get update
-sudo apt-get install -y git vim curl zsh
 sudo apt-get install -y i3 xfe autocutsel
-
-git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
 
 mkdir $HOME/.config/i3
 cd $HOME/.config/i3 && rm config && ln -s ../../dotfiles/.i3config config
