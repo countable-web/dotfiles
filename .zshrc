@@ -12,6 +12,10 @@ function pull {
     git pull origin $(git branch | grep "\*" | sed "s/\* //g")
 }
 
+function dx {
+    docker-compose exec $1 bash
+}
+
 # Customize to your needs...
 export PATH=$HOME/dotfiles/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:.:$HOME/.local/bin
 

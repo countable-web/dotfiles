@@ -1,14 +1,10 @@
 #!/bin/bash
 
-available=$(xrandr | egrep -oh "(^\S+\s)connected" | sed "s/\sconnected//" | egrep -v "^eDP1$")
+available=$(xrandr | grep -v primary | egrep -oh "(^\S+\s)connected" | sed "s/\sconnected//")
+primary=$(xrandr | grep primary |  egrep -oh "(^\S+\s)connected" | sed "s/\sconnected//")
 
-echo "Available external monitors:"
-
-items="
-one two three four
-hello world
-this should work just fine
-"
+echo "Primary: " $primary
+echo "Available external monitors:" $available
 
 IFS='
 '
