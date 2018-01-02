@@ -9,6 +9,7 @@ sudo apt-get update
 
 sudo apt-get update
 sudo apt-get install -y git vim curl zsh
+sudo apt-get install -y lrzip
 sudo apt-get install -y i3 xfe autocutsel
 
 mkdir $HOME/.config/i3
