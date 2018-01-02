@@ -7,6 +7,8 @@ alias detach-monitor="xrandr --output DP1 --off"
 alias save-atom-packages="apm list --installed --bare > ~/dotfiles/atom-package.list"
 alias load-atom-packages="apm install --packages-file ~/dotfiles/atom-package.list"
 
-alias dcr="docker-compose restart"
+alias d="docker-compose"
+alias dx="docker-compose exec $1 bash"
+
 alias ls="ls --color=auto"
 
