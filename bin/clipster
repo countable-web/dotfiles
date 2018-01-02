@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-"""Clipster - Clipboard manager."""
+"""Clipster - Clipboard manager. Modified by cvo to merge only from PRIMARY -> SELECTION"""
 
 # pylint: disable=line-too-long
 

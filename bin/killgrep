@@ -1,4 +1,0 @@
-#!/bin/bash
-
-ps aux | grep -i $1 | grep -v grep | awk '{print "kill -9 " $2}' | sh
-

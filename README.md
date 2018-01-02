@@ -74,4 +74,6 @@ search for on_buttonpress, and switch mouse indices
 
 TODO - deploy script for a docker host on Ubuntu.
 
+### Easily find countable.ca web addresses.
+You may want to add - /etc/dhcp/dhclient.conf:append domain-name " countable.ca";
 
