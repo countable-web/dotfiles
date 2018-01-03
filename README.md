@@ -1,30 +1,12 @@
 # dotfiles
 
-A man-bag (but can be used by anyone of course) of scripts I always want when setting up a new computer (most things only work in Ubuntu, some work in Linux more generally, a few work in OSX). This type of repository is often called "dotfiles" by other people.
-
-This repo contains standard config and scripts used by Countable Web Productions.
+This repo contains standard config and scripts used by Countable Web Productions. It includes scripts and settings to automate repetitive tasks in our workflow.
 
 ## Basic Installation
 
-Install git
 ```
-sudo apt-get install git
+sh -c "$(curl -sSL https://github.com/countable-web/dotfiles/edit/master/install.sh)"
 ```
-
-Clone and install dotfiles.
-```
-cd
-git clone git.countable.ca:/git/dotfiles
-./dotfiles/deploy/unpack-dotfiles.bash 
-```
-
-install oh-my-zsh (recommended)
-```
-sudo apt-get install zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-```
-
-Satchel is installed and "deployed" now. You can make use of the following utils.
 
 ### Git sync - does an add, commit, pull, push.
 ```
