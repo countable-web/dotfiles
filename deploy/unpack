@@ -5,7 +5,7 @@ echo "NOTE: You should probably run this from your home directory."
 echo "source $HOME/dotfiles/.bashrc" >> .bashrc
 ln -s dotfiles/.vimrc
 ln -s dotfiles/.gitconfig
-ln -s dotfiles/.gitignore
 source .bashrc
+echo "source $HOME/dotfiles/.zshrc" >> .zshrc
 echo "Done installing dotfiles."
 
