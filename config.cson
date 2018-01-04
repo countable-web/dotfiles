@@ -22,7 +22,7 @@
       "templates"
     ]
   editor:
-    fontSize: 19
+    fontSize: 16
     invisibles:
       eol: false
     preferredLineLength: 119

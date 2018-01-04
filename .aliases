@@ -9,4 +9,4 @@ alias load-atom-packages="apm install --packages-file ~/dotfiles/atom-package.li
 alias d="docker-compose"
 
 alias ls="ls --color=auto"
-
+alias dj="docker-compose exec django python manage.py"
