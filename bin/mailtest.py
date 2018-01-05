@@ -1,8 +1,8 @@
 def send_email():
     import smtplib
 
-    gmail_user = "countable-client"
-    gmail_pwd = "Y8G54XZCGO"
+    gmail_user = sys.argv[1]
+    gmail_pwd = sys.argv[2]
     FROM = "clark@countableclient.local"
     TO = ["clark@countable.ca"]
     SUBJECT = "hello"

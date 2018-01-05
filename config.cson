@@ -36,7 +36,7 @@
   editor:
     fontSize: 15
     invisibles:
-      cr: "\\r"
+      cr: "\\"
       lf: "\\n"
       space: "."
       tab: "-"
