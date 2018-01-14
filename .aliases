@@ -7,6 +7,5 @@ alias save-atom-packages="apm list --installed --bare > ~/dotfiles/atom-package.
 alias load-atom-packages="apm install --packages-file ~/dotfiles/atom-package.list"
 
 alias d="docker-compose"
-
+alias dl="docker-compose logs --tail=0 -f"
 alias ls="ls --color=auto"
-
