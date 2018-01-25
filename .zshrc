@@ -16,17 +16,14 @@ function dx {
     docker-compose exec $1 bash
 }
 
+function fullpath {
+    echo "$(hostname):$(readlink -f $1)"
+}
+
 # Customize to your needs...
 export PATH=$HOME/dotfiles/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:.:$HOME/.local/bin
-
-#fpath=($fpath $HOME/dotfiles/.zsh/functions)
-#typeset -U fpath
-#setopt promptsubst
-#autoload -U promptinit
-#promptinit
-#prompt wunjo
-
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+
 # for mac
 #export PATH=/Developer/usr/libexec/git-core/:$PATH
 
