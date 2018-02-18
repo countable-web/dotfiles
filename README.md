@@ -4,8 +4,10 @@ This repo contains standard config and scripts used by Countable Web Productions
 
 ## Basic Installation
 
+From your home dir:
 ```
 sh -c "$(curl -sSL https://raw.githubusercontent.com/countable-web/dotfiles/master/install.sh)"
+./dotfiles/deploy/setup-core
 ```
 
 ### Git sync - does an add, commit, pull, push.
