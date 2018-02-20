@@ -136,5 +136,3 @@ fi
 export PATH=$PATH:$HOME/dotfiles/bin
 
 source $HOME/dotfiles/.aliases
-
-source /Users/admin/dotfiles/.bashrc
