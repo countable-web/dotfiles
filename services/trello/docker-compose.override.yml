@@ -1,8 +1,0 @@
-version: '3'
-
-services:
-  trello:
-    environment:
-      - TRELLO_API_KEY=5e42be1065a9a64b6eeb053208bac671
-      - TRELLO_API_SECRET=e04e7feb52673d911ca09f95bbbb5a4436a5e9812a85f8f2d16c983e5509bcfc
-    command: python /code/trello_archive_job.py
