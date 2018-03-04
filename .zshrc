@@ -13,7 +13,8 @@ function pull {
 }
 
 function dx {
-    docker-compose exec $1 bash
+    remaining="${@:2}"
+    docker-compose exec $1 sh -c "${remaining:-bash}"
 }
 
 function fullpath {
