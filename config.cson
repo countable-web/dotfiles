@@ -46,6 +46,7 @@
     showInvisibles: true
     softWrap: true
     tabLength: 4
+    tabType: "soft"
     zoomFontWhenCtrlScrolling: false
   "exception-reporting":
     userId: "cfa2a248-ca96-4f6f-a879-dd795c166149"
@@ -84,5 +85,8 @@
     hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
+".html.source":
+  editor:
+    tabLength: 2
 "linter-flake8":
   executablePath: "/home/clark/.env/bin/flake8"
