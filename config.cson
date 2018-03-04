@@ -85,5 +85,8 @@
     hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
+".html.source":
+  editor:
+    tabLength: 2
 "linter-flake8":
   executablePath: "/home/clark/.env/bin/flake8"
