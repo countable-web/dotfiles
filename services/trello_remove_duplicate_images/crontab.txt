@@ -1,0 +1,1 @@
+* 9 * * 2 ~/trello_archive_script/remove_duplicate_images.py
