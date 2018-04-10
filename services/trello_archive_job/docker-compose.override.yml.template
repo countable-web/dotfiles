@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  trello:
+    environment:
+      - TRELLO_API_KEY=
+      - TRELLO_API_SECRET=
+    command: python /code/trello_archive_job.py

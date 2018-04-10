@@ -13,7 +13,8 @@ function pull {
 }
 
 function dx {
-    docker-compose exec $1 bash
+    remaining="${@:2}"
+    docker-compose exec $1 sh -c "${remaining:-bash}"
 }
 
 function fullpath {
@@ -50,17 +51,19 @@ setopt hist_verify
 
 # Share your history across all your terminal windows
 setopt share_history
-#setopt noclobber
+setopt noclobber
 
 # set some more options
 setopt pushd_ignore_dups
-#setopt pushd_silent
+setopt pushd_silent
 
 # Keep a ton of history.
 HISTSIZE=100000
 SAVEHIST=100000
 HISTFILE=~/.zsh_history
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+setopt    appendhistory     #Append history to the history file (no overwriting)
+setopt    sharehistory      #Share history across terminals
 
 # Long running processes should return time after they complete. Specified
 # in seconds.

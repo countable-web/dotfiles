@@ -10,24 +10,30 @@
 
 # Store our credentials in our home directory with a file called .
 my_creds=~/.timesheet/.creds
-my_timesheet=~/.timesheet/.google_id
+my_client_secret=~/.timesheet/.google_client_secret
+my_timesheet=~/.timesheet/.sheet_id
+client_id="853081442996-ppfu99poj9gdlf7p9e634hh5rr78d9ug.apps.googleusercontent.com"
 
 echo "$my_creds"
 # create your own client id/secret
 # https://developers.google.com/identity/protocols/OAuth2InstalledApp#creatingcred
-client_id='853081442996-0euuvlajbueeotk2r9nl3ibrolk1gne6.apps.googleusercontent.com'
-client_secret='E08-w7BjbCB2eiOp-W6A7tw7'
 
 if [ ! -d ~/.timesheet/ ]; then
   mkdir -p ~/.timesheet/;
 fi
 
-if [ -s $my_creds ]; then
+if [ -s $my_creds ] && [ -s $my_client_secret ] && [ -s $my_timesheet ]; then
   # if we already have a token stored, use it
   . $my_creds
   timesheet_id=`cat $my_timesheet`
+  client_secret=`
   time_now=`date +%s`
 else
+  echo "Please enter your Google Client Secret"
+  echo
+  read client_secret
+  echo -e "$client_secret" > $my_client_secret
+
   echo "Please enter your Google Sheet ID"
   echo
   read timesheet_id
