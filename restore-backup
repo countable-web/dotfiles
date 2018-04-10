@@ -1,0 +1,9 @@
+#!/bin/bash
+
+latest_backup=$(aws s3 ls s3://countable/backups/$1/ | tail -n 1 | rev | cut -d" " -f1 | rev)
+
+echo "latest backup is $latest_backup, downloading..."
+
+aws s3 cp s3://countable/backups/$1/$latest_backup ./
+
+

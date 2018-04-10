@@ -2,9 +2,9 @@
 docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
 echo $docker_compose_id
 docker cp ${1:-db.sql} ${docker_compose_id}_db_1:/tmp/
-docker-compose stop web
+docker-compose stop
+docker-compose up -d db
 docker-compose exec db dropdb -U postgres postgres
 docker-compose exec db createdb -U postgres postgres
 docker-compose exec db psql -U postgres -f /tmp/${1:-db.sql} postgres
-docker-compose up -d web
 

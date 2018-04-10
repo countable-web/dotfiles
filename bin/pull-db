@@ -10,5 +10,7 @@ if [ -z "$2" ]
     echo "No project folder supplied"
 fi
 
+echo Trying: ssh $1 -C "cd $2 && docker-compose exec db pg_dump -U postgres postgres | bzip2" > db.sql.bz2
+
 ssh $1 -C "cd $2 && docker-compose exec db pg_dump -U postgres postgres | bzip2" > db.sql.bz2
 bunzip2 db.sql.bz2
