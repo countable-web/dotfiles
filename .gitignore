@@ -1,3 +1,5 @@
+services/accounting/ENV
+services/accounting/tmp
 .DS_Store
 .vim/.netrwhist
 nohup.out
