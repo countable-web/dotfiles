@@ -3,6 +3,7 @@
 from __future__ import print_function
 import httplib2
 import os
+import io
 
 from apiclient import discovery
 from apiclient.http import MediaIoBaseDownload
@@ -59,34 +60,35 @@ class SheetManager:
             print('Storing credentials to ' + credential_path)
         return credentials
 
-    def download_timesheets(self):
+    def download_timesheets(self, q):
         page_token = None
         while True:
-            response = self.drive_service.files().list(q="name contains '2018-timesheet'",
+            response = self.drive_service.files().list(q=q,
                                                        spaces='drive',
                                                        fields='nextPageToken, files(id, name, parents)',
                                                        pageToken=page_token).execute()
             for f in response.get('files', []):
                 # Process change
                 print('Found file: %s' % (f.get('name')))
-                self.export_sheet_as_csv(f)
+                self.export_sheet(f)
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
 
-    def export_sheet_as_csv(self, f):
+    def export_sheet(self, f):
 
         request = self.drive_service.files().export_media(
             fileId=f.get('id'),
-            mimeType='text/csv'
+            mimeType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
-        # fh = io.BytesIO()
-        fh = open('tmp/{}.csv'.format(f.get('name')), 'wb')
+        fh = io.FileIO('tmp/{}.xlsx'.format(f.get('name')), 'w')
         downloader = MediaIoBaseDownload(fh, request)
         done = False
         while done is False:
             status, done = downloader.next_chunk()
             print("Download %d%%." % int(status.progress() * 100))
+
+        # open().write(fh.read().decode('utf-8'))
 
 
 def main():
@@ -96,7 +98,7 @@ def main():
     for up to 10 files.
     """
     manager = SheetManager()
-    # manager.download_timesheets()
+    manager.download_timesheets("name contains '2017-timesheet'")
 
 
 if __name__ == '__main__':
