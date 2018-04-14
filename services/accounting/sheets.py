@@ -4,6 +4,7 @@ from __future__ import print_function
 import httplib2
 import os
 import io
+import csv
 
 from apiclient import discovery
 from apiclient.http import MediaIoBaseDownload
@@ -70,6 +71,8 @@ class SheetManager:
             for f in response.get('files', []):
                 # Process change
                 print('Found file: %s' % (f.get('name')))
+                if '2017' not in f.get('name'):
+                    continue
                 self.export_sheet(f)
             page_token = response.get('nextPageToken', None)
             if page_token is None:
@@ -79,9 +82,9 @@ class SheetManager:
 
         request = self.drive_service.files().export_media(
             fileId=f.get('id'),
-            mimeType='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            mimeType='text/csv'  # 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
-        fh = io.FileIO('tmp/{}.xlsx'.format(f.get('name')), 'w')
+        fh = io.FileIO('tmp/{}.csv'.format(f.get('name')), 'w')
         downloader = MediaIoBaseDownload(fh, request)
         done = False
         while done is False:
@@ -89,6 +92,35 @@ class SheetManager:
             print("Download %d%%." % int(status.progress() * 100))
 
         # open().write(fh.read().decode('utf-8'))
+
+    def tally_timesheets(self):
+        tally = {}
+        for filename in os.listdir("tmp/"):
+            with open("tmp/" + filename, 'r') as csvfile:
+
+                csvreader = csv.reader(csvfile)
+
+                # This skips the first row of the CSV file.
+                # csvreader.next() also works in Python 2.
+                next(csvreader)
+                next(csvreader)
+                next(csvreader)
+                next(csvreader)
+                next(csvreader)
+
+                for row in csvreader:
+                    print(row)
+                    if len(row) == 4:
+                        amount = row[3]
+                    else:
+                        amount = row[4]
+                    project = row[0]
+                    if project not in tally:
+                        tally[project] = 0.0
+                    tally[project] += float(amount or '0')
+
+        for k, v in tally.items():
+            print(k, ',', v)
 
 
 def main():
@@ -98,7 +130,8 @@ def main():
     for up to 10 files.
     """
     manager = SheetManager()
-    manager.download_timesheets("name contains '2017-timesheet'")
+    # manager.download_timesheets("name contains 'timesheet-clark'")
+    manager.tally_timesheets()
 
 
 if __name__ == '__main__':
