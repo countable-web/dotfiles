@@ -36,7 +36,7 @@
       "templates"
     ]
   editor:
-    fontSize: 16
+    fontSize: 13
     invisibles:
       cr: "\\"
       lf: "\\n"
