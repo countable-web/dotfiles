@@ -4,7 +4,7 @@ def send_email():
 
     gmail_user = sys.argv[1]
     gmail_pwd = sys.argv[2]
-    FROM = "clark@countableclient.local"
+    FROM = "catch@this.fish"
     TO = ["clark@countable.ca"]
     SUBJECT = "hello"
     TEXT = "hi"
@@ -12,7 +12,8 @@ def send_email():
     # Prepare actual message
     message = """From: %s\nTo: %s\nSubject: %s\n\n%s
     """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
-    server = smtplib.SMTP("smtp.sendgrid.net", 587)
+    server = smtplib.SMTP("email-smtp.ca-central-1.amazonaws.com", 587)
+    #server = smtplib.SMTP("smtp.sendgrid.net", 587)
     server.ehlo()
     server.starttls()
     server.login(gmail_user, gmail_pwd)
