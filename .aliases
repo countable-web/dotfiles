@@ -11,3 +11,4 @@ alias dl="docker-compose logs --tail=0 -f"
 alias ls="ls --color=auto"
 alias dj="docker-compose exec django python manage.py"
 alias ai="sudo apt-get update && sudo apt-get install $@"
+
