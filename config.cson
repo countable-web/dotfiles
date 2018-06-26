@@ -14,6 +14,7 @@
       wrap_line_length: 199
     python:
       beautify_on_save: true
+      disabled: true
       max_line_length: 119
   core:
     audioBeep: false
@@ -71,7 +72,7 @@
   "linter-js-standard":
     lintHtmlFiles: true
   "linter-ui-default":
-    panelHeight: 1349
+    panelHeight: 447.578125
     showProviderName: true
   "prettier-atom":
     formatOnSaveOptions:
@@ -82,6 +83,7 @@
   "python-autopep8":
     formatOnSave: true
     maxLineLength: 119
+  "python-black": {}
   "tree-view":
     hideIgnoredNames: true
     hideVcsIgnoredFiles: true
