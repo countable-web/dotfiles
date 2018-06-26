@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+if [[ "$1" == "" ]] then
+  nmcli d wifi list
+else
+  if [[ "$2" == "" ]] then
+    nmcli d wifi con $1
+  else
+    nmcli d wifi con $1 password $2
+  fi
+fi
