@@ -54,9 +54,11 @@ sudo vi /usr/share/terminator/terminatorlib/terminal.py
 
 search for on_buttonpress, and switch mouse indices
 
-## Servers
+## Docker
 
-TODO - deploy script for a docker host on Ubuntu.
+```
+./dotfiles/deploy/setup-docker
+```
 
 ### Easily find countable.ca web addresses.
 You may want to add - /etc/dhcp/dhclient.conf:append domain-name " countable.ca";
