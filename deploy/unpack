@@ -2,6 +2,8 @@
 
 echo "Satchel is a repository filled with standard unix config and scripts for Countable Web Productions."
 echo "NOTE: You should probably run this from your home directory."
+touch .bashrc
+touch .zshrc
 echo "source $HOME/dotfiles/.bashrc" >> .bashrc
 echo "source $HOME/dotfiles/.zshrc" >> .zshrc
 ln -s dotfiles/.vimrc
