@@ -19,8 +19,8 @@
             "percent": 0.7,
             "swallows": [
                {
-                "class": "^Code$",
-                "instance": "^code$"
+                "class": "^Code.*$",
+                "instance": "^code.*$"
                }
             ],
             "type": "con"
@@ -87,12 +87,12 @@
        "x": 2572,
        "y": 28
     },
-    "name": "Mindful - Google Chrome",
+    "name": "Google Chrome",
     "percent": 0.5,
     "swallows": [
        {
-        "class": "^Google\\-chrome$",
-        "instance": "^google\\-chrome$"
+        "class": "^.*$",
+        "instance": "^google\\-chrome.*$"
        }
     ],
     "type": "con"

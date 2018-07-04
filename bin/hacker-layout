@@ -12,8 +12,8 @@ if [ -z "$workspace" ]
     i3-msg "workspace $workspace; exec /usr/bin/terminator"
 else
     i3-msg "workspace $workspace; append_layout .i3/workspace-2.json"
-    i3-msg "workspace $workspace; exec /usr/bin/google-chrome"
+    i3-msg "workspace $workspace; exec /usr/bin/google-chrome-stable"
     i3-msg "workspace $workspace; exec \"/usr/bin/code $HOME/apps/$workspace\""
     i3-msg "workspace $workspace; exec /usr/bin/terminator --working-directory=$HOME/apps/$workspace"
-    i3-msg "workspace $workspace; exec /usr/bin/terminator --working-directory=$HOME/apps/$workspace \"-e docker-compose up\""
+    i3-msg "workspace $workspace; exec /usr/bin/terminator --working-directory=$HOME/apps/$workspace -e \"docker-compose up\""
 fi
