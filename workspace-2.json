@@ -1,0 +1,100 @@
+{
+    "border": "normal",
+    "floating": "auto_off",
+    "layout": "splitv",
+    "percent": 0.5,
+    "type": "con",
+    "nodes": [
+        {
+            "border": "none",
+            "current_border_width": 0,
+            "floating": "auto_off",
+            "geometry": {
+               "height": 1078,
+               "width": 1436,
+               "x": 1202,
+               "y": 541
+            },
+            "name": "Untitled-1 - Visual Studio Code",
+            "percent": 0.7,
+            "swallows": [
+               {
+                "class": "^Code$",
+                "instance": "^code$"
+               }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "normal",
+            "floating": "auto_off",
+            "layout": "splith",
+            "percent": 0.3,
+            "type": "con",
+            "nodes": [
+                {
+                    "border": "normal",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 431,
+                       "width": 732,
+                       "x": 0,
+                       "y": 0
+                    },
+                    "name": "/bin/zsh",
+                    "percent": 0.5,
+                    "swallows": [
+                       {
+                        "class": "^Terminator$",
+                        "instance": "^terminator$"
+                       }
+                    ],
+                    "type": "con"
+                },
+                {
+                    "border": "normal",
+                    "current_border_width": 2,
+                    "floating": "auto_off",
+                    "geometry": {
+                       "height": 431,
+                       "width": 732,
+                       "x": 0,
+                       "y": 0
+                    },
+                    "name": "/bin/zsh",
+                    "percent": 0.5,
+                    "swallows": [
+                       {
+                        "class": "^Terminator$",
+                        "instance": "^terminator$"
+                       }
+                    ],
+                    "type": "con"
+                }
+            ]
+        }
+    ]
+}
+
+{
+    "border": "normal",
+    "current_border_width": 2,
+    "floating": "auto_off",
+    "geometry": {
+       "height": 2121,
+       "width": 1276,
+       "x": 2572,
+       "y": 28
+    },
+    "name": "Mindful - Google Chrome",
+    "percent": 0.5,
+    "swallows": [
+       {
+        "class": "^Google\\-chrome$",
+        "instance": "^google\\-chrome$"
+       }
+    ],
+    "type": "con"
+}
+

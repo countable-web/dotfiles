@@ -9,9 +9,9 @@ def send_email():
     else:
         server_name = 'sendgrid'
     FROM = "no-reply@bawkbox.com"
-    TO = ["clark@countable.ca"]
-    SUBJECT = "hello"
-    TEXT = "hi"
+    TO = ["johbud@hotmail.com"]
+    SUBJECT = "This is a test from KMC"
+    TEXT = "Hi, we had trouble reaching your email from Kensington Medical Clinic and are diagnosing the issue. Sorry for the interruption."
 
     # Prepare actual message
     message = """From: %s\nTo: %s\nSubject: %s\n\n%s
@@ -20,6 +20,8 @@ def send_email():
         server = smtplib.SMTP("email-smtp.ca-central-1.amazonaws.com", 587)
     elif server_name == 'sendgrid':
         server = smtplib.SMTP("smtp.sendgrid.net", 587)
+    elif server_name == 'blue':
+        server = smtplib.SMTP("smtp-relay.sendinblue.com", 587)
     else:
         server = server_name
     server.ehlo()
