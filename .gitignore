@@ -1,6 +1,9 @@
+services/accounting/ENV
+services/accounting/tmp
 .DS_Store
 .vim/.netrwhist
 nohup.out
 node_modules
 err.log
 out.log
+services/accounting/client_id.json

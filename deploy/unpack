@@ -1,10 +1,13 @@
 #!/bin/bash
 
 echo "Satchel is a repository filled with standard unix config and scripts for Countable Web Productions."
-echo "NOTE: You should probably run this from your home directory."
+cd $HOME
+touch .bashrc
+touch .zshrc
 echo "source $HOME/dotfiles/.bashrc" >> .bashrc
+echo "source $HOME/dotfiles/.zshrc" >> .zshrc
 ln -s dotfiles/.vimrc
-ln -s dotfiles/.gitconfig
+cp $HOME/dotfiles/.gitconfig $HOME/
 ln -s dotfiles/.gitignore
 source .bashrc
 sudo chsh -s /bin/zsh $(whoami)

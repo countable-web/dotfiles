@@ -1,0 +1,15 @@
+#!/bin/bash
+
+latest_backup=$(aws s3 ls s3://countable/backups/$1/ | tail -n 1 | rev | cut -d" " -f1 | rev)
+
+if [[ "" = $latest_backup ]]
+then
+    echo "cant find any backups."
+    exit 1
+else
+    echo "latest backup is $latest_backup, downloading..."
+fi
+
+aws s3 cp s3://countable/backups/$1/$latest_backup ./
+
+
