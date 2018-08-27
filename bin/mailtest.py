@@ -5,9 +5,10 @@ def send_email(TO, SUBJECT, TEXT):
     if len(sys.argv) > 1:
         user = sys.argv[1]
         pwd = sys.argv[2]
-        server_name = 'sendgrid'
-    elif len(sys.argv) > 3:
-        server_name = sys.argv[3]
+        if len(sys.argv) > 3:
+            server_name = sys.argv[3]
+        else:
+            server_name = 'sendgrid'
     else:
         server_name='smtp'
     FROM = "no-reply@bawkbox.com"
