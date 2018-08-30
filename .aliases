@@ -11,4 +11,13 @@ alias dl="docker-compose logs --tail=0 -f"
 alias ls="ls --color=auto"
 alias dj="docker-compose exec django python manage.py"
 alias ai="sudo apt-get update && sudo apt-get install $@"
-
+# better git diff.
+alias gdiff="git diff --word-diff -w"
+# recap on work done lately
+alias recap="git log --all --oneline --no-merges --author=clark@countable.ca"
+# what have i done today?
+alias todayswork="git log --since=00:00:00 --all --no-merges --oneline --author=clark@countable.ca"
+# make a changelog
+alias changelog="git log --oneline --no-merges <last tag>..HEAD"
+# analyze complicated logs
+alias forensic="git log --graph --all --decorate --stat --date=iso"
