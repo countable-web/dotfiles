@@ -1,17 +1,17 @@
 import sys
-def send_email():
+def send_email(TO, SUBJECT, TEXT):
     import smtplib
-
-    user = sys.argv[1]
-    pwd = sys.argv[2]
-    if len(sys.argv) > 3:
-        server_name = sys.argv[3]
+    
+    if len(sys.argv) > 1:
+        user = sys.argv[1]
+        pwd = sys.argv[2]
+        if len(sys.argv) > 3:
+            server_name = sys.argv[3]
+        else:
+            server_name = 'sendgrid'
     else:
-        server_name = 'sendgrid'
+        server_name='smtp'
     FROM = "no-reply@bawkbox.com"
-    TO = ["johbud@hotmail.com"]
-    SUBJECT = "This is a test from KMC"
-    TEXT = "Hi, we had trouble reaching your email from Kensington Medical Clinic and are diagnosing the issue. Sorry for the interruption."
 
     # Prepare actual message
     message = """From: %s\nTo: %s\nSubject: %s\n\n%s
@@ -23,12 +23,13 @@ def send_email():
     elif server_name == 'blue':
         server = smtplib.SMTP("smtp-relay.sendinblue.com", 587)
     else:
-        server = server_name
+        server = smtplib.SMTP(server_name)
     server.ehlo()
-    server.starttls()
-    server.login(user, pwd)
+    if len(sys.argv) > 1:
+        server.starttls()
+        server.login(user, pwd)
     server.sendmail(FROM, TO, message)
     server.close()
 
-send_email()
+send_email(['clark@countable.ca'], 'test mail', 'hello. this is the body.')
 

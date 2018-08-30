@@ -1,5 +1,5 @@
 #!/bin/bash
-docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
+docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d\-]//g")
 echo $docker_compose_id
 docker cp ${1:-db.sql} ${docker_compose_id}_db_1:/tmp/
 docker-compose stop

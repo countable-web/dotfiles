@@ -1,24 +1,9 @@
-[user]
-	name = Clark Van Oyen
-	email = clark@countable.ca
-[github]
-	user = countable
-	token = 9e43dbcf566292a2240a5b30255455f7
 [alias]
-        merges = git merge -s recursive -Xignore-space-change
-        st = status
-        co = checkout
-        ch = checkout
-        cm = commit
-	switch = !legit switch \"$@\"
-	branches = !legit branches
-	sprout = !legit sprout \"$@\"
-	unpublish = !legit unpublish \"$@\"
-	harvest = !legit harvest \"$@\"
-	sync = !legit sync \"$@\"
-	publish = !legit publish \"$@\"
-	graft = !legit graft \"$@\"
-
+  merges = git merge -s recursive -Xignore-space-change
+  st = status
+  co = checkout
+  ch = checkout
+  cm = commit
 [core]
 	excludesfile = /Users/clark/dotfiles/.gitignore
 	editor = vim
