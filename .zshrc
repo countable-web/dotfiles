@@ -25,7 +25,7 @@ function clone {
     if git clone git@bitbucket.org:countable-web/$1.git; then
         echo "ssh key worked."
     else
-        git clone https://countable@bitbucket.org/countable-web/countable-website.git
+        git clone https://countable@bitbucket.org/countable-web/$1.git
     fi
 }
 
