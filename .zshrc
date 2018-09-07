@@ -21,6 +21,14 @@ function fullpath {
     echo "$(hostname):$(readlink -f $1)"
 }
 
+function clone {
+    if git clone git@bitbucket.org:countable-web/$1.git; then
+        echo "ssh key worked."
+    else
+        git clone https://countable@bitbucket.org/countable-web/countable-website.git
+    fi
+}
+
 # Customize to your needs...
 export PATH=$HOME/dotfiles/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:.:$HOME/.local/bin
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
