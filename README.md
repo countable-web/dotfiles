@@ -4,8 +4,10 @@ This repo contains standard config and scripts used by Countable Web Productions
 
 ## Basic Installation
 
+From your home dir:
 ```
 sh -c "$(curl -sSL https://raw.githubusercontent.com/countable-web/dotfiles/master/install.sh)"
+./dotfiles/deploy/setup-core
 ```
 
 ### Git sync - does an add, commit, pull, push.
@@ -52,9 +54,11 @@ sudo vi /usr/share/terminator/terminatorlib/terminal.py
 
 search for on_buttonpress, and switch mouse indices
 
-## Servers
+## Docker
 
-TODO - deploy script for a docker host on Ubuntu.
+```
+./dotfiles/deploy/setup-docker
+```
 
 ### Easily find countable.ca web addresses.
 You may want to add - /etc/dhcp/dhclient.conf:append domain-name " countable.ca";

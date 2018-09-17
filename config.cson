@@ -6,12 +6,15 @@
       _analyticsUserId: "cb8f1375-c99f-4bbd-b25d-08e45440e674"
     html:
       disabled: true
+    jade:
+      disabled: true
     js:
       beautify_on_save: true
       indent_level: 2
-      wrap_line_length: 119
+      wrap_line_length: 199
     python:
       beautify_on_save: true
+      disabled: true
       max_line_length: 119
   core:
     audioBeep: false
@@ -34,7 +37,7 @@
       "templates"
     ]
   editor:
-    fontSize: 16
+    fontSize: 13
     invisibles:
       cr: "\\"
       lf: "\\n"
@@ -46,6 +49,7 @@
     showInvisibles: true
     softWrap: true
     tabLength: 4
+    tabType: "soft"
     zoomFontWhenCtrlScrolling: false
   "exception-reporting":
     userId: "cfa2a248-ca96-4f6f-a879-dd795c166149"
@@ -68,7 +72,7 @@
   "linter-js-standard":
     lintHtmlFiles: true
   "linter-ui-default":
-    panelHeight: 1349
+    panelHeight: 447.578125
     showProviderName: true
   "prettier-atom":
     formatOnSaveOptions:
@@ -79,10 +83,14 @@
   "python-autopep8":
     formatOnSave: true
     maxLineLength: 119
+  "python-black": {}
   "tree-view":
     hideIgnoredNames: true
     hideVcsIgnoredFiles: true
   welcome:
     showOnStartup: false
+".html.source":
+  editor:
+    tabLength: 2
 "linter-flake8":
   executablePath: "/home/clark/.env/bin/flake8"
