@@ -7,3 +7,5 @@ sudo swapon /swapfile
 sudo swapon --show
 free -h
 
+echo "Add this to /etc/fstab: '/swapfile none swap sw 0 0'"
+
