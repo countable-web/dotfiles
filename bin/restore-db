@@ -1,10 +1,63 @@
 #!/bin/bash
-docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d\-]//g")
-echo $docker_compose_id
-docker cp ${1:-db.sql} ${docker_compose_id}_db_1:/tmp/
-docker-compose stop
-docker-compose up -d db
-docker-compose exec db dropdb -U postgres postgres
-docker-compose exec db createdb -U postgres postgres
-docker-compose exec db psql -U postgres -f /tmp/${1:-db.sql} postgres
+
+set -euxo pipefail
+
+docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
+
+archive=$(aws s3 ls countable/backups/ | grep $docker_compose_id | sed "s/\\s*PRE\\s*//g")
+
+echo $archive
+
+numlines=$(echo $archive | wc -l)
+
+if [ $numlines != '1' ]
+then
+  echo 'more than one result: $archive'
+  exit 1
+fi
+
+month=$(aws s3 ls s3://countable/backups/$archive | tail -n 1)
+month_folder="${month##* }"
+
+latest=$(aws s3 ls s3://countable/backups/$archive$month_folder | tail -n 1)
+latest_item="${latest##* }"
+
+echo $latest_item
+
+full_path=s3://countable/backups/$archive$month_folder$latest_item
+
+echo "Found latest backup: $full_path"
+
+if [ -e $latest_item ]
+then
+  echo "File already downloaded."
+else
+  echo "Downloading..."
+  aws s3 cp $full_path ./
+fi
+
+
+extracted="${latest_item/.lrz/}"
+
+echo $extracted
+
+
+if [ -e $extracted ]
+then
+  echo "Already extracted."
+else
+  lrunzip $latest_item
+  if [[ $latest_item = *"tar"* ]]; then
+    tar xvf $latest_item
+  fi
+fi
+
+if [[ $latest_item = *"-dump."* ]]; then
+  archive_type="mongo"
+  mv tmp/* dump
+  restore-mongo dump
+else
+  archive_type="postgres"
+  restore-pg $extracted
+fi
 
