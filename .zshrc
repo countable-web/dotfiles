@@ -13,20 +13,26 @@ function pull {
 }
 
 function dx {
-    docker-compose exec $1 bash
+    remaining="${@:2}"
+    docker-compose exec $1 sh -c "${remaining:-bash}"
+}
+
+function fullpath {
+    echo "$(hostname):$(readlink -f $1)"
+}
+
+function clone {
+    if git clone git@bitbucket.org:countable-web/$1.git; then
+        echo "ssh key worked."
+    else
+        git clone https://countable@bitbucket.org/countable-web/$1.git
+    fi
 }
 
 # Customize to your needs...
 export PATH=$HOME/dotfiles/bin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:.:$HOME/.local/bin
-
-#fpath=($fpath $HOME/dotfiles/.zsh/functions)
-#typeset -U fpath
-#setopt promptsubst
-#autoload -U promptinit
-#promptinit
-#prompt wunjo
-
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+
 # for mac
 #export PATH=/Developer/usr/libexec/git-core/:$PATH
 
@@ -53,17 +59,19 @@ setopt hist_verify
 
 # Share your history across all your terminal windows
 setopt share_history
-#setopt noclobber
+setopt noclobber
 
 # set some more options
 setopt pushd_ignore_dups
-#setopt pushd_silent
+setopt pushd_silent
 
 # Keep a ton of history.
 HISTSIZE=100000
 SAVEHIST=100000
 HISTFILE=~/.zsh_history
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+setopt    appendhistory     #Append history to the history file (no overwriting)
+setopt    sharehistory      #Share history across terminals
 
 # Long running processes should return time after they complete. Specified
 # in seconds.
@@ -107,4 +115,11 @@ export LS_COLORS='di=1;34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;
 
 
 zgen load skx/sysadmin-util
+
+if [ -f  $HOME/.nvm/nvm.sh ]; then
+   source $HOME/.nvm/nvm.sh
+   nvm use stable
+fi
+
+
 

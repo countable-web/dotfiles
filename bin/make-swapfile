@@ -1,0 +1,11 @@
+#!/bin/bash
+
+sudo fallocate -l ${1:-4G} /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sudo swapon --show
+free -h
+
+echo "Add this to /etc/fstab: '/swapfile none swap sw 0 0'"
+

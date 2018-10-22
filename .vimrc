@@ -11,9 +11,9 @@ set nocindent
 set smartindent
 set autoindent
 set expandtab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 "set cinkeys=0{,0},:,0#,!,!^F
 
 set pastetoggle=<F3>
