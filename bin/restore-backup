@@ -1,15 +1,25 @@
 #!/bin/bash
 
-latest_backup=$(aws s3 ls s3://countable/backups/$1/ | tail -n 1 | rev | cut -d" " -f1 | rev)
+set -euxo
 
-if [[ "" = $latest_backup ]]
+folder=$(aws s3 ls s3://countable/backups/$1/ | tail -n 1 | rev | cut -d" " -f1 | rev)
+
+if [[ "" = $folder ]]
 then
-    echo "cant find any backups."
+    echo "cant find any folders."
     exit 1
-else
-    echo "latest backup is $latest_backup, downloading..."
 fi
 
-aws s3 cp s3://countable/backups/$1/$latest_backup ./
+latest_backup=$(aws s3 ls s3://countable/backups/$1/$folder | tail -n 1 | rev | cut -d" " -f1 | rev)
+
+aws s3 cp s3://countable/backups/$1/$folder$latest_backup ./
+
+lrunzip $latest_backup
+tarfile=$(echo $latest_backup | sed s/.lrz//g)
+
+echo $tarfile
+
+tar xvf $tarfile
+
 
 
