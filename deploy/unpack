@@ -9,9 +9,14 @@ touch .zshrc
 echo "source $HOME/dotfiles/.bashrc" >> .bashrc
 echo "source $HOME/dotfiles/.zshrc" >> .zshrc
 ln -s dotfiles/.vimrc
+<<<<<<< HEAD
+ln -s dotfiles/.gitconfig
+=======
 cp $HOME/dotfiles/.gitconfig $HOME/
 ln -s dotfiles/.gitignore
+>>>>>>> 971393b2ba58838898b7654d900d645360b3713c
 source .bashrc
+echo "source $HOME/dotfiles/.zshrc" >> .zshrc
 sudo chsh -s /bin/zsh $(whoami)
 echo "Done installing dotfiles."
 

@@ -12,7 +12,7 @@ def send_email(TO, SUBJECT, TEXT):
     else:
         server_name='smtp'
     FROM = "no-reply@bawkbox.com"
-
+    print('server is ', server_name)
     # Prepare actual message
     message = """From: %s\nTo: %s\nSubject: %s\n\n%s
     """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
