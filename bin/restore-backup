@@ -21,5 +21,10 @@ echo $tarfile
 
 tar xvf $tarfile
 
+target=$(ls tmp)
+mv tmp/$target dump
+rmdir tmp
 
+restore-mongo
+rm -r dump
 
