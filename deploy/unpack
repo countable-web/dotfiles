@@ -7,5 +7,6 @@ ln -s dotfiles/.vimrc
 ln -s dotfiles/.gitconfig
 source .bashrc
 echo "source $HOME/dotfiles/.zshrc" >> .zshrc
+sudo chsh -s /bin/zsh $(whoami)
 echo "Done installing dotfiles."
 
