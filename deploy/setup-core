@@ -5,6 +5,8 @@ sudo apt-get update
 sudo apt-get install -y zsh python-pip
 git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
 
+sudo groupadd dev
+sudo usermod -aG dev `whoami`
 # install aws cli
 pip install awscli --upgrade --user
 sudo apt-get install -y git vim curl lrzip iputils-ping
