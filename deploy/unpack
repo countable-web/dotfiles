@@ -8,14 +8,16 @@ touch .bashrc
 touch .zshrc
 echo "source $HOME/dotfiles/.bashrc" >> .bashrc
 echo "source $HOME/dotfiles/.zshrc" >> .zshrc
-ln -s dotfiles/.vimrc
+ln -sf dotfiles/.vimrc
 cp $HOME/dotfiles/.gitconfig $HOME/
-ln -s dotfiles/.gitignore
+ln -sf dotfiles/.gitignore
 
 source .bashrc
 echo "source $HOME/dotfiles/.zshrc" >> .zshrc
 sudo chsh -s /bin/zsh $(whoami)
 echo "Done installing dotfiles."
+
+ssh-keygen -f id_rsa -t rsa -N ''
 
 cp "dotfiles/.ssh/config" .ssh/config
 

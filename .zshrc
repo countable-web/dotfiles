@@ -122,4 +122,5 @@ if [ -f  $HOME/.nvm/nvm.sh ]; then
 fi
 
 
+source $HOME/dotfiles/bin/z.sh
 
