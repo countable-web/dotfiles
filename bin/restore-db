@@ -37,25 +37,22 @@ else
 fi
 
 
-extracted="${latest_item/.lrz/}"
+extracted="${latest_item/.tar.lrz/}"
 
 echo $extracted
 
 
-if [ -e $extracted ]
+if [ -d tmp/$extracted ]
 then
   echo "Already extracted."
 else
-  lrunzip $latest_item
-  if [[ $latest_item = *"tar"* ]]; then
-    tar xvf $latest_item
-  fi
+  echo "Extracting"
+  lrztar -d $latest_item
 fi
 
 if [[ $latest_item = *"-dump."* ]]; then
   archive_type="mongo"
-  mv tmp/* dump
-  restore-mongo dump
+  restore-mongo tmp/$extracted
 else
   archive_type="postgres"
   restore-pg $extracted
