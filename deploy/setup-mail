@@ -2,4 +2,4 @@
 sudo apt-get update
 sudo apt-get install ssmtp
 
-echo "add `mailhub=smtp.sendgrid.net:587 AuthUser=sendgridusername AuthPass=sendgridpassword UseSTARTTLS=YES` to /etc/ssmtp/ssmtp.conf"
+echo "add\n\nmailhub=smtp.sendgrid.net:587\nAuthUser=sendgridusername\nAuthPass=sendgridpassword\nUseSTARTTLS=YES\n\nto /etc/ssmtp/ssmtp.conf"

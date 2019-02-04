@@ -2,7 +2,7 @@
 
 ./setup-core
 
-sudo add-apt-repository ppa:webupd8team/atom
+#sudo add-apt-repository ppa:webupd8team/atom
 sudo add-apt-repository ppa:gnome-terminator
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
 sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
@@ -14,14 +14,14 @@ sudo apt-get install -y i3 xfe
 mkdir $HOME/.config/i3
 cd $HOME/.config/i3 && rm config && ln -s ../../dotfiles/.i3config config
 
-sudo apt-get install -y xbacklight atom google-chrome-stable terminator redshift nitrogen
+sudo apt-get install -y xbacklight google-chrome-stable terminator redshift nitrogen
 
-atom &
-sleep 5
+#atom &
+#sleep 5
 
-cd $HOME/.atom && rm config.cson && ln -s ../dotfiles/config.cson
-cd $HOME/.atom && ln -s ../dotfiles/styles.less
-load-atom-packages
+#cd $HOME/.atom && rm config.cson && ln -s ../dotfiles/config.cson
+#cd $HOME/.atom && ln -s ../dotfiles/styles.less
+#load-atom-packages
 
 cd $HOME && rmdir Desktop/ Documents Pictures Music Public Templates Videos
 

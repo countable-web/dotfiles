@@ -1,15 +1,26 @@
 #!/bin/bash
 
+set -euxo pipefail
+
 echo "Satchel is a repository filled with standard unix config and scripts for Countable Web Productions."
 cd $HOME
 touch .bashrc
 touch .zshrc
 echo "source $HOME/dotfiles/.bashrc" >> .bashrc
 echo "source $HOME/dotfiles/.zshrc" >> .zshrc
-ln -s dotfiles/.vimrc
+ln -sf dotfiles/.vimrc
 cp $HOME/dotfiles/.gitconfig $HOME/
-ln -s dotfiles/.gitignore
+ln -sf dotfiles/.gitignore
+
 source .bashrc
+echo "source $HOME/dotfiles/.zshrc" >> .zshrc
 sudo chsh -s /bin/zsh $(whoami)
 echo "Done installing dotfiles."
+
+ssh-keygen -f id_rsa -t rsa -N ''
+
+cp "dotfiles/.ssh/config" .ssh/config
+
+echo "setting passwordless sudo"
+sudo bash -c "echo \"$(whoami) ALL=(ALL:ALL) NOPASSWD: ALL\" > /etc/sudoers.d/$(whoami)"
 

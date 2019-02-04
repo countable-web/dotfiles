@@ -71,9 +71,12 @@ class SheetManager:
             for f in response.get('files', []):
                 # Process change
                 print('Found file: %s' % (f.get('name')))
-                if '2017' not in f.get('name'):
+                if '201' not in f.get('name'):
                     continue
-                self.export_sheet(f)
+                try:
+                    self.export_sheet(f)
+                except:
+                    print('cant export ', f)
             page_token = response.get('nextPageToken', None)
             if page_token is None:
                 break
@@ -130,8 +133,8 @@ def main():
     for up to 10 files.
     """
     manager = SheetManager()
-    # manager.download_timesheets("name contains 'timesheet-clark'")
-    manager.tally_timesheets()
+    manager.download_timesheets("name contains '-kmc-'")
+    #manager.tally_timesheets()
 
 
 if __name__ == '__main__':
