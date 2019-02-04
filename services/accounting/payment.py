@@ -52,7 +52,8 @@ class SheetManager:
 				if not os.path.exists(credential_dir):
 						os.makedirs(credential_dir)
 				credential_path = os.path.join(
-				    credential_dir, 'drive-python-quickstart.json')
+				    credential_dir, 'client_id.json')
+				    #credential_dir, 'drive-python-quickstart.json')
 
 				store = Storage(credential_path)
 				credentials = store.get()
@@ -72,7 +73,8 @@ class SheetManager:
 			sheets_store = file.Storage('token.json')
 			sheets_creds = sheets_store.get()
 			if not sheets_creds or sheets_creds.invalid:
-				flow = client.flow_from_clientsecrets('sheets_credentials.json', SCOPES)
+				flow = client.flow_from_clientsecrets('client_id.json', SCOPES)
+				#flow = client.flow_from_clientsecrets('sheets_credentials.json', SCOPES)
 				sheets_creds = tools.run_flow(flow, sheets_store)
 			service = discovery.build(
 			    'sheets', 'v4', http=sheets_creds.authorize(httplib2.Http()))

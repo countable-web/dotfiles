@@ -1,3 +1,5 @@
+services/accounting/token.json
+services/accounting/PAYMENTS.xlsx
 services/accounting/ENV
 services/accounting/tmp
 .DS_Store
