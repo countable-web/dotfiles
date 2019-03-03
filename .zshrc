@@ -124,3 +124,5 @@ fi
 
 source $HOME/dotfiles/bin/z.sh
 
+export AWS_DEFAULT_PROFILE=default
+

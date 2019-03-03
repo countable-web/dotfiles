@@ -5,6 +5,7 @@ import httplib2
 import os
 import io
 import csv
+import sys
 
 from apiclient import discovery
 from apiclient.http import MediaIoBaseDownload
@@ -61,7 +62,7 @@ class SheetManager:
             print('Storing credentials to ' + credential_path)
         return credentials
 
-    def download_timesheets(self, q):
+    def download_timesheets(self, q, subquery = '2018'):
         page_token = None
         while True:
             response = self.drive_service.files().list(q=q,
@@ -71,8 +72,6 @@ class SheetManager:
             for f in response.get('files', []):
                 # Process change
                 print('Found file: %s' % (f.get('name')))
-                if '201' not in f.get('name'):
-                    continue
                 try:
                     self.export_sheet(f)
                 except:
@@ -133,8 +132,8 @@ def main():
     for up to 10 files.
     """
     manager = SheetManager()
-    manager.download_timesheets("name contains '-kmc-'")
-    #manager.tally_timesheets()
+    #manager.download_timesheets("name contains '2018-timesheet'")
+    manager.tally_timesheets()
 
 
 if __name__ == '__main__':
