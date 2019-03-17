@@ -98,19 +98,16 @@ class SheetManager:
     def tally_timesheets(self):
         tally = {}
         for filename in os.listdir("tmp/"):
+            print(filename)
             with open("tmp/" + filename, 'r') as csvfile:
 
                 csvreader = csv.reader(csvfile)
 
-                # This skips the first row of the CSV file.
-                # csvreader.next() also works in Python 2.
-                next(csvreader)
-                next(csvreader)
-                next(csvreader)
-                next(csvreader)
-                next(csvreader)
-
+                row_idx = 0
                 for row in csvreader:
+                    row_idx += 1
+                    if row_idx < 6:
+                        continue
                     print(row)
                     if len(row) == 4:
                         amount = row[3]
