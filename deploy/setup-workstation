@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#sudo add-apt-repository ppa:webupd8team/atom
 sudo add-apt-repository ppa:gnome-terminator
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
 sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
@@ -22,7 +21,7 @@ sudo apt-get install -y apt-transport-https
 sudo apt-get update
 sudo apt-get install -y code # or code-insiders
 
-cd $HOME && rmdir Desktop/ Documents Pictures Music Public Templates Videos
+cd $HOME && rmdir Documents Pictures Music Public Templates Videos
 
 # performance - remove ubuntu junk
 sudo systemctl disable apparmor.service
