@@ -3,6 +3,6 @@
 set -euxo pipefail
 
 docker-compose exec db pg_dump -f /tmp/db.sql -U postgres postgres
-id=docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
-docker cp ${id}_db_1:/tmp/db.sql ./
+docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
+docker cp ${docker_compose_id}_db_1:/tmp/db.sql ./
 
