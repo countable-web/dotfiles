@@ -27,8 +27,6 @@ SCOPES = 'https://www.googleapis.com/auth/drive.readonly'
 CLIENT_SECRET_FILE = 'client_id.json'
 APPLICATION_NAME = 'Drive API Python Quickstart'
 
-CURRENT_MONTH = "JAN"
-
 
 class SheetManager:
     EMPLOYEE_RATES = {}
@@ -81,7 +79,7 @@ class SheetManager:
 
         SPREADSHEET_ID = '1ibMFHmCZiHBRfIsAfL7npyxhK32mxkkcTuvLLdfM0_A'
       # Update RANGE_NAME when number of employees change
-        RANGE_NAME = 'Rates!A3:B16'
+        RANGE_NAME = 'Rates!A3:B100'
         result = service.spreadsheets().values().get(spreadsheetId=SPREADSHEET_ID,
                                                      range=RANGE_NAME).execute()
         values = result.get('values', [])
@@ -126,82 +124,113 @@ class SheetManager:
             status, done = downloader.next_chunk()
             print("Download %d%%." % int(status.progress() * 100))
 
-    def tally_hours(self, months=[CURRENT_MONTH]):
+    def tally_hours(self, months=[
+        'JAN', 'FEB', 'MAR',
+        'APR', 'MAY', 'JUN',
+        'JUL', 'AUG', 'SEP',
+        'OCT', 'NOV', 'DEC'
+    ]):
         employees_data = {}
-        CURRENT_EMPLOYEES = [
-            'aaron-2019-timesheet.xlsx',
-            # 'adrian-2019-timesheet.xlsx',
-            'arielle-2019-timesheet.xlsx',
-            'chetanya-2019-timesheet.xlsx',
-            'clark-2019-timesheet.xlsx',
-            'denny-2019-timesheet.xlsx',
-            'felipe-2019-timesheet.xlsx',
-            'ferdinand-2019-timesheet.xlsx',
-            'gianlucci-2019-timesheet.xlsx',
-            # 'graeme-2019-timesheet.xlsx',
-            # 'joao-2019-timesheet.xlsx', -- image
-            # 'julie-2019-timesheet.xlsx', -- image
-            # 'steve-2019-timesheet.xlsx',
-            'tunjay-2019-timesheet.xlsx',
-            'valentina-2019-timesheet.xlsx',
-        ]
-        for filename in CURRENT_EMPLOYEES:
+
+        employee_files = []
+        for filename in os.listdir("tmp/"):
+            if filename.endswith(".xlsx"):
+                employee_files.append(filename)
+
+        output_book = Workbook()
+
+        for filename in employee_files:
             print(filename)
+            employee_name = filename.split("-")[0]
+            output_sheet = output_book.create_sheet(employee_name, 0)
+
             if not filename.startswith('.'):
-                employee_name = filename.split("-")[0]
 
                 wb = openpyxl.load_workbook("tmp/" + filename, data_only=True)
                 total = 0
-                for month in months:
-                    current_sheet = wb[month]
+                for month_idx, month in enumerate(months):
+                    try:
+                        current_sheet = wb[month]
+                    except KeyError:
+                        continue
+
+                    output_sheet.cell(month_idx + 2, 1).value = month
 
                     null_line = 0
-                    # projects = {}
+                    projects = {}
+                    start_row = 6
+                    date_col = 2
+                    project_col = 1
+                    if current_sheet.cell(5, 5).value == 'Hours Worked':
+                        hours_col = 5
+                    elif current_sheet.cell(18, 6).value == 'Hours Worked':
+                        hours_col = 6
+                        start_row = 19
+                        date_col = 1
+                        project_col = 2
+                    else:
+                        hours_col = 6
+                    for row in range(start_row, current_sheet.max_row):
+                        cellValue = current_sheet.cell(
+                            row, hours_col).value
+                        project_name = current_sheet.cell(
+                            row, project_col).value
+                        the_date = current_sheet.cell(row, date_col).value
 
-                    for row in range(6, current_sheet.max_row):
-                        cellValue = current_sheet.cell(row, 5).value
-                        # project_name = current_sheet.cell(row, 1).value
-                        if cellValue is None:
-                            null_line += 1
-                            if null_line == 2:
-                                break
-                        else:
+                        # if cellValue is None:
+                        #     null_line += 1
+                        #     if null_line == 2:
+                        #         break
+                        if not project_name:
+                            if the_date:
+                                print("**** no project name ****",
+                                      the_date, cellValue)
+                            continue
+                        elif the_date:
                             # if project_name not in projects:
-                            # projects[project_name] = 0
-
-                            # projects[project_name] += float(cellValue or '0')
+                            if project_name not in projects:
+                                projects[project_name] = 0
                             null_line = 0
-                            total += cellValue
+                            try:
+                                projects[project_name] += float(
+                                    cellValue or '0')
+                            except:
+                                print("*****", cellValue,
+                                      'was a bad cell value in', month)
+                    #print(row, 'rows')
+                    row_idx = 1
+                    for k, v in projects.items():
+                        row_idx += 1
+                        output_sheet.cell(1, row_idx).value = k
+                        output_sheet.cell(month_idx + 2, row_idx).value = v
 
-                    employees_data[employee_name] = {
-                        'hours': total,
-                        'wage': SheetManager.EMPLOYEE_RATES[employee_name],
-                        'payment': total * SheetManager.EMPLOYEE_RATES[employee_name]
-                    }
+                    print(month)
+        # employees_data[employee_name] = {
+        #     'hours': total,
+        #     'wage': SheetManager.EMPLOYEE_RATES[employee_name],
+        #     'payment': total * SheetManager.EMPLOYEE_RATES[employee_name]
+        # }
 
-        output_book = Workbook()
-        output_sheet = output_book.create_sheet("PAYMENT", 0)
-
-        output_data = [['Employee', 'Hours', 'Wage', 'Payment']]
-        for employee in iter(employees_data):
-            new_row = []
-            new_row.append(employee)
-            new_row.append(employees_data[employee]['hours'])
-            new_row.append(employees_data[employee]['wage'])
-            new_row.append(employees_data[employee]['payment'])
-            output_data.append(new_row)
-        for row in output_data:
-            rowIndex = output_data.index(row)
-            for col in range(len(output_data[0])):
-                output_sheet.cell(row=rowIndex + 1, column=col +
-                                  1).value = output_data[rowIndex][col]
+        # output_data = [['Employee', 'Hours', 'Wage', 'Payment']]
+        # for employee in iter(employees_data):
+        #     new_row = []
+        #     new_row.append(employee)
+        #     new_row.append(employees_data[employee]['hours'])
+        #     new_row.append(employees_data[employee]['wage'])
+        #     new_row.append(employees_data[employee]['payment'])
+        #     output_data.append(new_row)
+        # for row in output_data:
+        #     rowIndex = output_data.index(row)
+        #     for col in range(len(output_data[0])):
+        #         output_sheet.cell(row=rowIndex + 1, column=col +
+        #                             1).value = output_data[rowIndex][col]
 
         output_book.save(filename="PAYMENTS.xlsx")
 
 
 def main():
     manager = SheetManager()
-    manager.search_timesheets("name contains '2019-timesheet'")
+    #manager.search_timesheets("name contains '2018-timesheet'")
     manager.get_pay()
     manager.tally_hours()
 
