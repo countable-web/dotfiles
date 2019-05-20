@@ -37,9 +37,6 @@ else
 fi
 
 
-
-echo $extracted
-
 if [[ $latest_item == *".tar"* ]]; then
   echo "It's a TAR archive."
   extracted="${latest_item/.tar.lrz/}"

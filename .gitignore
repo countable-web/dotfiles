@@ -1,4 +1,5 @@
 services/accounting/token.json
+services/accounting/.vscode
 services/accounting/PAYMENTS.xlsx
 services/accounting/ENV
 services/accounting/tmp
