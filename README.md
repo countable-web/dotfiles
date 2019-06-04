@@ -15,6 +15,18 @@ then
 ./dotfiles/deploy/setup-core
 ```
 
+To install docker.
+
+```
+./dotfiles/deploy/setup-docker
+```
+
+To set up a workstation environment.
+
+```
+./dotfiles/deploy/setup-workstation
+```
+
 ### Git sync - does an add, commit, pull, push.
 ```
 gsync
