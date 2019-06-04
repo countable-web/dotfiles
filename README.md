@@ -9,12 +9,6 @@ From your home dir:
 sh -c "$(curl -sSL https://raw.githubusercontent.com/countable-web/dotfiles/master/install.sh)"
 ```
 
-then
-
-```
-./dotfiles/deploy/setup-core
-```
-
 To install docker.
 
 ```
