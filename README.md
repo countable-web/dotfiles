@@ -4,10 +4,26 @@ This repo contains standard config and scripts used by Countable Web Productions
 
 ## Basic Installation
 
+Install curl
+```
+sudo apt-get install curl
+```
+
 From your home dir:
 ```
 sh -c "$(curl -sSL https://raw.githubusercontent.com/countable-web/dotfiles/master/install.sh)"
-./dotfiles/deploy/setup-core
+```
+
+To install docker.
+
+```
+./dotfiles/deploy/setup-docker
+```
+
+To set up a workstation environment.
+
+```
+./dotfiles/deploy/setup-workstation
 ```
 
 ### Git sync - does an add, commit, pull, push.
