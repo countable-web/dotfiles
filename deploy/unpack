@@ -9,15 +9,18 @@ echo "This is a repository filled with standard unixy stuff for Countable Web Pr
 echo "This includes bootstrapping workstations and servers as Jenkins slaves."
 echo "If you're doing something repetitive on unix (Mac OS terminal or Linux) automate it, and save it in here!"
 
+appendifmissing() {
+    touch $2
+    grep -qxF '$1' $2 || echo '$1' >> $2
+}
+
 cd $HOME
 
 echo "Sourcing the dotfiles .bashrc..."
-touch .bashrc
-echo "source $HOME/dotfiles/.bashrc" >> .bashrc
+appendifmissing "source $HOME/dotfiles/.bashrc" $HOME/.bashrc
 
 echo "Sourcing the dotfiles .zshrc..."
-touch .zshrc
-echo "source $HOME/dotfiles/.zshrc" >> .zshrc
+appendifmissing "source $HOME/dotfiles/.zshrc" $HOME/.zshrc
 
 echo "Linking your .vimrc..."
 ln -sf dotfiles/.vimrc
