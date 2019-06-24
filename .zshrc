@@ -30,6 +30,10 @@ function dcp {
     dx $2
 }
 
+function dstop {
+    docker stop `docker ps -q`
+}
+
 function fullpath {
     echo "$(hostname):$(readlink -f $1)"
 }
