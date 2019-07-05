@@ -31,8 +31,9 @@ source .bashrc
 echo "source $HOME/dotfiles/.zshrc" >> .zshrc
 sudo chsh -s /bin/zsh $(whoami)
 echo "Done installing dotfiles."
-
-ssh-keygen -f id_rsa -t rsa -N ''
+mkdir -p $HOME/.ssh
+chmod 600 $HOME/.ssh
+ssh-keygen -f .ssh/id_rsa -t rsa -N ''
 
 cp "dotfiles/.ssh/config" .ssh/config
 
