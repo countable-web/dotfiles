@@ -1,9 +1,26 @@
 #!/bin/sh
 
-i3-msg "workspace 2; append_layout .i3/workspace-2.json"
+workspace=${1:-2}
 
-i3-msg 'workspace 2; exec /usr/bin/google-chrome-stable'
-i3-msg 'workspace 2; exec /usr/bin/atom'
-i3-msg 'workspace 2; exec /usr/bin/terminator'
-i3-msg 'workspace 2; exec /usr/bin/terminator'
-
+if [ -z "$workspace" ]
+  then
+    echo "no project selected."
+    i3-msg "workspace $workspace; append_layout .i3/workspace-2.json"
+    i3-msg "workspace $workspace; exec /usr/bin/google-chrome-stable"
+    i3-msg "workspace $workspace; exec /usr/bin/code"
+    i3-msg "workspace $workspace; exec /usr/bin/terminator"
+    i3-msg "workspace $workspace; exec /usr/bin/terminator"
+else
+    i3-msg "workspace $workspace; append_layout .i3/workspace-2.json"
+    i3-msg "workspace $workspace; exec /usr/bin/google-chrome-stable"
+    i3-msg "workspace $workspace; exec /usr/bin/google-chrome-stable --app http://bitbucket.org/countable-web/$workspace"
+    i3-msg "workspace $workspace; exec /usr/bin/google-chrome-stable --app https://trello.com/search?q=$workspace"
+    #TODO - open slack to the right client's channel.
+#    i3-msg "workspace $workspace; exec /usr/bin/google-chrome-stable --app https://countable-web.slack.com/app_redirect?channel=client-$client_slug"
+    i3-msg "workspace $workspace; exec \"/usr/bin/code $HOME/apps/$workspace\""
+    i3-msg "workspace $workspace; exec /usr/bin/terminator --working-directory=$HOME/apps/$workspace"
+    i3-msg "workspace $workspace; exec /usr/bin/terminator --working-directory=$HOME/apps/$workspace -e \"docker-compose up\""
+    
+    sleep 2
+    i3-msg "workspace $workspace; exec /usr/bin/google-chrome-stable --app http://localhost"
+fi

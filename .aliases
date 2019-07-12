@@ -3,12 +3,22 @@
 alias wstrip="sed 's/[\n ]//g'"
 alias fiddle="sudo tcpdump -s 1024 -l -A dst"
 alias detach-monitor="xrandr --output DP1 --off"
-alias save-atom-packages="apm list --installed --bare > ~/dotfiles/atom-package.list"
-alias load-atom-packages="apm install --packages-file ~/dotfiles/atom-package.list"
 
 alias d="docker-compose"
 alias dl="docker-compose logs --tail=0 -f"
 alias ls="ls --color=auto"
-alias dj="docker-compose exec django python manage.py"
-alias ai="sudo apt-get update && sudo apt-get install $@"
+alias ai="sudo apt-get update && sudo apt-get install -y $@"
+# better git diff.
+alias gdiff="git diff --word-diff -w"
+# recap on work done lately
+alias recap="git log --all --oneline --no-merges --author=clark@countable.ca"
+# what have i done today?
+alias todayswork="git log --since=00:00:00 --all --no-merges --oneline --author=clark@countable.ca"
+# make a changelog
+alias changelog="git log --oneline --no-merges <last tag>..HEAD"
+# analyze complicated logs
+alias forensic="git log --graph --all --decorate --stat --date=iso"
+# remove alread-merged remote branches
+alias git_cleanup_remote="git fetch --all && git remote prune origin && git branch -r --merged | grep -v master | grep -v develop | sed 's/origin\///' | xargs -n 1 git push --delete origin"
 
+alias hubstaff="/home/clark/Hubstaff/HubstaffClient.bin.x86_64"
