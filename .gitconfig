@@ -19,3 +19,6 @@
 	clean = git-lfs clean %f
 [credential]
 	helper = cache
+[user]
+	email = you@example.com
+	name = Your Name
