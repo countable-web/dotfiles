@@ -19,6 +19,10 @@ function pull {
     git pull origin $(git branch | grep "\*" | sed "s/\* //g")
 }
 
+function fetch {
+    get fetch --all
+}
+
 function dx {
     remaining="${@:2}"
     docker-compose exec $1 sh -c "${remaining:-bash -c \"stty cols $COLUMNS rows $LINES && bash\"}"
