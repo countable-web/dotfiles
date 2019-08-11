@@ -2,12 +2,27 @@
 
 set -euxo pipefail
 
-echo "Satchel is a repository filled with standard unix config and scripts for Countable Web Productions."
+echo "************************************************************************************"
+echo "Welcome to the Countable dotfiles!"
+echo ""
+echo "This is a repository filled with standard unixy stuff for Countable Web Productions."
+echo "This includes bootstrapping workstations and servers as Jenkins slaves."
+echo "If you're doing something repetitive on unix (Mac OS terminal or Linux) automate it, and save it in here!"
+
+appendifmissing() {
+    touch $2
+    grep -qxF '$1' $2 || echo '$1' >> $2
+}
+
 cd $HOME
-touch .bashrc
-touch .zshrc
-echo "source $HOME/dotfiles/.bashrc" >> .bashrc
-echo "source $HOME/dotfiles/.zshrc" >> .zshrc
+
+echo "Sourcing the dotfiles .bashrc..."
+appendifmissing "source $HOME/dotfiles/.bashrc" $HOME/.bashrc
+
+echo "Sourcing the dotfiles .zshrc..."
+appendifmissing "source $HOME/dotfiles/.zshrc" $HOME/.zshrc
+
+echo "Linking your .vimrc..."
 ln -sf dotfiles/.vimrc
 cp $HOME/dotfiles/.gitconfig $HOME/
 ln -sf dotfiles/.gitignore
@@ -16,8 +31,9 @@ source .bashrc
 echo "source $HOME/dotfiles/.zshrc" >> .zshrc
 sudo chsh -s /bin/zsh $(whoami)
 echo "Done installing dotfiles."
-
-ssh-keygen -f id_rsa -t rsa -N ''
+mkdir -p $HOME/.ssh
+chmod 700 $HOME/.ssh
+ssh-keygen -f $HOME/.ssh/id_rsa -t rsa -N ''
 
 cp "dotfiles/.ssh/config" .ssh/config
 

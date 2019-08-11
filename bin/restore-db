@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+#set -euxo pipefail
 
 docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
 

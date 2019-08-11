@@ -4,10 +4,26 @@ This repo contains standard config and scripts used by Countable Web Productions
 
 ## Basic Installation
 
+Install curl
+```
+sudo apt-get install curl
+```
+
 From your home dir:
 ```
 sh -c "$(curl -sSL https://raw.githubusercontent.com/countable-web/dotfiles/master/install.sh)"
-./dotfiles/deploy/setup-core
+```
+
+To install docker.
+
+```
+./dotfiles/deploy/setup-docker
+```
+
+To set up a workstation environment.
+
+```
+./dotfiles/deploy/setup-workstation
 ```
 
 ### Git sync - does an add, commit, pull, push.
@@ -25,19 +41,6 @@ perm
 ```
 _warning_ : This script is recursive, so don't run it in the root directory or anywhere else ridiculous. Use it in your project folders only.
 
-## Disable sudo password checking
-This is probably doesn't belong here but my god sudo timeouts are annoying.
-```
-sudo visudo
-```
-
-Find this line:
-```
-%sudo ALL=(ALL) ALL
-```
-Change to:
-```
-%sudo ALL=(ALL) NOPASSWD: ALL
 ```
 
 ## Workstations

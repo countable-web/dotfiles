@@ -21,3 +21,4 @@ alias forensic="git log --graph --all --decorate --stat --date=iso"
 # remove alread-merged remote branches
 alias git_cleanup_remote="git fetch --all && git remote prune origin && git branch -r --merged | grep -v master | grep -v develop | sed 's/origin\///' | xargs -n 1 git push --delete origin"
 
+alias hubstaff="/home/clark/Hubstaff/HubstaffClient.bin.x86_64"

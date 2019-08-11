@@ -1,6 +1,15 @@
-#!/bin/sh
+#!/bin/bash
+
+# prevent people running this command in root dirs.
+var=$(pwd)
+res="${var//[^\/]}"
+slashcount="${#res}"
+if [[ $slashcount -lt "2" ]]; then
+    echo "you are too close to the root!"
+    exit 1
+fi
 
 sudo chgrp -R dev .
 sudo chmod g+rw -R .
-find . -type d | sudo xargs chmod g+s
+find . -type d | sudo xargs -d '\n' chmod g+s
 
