@@ -11,25 +11,48 @@ cd
 sh -c "$(curl -sSL https://raw.githubusercontent.com/countable-web/dotfiles/master/install.sh)"
 ```
 
-To install docker.
+This will do the following to your machine:
+  * Change your default shell to zsh.
+  * Install the zgen package manager for zsh, which lets you add shell utilities.
+  * Sets up much better autocompletion than the default.
+  * Create a local ssh key for you machine.
+  * Prevent `sudo` asking your password.
+  * Allow GIT to store your credentials in memory temporarily, to avoid needing to enter passwords multiple times per session.
+  * Installs several convenient scripts, see below.
 
+## Extra Steps
+
+To install docker.
 ```
 ./dotfiles/deploy/setup-docker
 ```
 
-To set up a workstation environment.
+## Scripts
+These dotfiles come bundled with several useful scripts.
 
-```
-./dotfiles/deploy/setup-workstation
-```
+### dump-pg
+Dumps a postgres database (within docker-compose as nearly all our projects use), to `./db.sql`. _warning_ : Don't commit this sql file into GIT!
 
-### Git sync - does an add, commit, pull, push.
-```
-gsync
-```
+### restore-pg [sql file]
+Restores an sql file into a dockerized postgres databse (as nearly all our projects use)
+
+### dump-mongo
+Same as above, but for mongo
+
+### restore-mongo
+Same as above but for mongo
+
+### restore-db
+If you have `awscli` set up, this will download the latest production database for your project and try to install it locally.
+
+### cryptsend <file>
+Sends a file to an encrypted cloud link you can download or share.
+
+### gsync
+Git sync - does an add, commit, pull, push from your repo folder.
 _warning_ : Run `git status` first, and ensure you're not adding any files you don't want. Add those to your `.gitignore` file or delete them before running `gsync`
 
-### Fix Permissions
+### perm
 _warning_ : This script is recursive, so don't run it in the root directory or anywhere else ridiculous. Use it in your project folders only.
 
 On any shared machine, Countable uses open group permissions for the "dev" group, which all users belong to. The setup script should create this group and add you to it. Once done, there's a catchall command for setting permissions so anyone in our group has full access. This is nearly always what we want, in order to be both simple and relatively secure.
@@ -37,6 +60,8 @@ On any shared machine, Countable uses open group permissions for the "dev" group
 cd <directory with permission issue>
 perm
 ```
+
+# Tweaks
 
 ### Terminator Right Click to Paste
 This is a suggested tweak for the terminal program. Probably only Clark cares about it.
