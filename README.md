@@ -61,6 +61,11 @@ cd <directory with permission issue>
 perm
 ```
 
+### Docker Aliases
+  * `d` is aliased to `docker-compose`
+  * `dx` is aliased to `docker-compose exec` and includes some terminal width fixes.
+  * `dl` is allaseed to `docker-compose logs -f --tail=1000`, ie `dl web` to start tailing web logs.
+
 # Tweaks
 
 ### Terminator Right Click to Paste
