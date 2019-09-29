@@ -2,6 +2,13 @@
 autoload -U colors && colors
 PS1="%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[cyan]%}%m:%{$fg[yellow]%}%~ %{$reset_color%}%% "
 
+function dcid {
+    echo $(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
+}
+
+#function goinside {
+#    docker exec -it $1 bash -c "stty cols $COLUMNS rows $LINES && bash";
+#}
 
 function push {
     git push origin $(git branch | grep "\*" | sed "s/\* //g")
@@ -12,9 +19,23 @@ function pull {
     git pull origin $(git branch | grep "\*" | sed "s/\* //g")
 }
 
+function fetch {
+    get fetch --all
+}
+
 function dx {
     remaining="${@:2}"
-    docker-compose exec $1 sh -c "${remaining:-bash}"
+    docker-compose exec $1 sh -c "${remaining:-bash -c \"stty cols $COLUMNS rows $LINES && bash\"}"
+}
+
+function dcp {
+    id=$(dcid)
+    docker cp $1 ${id}_${2}_1:/tmp/
+    dx $2
+}
+
+function dstop {
+    docker stop `docker ps -q`
 }
 
 function fullpath {
@@ -23,7 +44,7 @@ function fullpath {
 
 function clone {
     if git clone git@bitbucket.org:countable-web/$1.git; then
-        echo "ssh key worked."
+        echo "found it on github."
     else
         git clone https://countable@bitbucket.org/countable-web/$1.git
     fi
@@ -122,4 +143,7 @@ if [ -f  $HOME/.nvm/nvm.sh ]; then
 fi
 
 
+source $HOME/dotfiles/bin/z.sh
+
+export AWS_DEFAULT_PROFILE=default
 

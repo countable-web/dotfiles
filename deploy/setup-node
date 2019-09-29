@@ -12,8 +12,8 @@ fi
 
 sudo apt-get install curl g++ libssl-dev
 
-git clone https://github.com/creationix/nvm.git .nvm
-. ~/.nvm/nvm.sh
+git clone https://github.com/creationix/nvm.git $HOME/.nvm
+. $HOME/.nvm/nvm.sh
 
 nvm install $1
 nvm use $1

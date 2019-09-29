@@ -6,9 +6,9 @@ set -euxo pipefail
 
 filename=${1:-dump}
 
-docker cp $filename ${docker_compose_id}_db_1:/tmp/
+docker-compose exec db rm -fr /tmp/dump
+docker cp $filename ${docker_compose_id}_db_1:/tmp/dump
 docker-compose stop
 docker-compose up -d db
-docker-compose exec db mongo db --eval "db.dropDatabase()"
-docker-compose exec db bash -c "cd /tmp && mongorestore" 
+docker-compose exec db bash -c "cd /tmp && mongorestore --drop" 
 

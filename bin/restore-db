@@ -1,10 +1,12 @@
 #!/bin/bash
 
-set -euxo pipefail
+#set -euxo pipefail
 
 docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
 
-archive=$(aws s3 ls countable/backups/ | grep $docker_compose_id | sed "s/\\s*PRE\\s*//g")
+site=${1:-$docker_compose_id}
+
+archive=$(aws s3 ls countable/backups/ | grep $site | sed "s/\\s*PRE\\s*//g")
 
 echo $archive
 
@@ -36,28 +38,28 @@ else
   aws s3 cp $full_path ./
 fi
 
-
-extracted="${latest_item/.lrz/}"
-
-echo $extracted
-
-
-if [ -e $extracted ]
-then
-  echo "Already extracted."
-else
-  lrunzip $latest_item
-  if [[ $latest_item = *"tar"* ]]; then
-    tar xvf $latest_item
+if [[ $latest_item == *".tar"* ]]; then
+  echo "It's a TAR archive."
+  extracted="${latest_item/.tar.lrz/}"
+  if [ -d tmp/$extracted ]
+  then
+    echo "Already extracted."
+  else
+    echo "Extracting"
+    lrztar -d $latest_item
   fi
-fi
 
-if [[ $latest_item = *"-dump."* ]]; then
-  archive_type="mongo"
-  mv tmp/* dump
-  restore-mongo dump
+  restore-mongo tmp/$extracted
 else
-  archive_type="postgres"
+
+  extracted="${latest_item/.lrz/}"
+  if [ -d $extracted ]
+  then
+    echo "Already extracted sql previously."
+  else
+    echo "Extracting sql"
+    lrzip -d $latest_item
+  fi
   restore-pg $extracted
 fi
 
