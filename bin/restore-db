@@ -4,7 +4,9 @@
 
 docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
 
-archive=$(aws s3 ls countable/backups/ | grep $docker_compose_id | sed "s/\\s*PRE\\s*//g")
+site=${1:-$docker_compose_id}
+
+archive=$(aws s3 ls countable/backups/ | grep $site | sed "s/\\s*PRE\\s*//g")
 
 echo $archive
 
@@ -35,7 +37,6 @@ else
   echo "Downloading..."
   aws s3 cp $full_path ./
 fi
-
 
 if [[ $latest_item == *".tar"* ]]; then
   echo "It's a TAR archive."
