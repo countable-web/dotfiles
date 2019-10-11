@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Killing redshift if it exists, as it will affect custom brightness settings."
+pkill -f redshift
+
 MON=$( xrandr | grep "connected primary" | awk '{print $1;}' )
 STEP=5          # Step Up/Down brightnes by: 5 = ".05", 10 = ".10", etc.
 

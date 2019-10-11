@@ -6,9 +6,9 @@ function dcid {
     echo $(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
 }
 
-#function goinside {
-#    docker exec -it $1 bash -c "stty cols $COLUMNS rows $LINES && bash";
-#}
+function gpuoff {
+    echo "auto" | sudo tee /sys/bus/pci/devices/0000:01:00.0/power/control
+}
 
 function push {
     git push origin $(git branch | grep "\*" | sed "s/\* //g")
