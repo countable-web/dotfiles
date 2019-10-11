@@ -2,7 +2,7 @@
 
 site=$1
 filename=$site-dump.$(date +%Y%m%d-%H%M%S)
-aws=/home/clark/.local/bin/aws
+aws=$HOME/.local/bin/aws
 folder=$(date +%Y%m)
 
 docker exec -t ${site}_db_1 rm -rf /dump

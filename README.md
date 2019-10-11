@@ -2,9 +2,9 @@
 
 Linux utilities for Countable Web Productions: Bootstrap servers and workstations, manage dev environment databases, and automate rote tasks.
 
-## Basic Installation
+## Basic Installation (Generic Linux Workstation)
 
-Install curl
+Install curl, then run the automated installer.
 ```
 sudo apt-get install curl
 cd
@@ -19,6 +19,13 @@ This will do the following to your machine:
   * Prevent `sudo` asking your password.
   * Allow GIT to store your credentials in memory temporarily, to avoid needing to enter passwords multiple times per session.
   * Installs several convenient scripts, see below.
+
+## Jenkins Slave Node Installation
+To do set up a server as a jenkins slave on a remote node, do this instead where `node-direct.countable.ca` is the new node's DNS.
+```
+ssh node-direct.countable.ca \ 
+  "$(curl -sSL https://raw.githubusercontent.com/countable-web/dotfiles/master/install-slave.sh)"
+```
 
 ## Extra Steps
 
