@@ -33,7 +33,13 @@ sudo chsh -s /bin/zsh $(whoami)
 echo "Done installing dotfiles."
 mkdir -p $HOME/.ssh
 chmod 700 $HOME/.ssh
-ssh-keygen -f $HOME/.ssh/id_rsa -t rsa -N ''
+
+key=$HOME/.ssh/id_rsa
+if test -f "$key"; then
+  echo "ssh key already exists."
+else
+  ssh-keygen -f $key -t rsa -N ''
+fi
 
 cp "dotfiles/.ssh/config" .ssh/config
 
