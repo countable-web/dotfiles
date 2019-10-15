@@ -13,3 +13,5 @@ sudo usermod -aG dev `whoami`
 pip install awscli --upgrade --user
 sudo apt-get install -y git vim curl lrzip iputils-ping
 
+$HOME/dotfiles/deploy/setup-node
+

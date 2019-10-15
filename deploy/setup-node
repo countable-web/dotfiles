@@ -10,15 +10,19 @@ then
   exit $E_BADARGS
 fi
 
-sudo apt-get install curl g++ libssl-dev
+sudo apt-get install -y curl g++ libssl-dev
 
 git clone https://github.com/creationix/nvm.git $HOME/.nvm
 . $HOME/.nvm/nvm.sh
 
-nvm install $1
-nvm use $1
+VER=${1:-v10}
+nvm install $VER
+nvm use $VER
 
 echo ". $HOME/.nvm/nvm.sh" >> $HOME/.bashrc
-echo "nvm use $1" >> $HOME/.bashrc
+echo "nvm use $VER" >> $HOME/.bashrc
 
 source $HOME/.bashrc
+
+npm i -g cryptsend-cli
+
