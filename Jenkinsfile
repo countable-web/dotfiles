@@ -2,7 +2,9 @@ pipeline {
     agent { label 'bool.countable.ca' }
     stages {
         stage('Clone repository') {
-            checkout scm
+            steps {
+                checkout scm
+            }
         }
         stage('Build') {
             steps {
