@@ -1,0 +1,17 @@
+#!/bin/bash
+
+sudo adduser --disabled-password --gecos "" $1
+sudo usermod -aG docker $1
+sudo usermod -aG dev $1
+
+# create SSH folder.
+SSH_DIR=/home/$1
+sudo mkdir -p $SSH_DIR
+sudo touch $SSH_DIR/authorized_keys
+sudo chown -R $1 $SSH_DIR
+chmod 700 $SSH_DIR
+chmod 644 $SSH_DIR/authorized_keys
+
+# TODO: get this working. Download the person's key if it exists on a known server.
+# curl countable.ca/pubkeys/$1.pub >> ~/.ssh/authorized_keys
+
