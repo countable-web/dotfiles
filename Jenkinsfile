@@ -11,8 +11,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
-                ./ci.sh
+                sh './ci.sh'
             }
         }
         stage('Deploy') {
