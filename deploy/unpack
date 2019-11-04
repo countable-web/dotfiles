@@ -29,7 +29,11 @@ echo "Copying gitconfig..."
 cp $HOME/dotfiles/.gitconfig $HOME/
 ln -sf dotfiles/.gitignore
 
-git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+if test -d "${HOME}/.zgen"; then
+  echo "zgen already here."
+else
+  git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+fi
 
 echo "Setting up .ssh directory..."
 mkdir -p $HOME/.ssh
