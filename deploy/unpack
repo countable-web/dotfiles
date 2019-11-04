@@ -44,10 +44,6 @@ fi
 
 cp "dotfiles/.ssh/config" .ssh/config
 
-echo "Adding you to default groups..."
-sudo groupadd dev
-sudo usermod -aG dev `whoami`
-
 echo "Installing awd cli locally..."
 pip install awscli --upgrade --user
 
