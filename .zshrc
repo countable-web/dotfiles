@@ -3,7 +3,7 @@ autoload -U colors && colors
 PS1="%{$fg[cyan]%}%n%{$reset_color%}@%{$fg[cyan]%}%m:%{$fg[yellow]%}%~ %{$reset_color%}%% "
 
 function dcid {
-    echo $(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
+    echo $(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d_]//g")
 }
 
 #function goinside {

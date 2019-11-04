@@ -2,7 +2,7 @@
 
 set -euxo pipefail
 
-docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d]//g")
+docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d_]//g")
 
 filename=${1:-db.sql}
 
