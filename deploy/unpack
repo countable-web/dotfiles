@@ -29,11 +29,6 @@ echo "Copying gitconfig..."
 cp $HOME/dotfiles/.gitconfig $HOME/
 ln -sf dotfiles/.gitignore
 
-echo "Setting passwordless sudo..."
-sudo bash -c "echo \"$(whoami) ALL=(ALL:ALL) NOPASSWD: ALL\" > /etc/sudoers.d/$(whoami)"
-
-echo "Changing default shell to zsh..."
-sudo chsh -s /bin/zsh $(whoami)
 git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
 
 echo "Setting up .ssh directory..."

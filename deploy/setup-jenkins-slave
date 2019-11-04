@@ -2,6 +2,11 @@
 
 sudo adduser --disabled-password --gecos "" jenkins
 sudo usermod -aG docker jenkins
+sudo chsh jenkins --shell /bin/zsh
 sudo apt-get update
 sudo apt-get install -y default-jre
+
+sudo -H -u jenkins bash -c 'echo "I am $USER, with uid $UID"'
+sudo -H -u jenkins bash -c 'cd && git clone https://github.com/countable-web/dotfiles.git'
+sudo -H -u jenkins bash -c 'cd && ./dotfiles/deploy/unpack'
 
