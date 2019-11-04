@@ -2,11 +2,9 @@
 
 set -euxo pipefail
 
-docker_compose_id=$(pwd | grep -oh "[^/]*$" | sed "s/[^a-z\d_]//g")
-
 filename=${1:-db.sql}
 
-docker cp $filename ${docker_compose_id}_db_1:/tmp/
+docker cp $filename "$(docker-compose ps -q db)":/tmp/
 docker-compose stop
 docker-compose up -d db
 docker-compose exec db dropdb -U postgres postgres

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -exo pipefail
 
 echo "************************************************************************************"
 echo "Welcome to the Countable dotfiles!"
@@ -11,7 +11,7 @@ echo "If you're doing something repetitive on unix (Mac OS terminal or Linux) au
 
 appendifmissing() {
     touch $2
-    grep -qxF '$1' $2 || echo '$1' >> $2
+    grep -qxF "$1" $2 || echo "$1" >> $2
 }
 
 cd $HOME
@@ -24,19 +24,37 @@ appendifmissing "source $HOME/dotfiles/.zshrc" $HOME/.zshrc
 
 echo "Linking your .vimrc..."
 ln -sf dotfiles/.vimrc
+
+echo "Copying gitconfig..."
 cp $HOME/dotfiles/.gitconfig $HOME/
 ln -sf dotfiles/.gitignore
 
-source .bashrc
-echo "source $HOME/dotfiles/.zshrc" >> .zshrc
+echo "Setting passwordless sudo..."
+sudo bash -c "echo \"$(whoami) ALL=(ALL:ALL) NOPASSWD: ALL\" > /etc/sudoers.d/$(whoami)"
+
+echo "Changing default shell to zsh..."
 sudo chsh -s /bin/zsh $(whoami)
-echo "Done installing dotfiles."
+git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+
+echo "Setting up .ssh directory..."
 mkdir -p $HOME/.ssh
 chmod 700 $HOME/.ssh
-ssh-keygen -f $HOME/.ssh/id_rsa -t rsa -N ''
+
+key=$HOME/.ssh/id_rsa
+if test -f "$key"; then
+  echo "ssh key already exists."
+else
+  ssh-keygen -f $key -t rsa -N ''
+fi
 
 cp "dotfiles/.ssh/config" .ssh/config
 
-echo "setting passwordless sudo"
-sudo bash -c "echo \"$(whoami) ALL=(ALL:ALL) NOPASSWD: ALL\" > /etc/sudoers.d/$(whoami)"
+echo "Adding you to default groups..."
+sudo groupadd dev
+sudo usermod -aG dev `whoami`
+
+echo "Installing awd cli locally..."
+pip install awscli --upgrade --user
+
+echo "Done installing dotfiles."
 
