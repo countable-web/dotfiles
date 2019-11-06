@@ -11,6 +11,13 @@ cd
 sh -c "$(curl -sSL https://raw.githubusercontent.com/countable-web/dotfiles/master/install.sh)"
 ```
 
+To update in the future you can do:
+```
+cd $HOME/dotfiles
+git pull origin master
+zsh
+```
+
 This will do the following to your machine:
   * Change your default shell to zsh.
   * Install the zgen package manager for zsh, which lets you add shell utilities.
