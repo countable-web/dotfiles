@@ -2,6 +2,8 @@
 
 set -xo
 
+cd $HOME
+
 sudo easy_install pip
 #sudo pip install ansible
 
