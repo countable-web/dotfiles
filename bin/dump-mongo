@@ -1,7 +1,7 @@
 #!/bin/bash
 
 docker-compose exec db mongodump --out /tmp/dump
-site=$(basename $(pwd) | sed s/\-//g)
+site=$(basename $(pwd))
 rm -rf /tmp/dump
 docker cp ${site}_db_1:/tmp/dump /tmp/dump
 rm -f /tmp/dump/tar.bz2
