@@ -114,6 +114,10 @@ bindkey " " globalias
 bindkey "^ " magic-space           # control-space to bypass completion
 bindkey -M isearch " " magic-space # normal space during searches
 
+# shift + left/right arrow key to move cursor by a word
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
 # for mac
 #export GIT_EXEC_PATH=/opt/local/libexec/git-core
 
