@@ -34,8 +34,7 @@ This will do the following to your machine:
 ## Jenkins Slave Node Installation
 To do set up a server as a jenkins slave on a remote node, do this instead where `node-direct.countable.ca` is the new node's DNS.
 ```
-ssh node-direct.countable.ca \ 
-  "$(curl -sSL https://raw.githubusercontent.com/countable-web/dotfiles/master/install-slave.sh)"
+./dotfiles/deploy/setup-jenkins-slave
 ```
 
 ## Extra Steps
