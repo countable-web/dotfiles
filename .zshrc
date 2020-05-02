@@ -147,7 +147,8 @@ if [ -f  $HOME/.nvm/nvm.sh ]; then
 fi
 
 
-source $HOME/dotfiles/bin/z.sh
+# This is disabled for now as it causes permission errors.
+#source $HOME/dotfiles/bin/z.sh
 
 export AWS_DEFAULT_PROFILE=default
 
