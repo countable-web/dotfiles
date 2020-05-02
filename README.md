@@ -2,6 +2,8 @@
 
 Linux utilities for Countable Web Productions: Bootstrap servers and workstations, manage dev environment databases, and automate rote tasks.
 
+Dotfiles are meant to go in the home directory of Linux/Unix machines you use. There is a guide on this pattern [here from GitHub](https://dotfiles.github.io/bootstrap/).
+
 ## Basic Installation (Generic Linux Workstation)
 
 Install curl, then run the automated installer.
