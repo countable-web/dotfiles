@@ -31,5 +31,5 @@ def send_email(TO, SUBJECT, TEXT):
     server.sendmail(FROM, TO, message)
     server.close()
 
-send_email(['clark@countable.ca'], 'test mail', 'hello. this is the body.')
+send_email(['adam@silverlightfilm.com'], 'test mail', 'hello. this is the body.')
 

@@ -1,0 +1,9 @@
+git checkout master
+
+featurename=$(echo "$@" | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z)
+
+echo $featurename
+
+git checkout -b "hotfix/$featurename"
+
+
