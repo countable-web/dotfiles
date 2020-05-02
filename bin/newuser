@@ -5,13 +5,23 @@ sudo usermod -aG docker $1
 sudo usermod -aG dev $1
 
 # create SSH folder.
-SSH_DIR=/home/$1
+SSH_DIR=/home/$1/.ssh
 sudo mkdir -p $SSH_DIR
 sudo touch $SSH_DIR/authorized_keys
 sudo chown -R $1 $SSH_DIR
 chmod 700 $SSH_DIR
 chmod 644 $SSH_DIR/authorized_keys
 
-# TODO: get this working. Download the person's key if it exists on a known server.
-# curl countable.ca/pubkeys/$1.pub >> ~/.ssh/authorized_keys
+echo "updating dotfiles for latest pubkeys"
+cd $HOME/dotfiles
+git pull origin master
+cd
+
+if [ -f "dotfiles/pubkeys/$1.pub" ]; then
+    echo "adding pub key from dotfiles."
+    cat "dotfiles/pubkeys/$1.pub" >> $SSH_DIR/authorized_keys
+    echo "\n" >> $SSH_DIR/authorized_keys
+else
+    echo "pub key not found in dotfiles, not adding."
+fi
 
