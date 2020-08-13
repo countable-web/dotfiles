@@ -1,0 +1,12 @@
+#!/bin/bash
+
+git branch -r --merged |
+grep origin |
+grep -v '>' |
+grep -v master |
+grep -v develop |
+grep -v release |
+xargs -L1 |
+cut -d"/" -f2- |
+xargs git push origin --delete
+

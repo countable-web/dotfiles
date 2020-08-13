@@ -62,9 +62,9 @@ source $HOME/dotfiles/.aliases
 
 
 # start zgen
-if [ -f ~/.zgen-setup ]; then
-  source ~/.zgen-setup
-fi
+#if [ -f ~/.zgen-setup ]; then
+#  source ~/.zgen-setup
+#fi
 # end zgen
 
 # set some history options
@@ -122,29 +122,29 @@ bindkey "^[[1;5D" backward-word
 #export GIT_EXEC_PATH=/opt/local/libexec/git-core
 
 # zgen zsh plugins
-source "${HOME}/.zgen/zgen.zsh"
-zgen load zsh-users/zsh-syntax-highlighting
-zgen load zsh-users/zsh-history-substring-search
+#source "${HOME}/.zgen/zgen.zsh"
+#zgen load zsh-users/zsh-syntax-highlighting
+#zgen load zsh-users/zsh-history-substring-search
 
 # Set keystrokes for substring searching
-zmodload zsh/terminfo
-bindkey "$terminfo[kcuu1]" history-substring-search-up
-bindkey "$terminfo[kcud1]" history-substring-search-down
+#zmodload zsh/terminfo
+#bindkey "$terminfo[kcuu1]" history-substring-search-up
+#bindkey "$terminfo[kcud1]" history-substring-search-down
 
-zgen load djui/alias-tips
-zgen load zsh-users/zsh-autosuggestions
-zgen load chrissicool/zsh-256color
+#zgen load djui/alias-tips
+#zgen load zsh-users/zsh-autosuggestions
+#zgen load chrissicool/zsh-256color
 
 export LSCOLORS='Exfxcxdxbxegedabagacad'
 export LS_COLORS='di=1;34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=0;41:sg=0;46:tw=0;42:ow=0;43:'
 
 
-zgen load skx/sysadmin-util
+#zgen load skx/sysadmin-util
 
-if [ -f  $HOME/.nvm/nvm.sh ]; then
-   source $HOME/.nvm/nvm.sh
-   nvm use stable
-fi
+#if [ -f  $HOME/.nvm/nvm.sh ]; then
+#   source $HOME/.nvm/nvm.sh
+#   nvm use stable
+#fi
 
 
 # This is disabled for now as it causes permission errors.
