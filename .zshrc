@@ -34,6 +34,10 @@ function dcp {
     dx $2
 }
 
+function dsh {
+    docker-compose exec $1 python manage.py shell
+}
+
 function dstop {
     docker stop `docker ps -q`
 }
