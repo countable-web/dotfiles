@@ -62,9 +62,9 @@ source $HOME/dotfiles/.aliases
 
 
 # start zgen
-#if [ -f ~/.zgen-setup ]; then
-#  source ~/.zgen-setup
-#fi
+if [ -f ~/.zgen-setup ]; then
+  source ~/.zgen-setup
+fi
 # end zgen
 
 # set some history options
@@ -122,9 +122,9 @@ bindkey "^[[1;5D" backward-word
 #export GIT_EXEC_PATH=/opt/local/libexec/git-core
 
 # zgen zsh plugins
-#source "${HOME}/.zgen/zgen.zsh"
+source "${HOME}/.zgen/zgen.zsh"
 #zgen load zsh-users/zsh-syntax-highlighting
-#zgen load zsh-users/zsh-history-substring-search
+zgen load zsh-users/zsh-history-substring-search
 
 # Set keystrokes for substring searching
 #zmodload zsh/terminfo
@@ -132,7 +132,7 @@ bindkey "^[[1;5D" backward-word
 #bindkey "$terminfo[kcud1]" history-substring-search-down
 
 #zgen load djui/alias-tips
-#zgen load zsh-users/zsh-autosuggestions
+zgen load zsh-users/zsh-autosuggestions
 #zgen load chrissicool/zsh-256color
 
 export LSCOLORS='Exfxcxdxbxegedabagacad'
