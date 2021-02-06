@@ -1,15 +1,18 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -uxo
 
+ADD=$(which apt-get)
+if [[ -z $ADD ]]; then
+    ADD=$(which dnf)
+fi
 # zsh and pip
-sudo apt-get update
-sudo apt-get install -y zsh python-pip
+
+sudo $ADD install -y zsh python-pip
 sudo groupadd dev
-sudo apt-get install -y git vim curl lrzip iputils-ping
+sudo $ADD install -y git vim curl lrzip iputils-ping
 
 echo "Setting passwordless sudo..."
 sudo bash -c "echo \"$(whoami) ALL=(ALL:ALL) NOPASSWD: ALL\" > /etc/sudoers.d/$(whoami)"
 
-$HOME/dotfiles/deploy/setup-node
 

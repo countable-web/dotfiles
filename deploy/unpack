@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -exo pipefail
+set -uxo
 
 echo "************************************************************************************"
 echo "Welcome to the Countable dotfiles!"
