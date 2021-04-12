@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -x
 
 workspace=/home/ferdinand/work/testworkspace
 cd $workspace
@@ -39,7 +39,10 @@ do
     filename=$dir.$(date +%Y%m%d-%H%M%S).sql
     folder=$(date +%Y%m)
 
-    echo s3://countable/backups/$dir/$folder/$filename.tar.lrz
     aws s3 mv ./dump.tar.lrz s3://countable/backups/$dir/$folder/$filename.tar.lrz
+
+    echo ""
+    echo "Successfully backed up $environment"
+    echo "*************************"
 done
 
