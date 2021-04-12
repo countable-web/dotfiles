@@ -2,7 +2,7 @@
 
 set -x
 
-workspace=/home/ferdinand/work/testworkspace
+workspace=/home/jenkins/testworkspace
 cd $workspace
 folders=$(ls -d * | grep -vE '*@tmp|ARCH')
 
