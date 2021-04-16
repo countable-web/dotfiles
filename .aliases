@@ -4,7 +4,7 @@ alias wstrip="sed 's/[\n ]//g'"
 alias fiddle="sudo tcpdump -s 1024 -l -A dst"
 alias detach-monitor="xrandr --output DP1 --off"
 
-alias d="docker-compose --compatibility"
+alias d="docker-compose"
 alias dl="docker-compose logs --tail=0 -f"
 alias ls="ls --color=auto"
 alias ll="ls -lh"

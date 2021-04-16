@@ -2,7 +2,10 @@
 
 set -x
 
-workspace=/home/jenkins/workspace
+workspace=${1:-/home/jenkins/workspace}
+aws_bucket=${2:-countable}
+aws_folder=${3:-backups}
+
 cd $workspace
 folders=$(ls -d * | grep -vE '*@tmp|ARCH')
 
@@ -39,7 +42,7 @@ do
     filename=$dir.$(date +%Y%m%d-%H%M%S).sql
     folder=$(date +%Y%m)
 
-    aws s3 mv ./dump.tar.lrz s3://countable/backups/$dir/$folder/$filename.tar.lrz
+    aws s3 mv ./dump.tar.lrz s3://$aws_bucket/$aws_folder/$dir/$folder/$filename.tar.lrz
 
     echo ""
     echo "Successfully backed up $environment"
