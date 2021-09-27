@@ -37,12 +37,12 @@ do
 
     tar cvf ./dump.tar ./dump
     lrzip ./dump.tar
-    rm -r ./dump
     
     filename=$dir.$(date +%Y%m%d-%H%M%S).sql
     folder=$(date +%Y%m)
 
     aws s3 mv ./dump.tar.lrz s3://$aws_bucket/$aws_folder/$dir/$folder/$filename.tar.lrz
+    rm -r ./*dump*
 
     echo ""
     echo "Successfully backed up $environment"
