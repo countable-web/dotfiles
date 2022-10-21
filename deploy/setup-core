@@ -8,7 +8,7 @@ if [[ -z $ADD ]]; then
 fi
 # zsh and pip
 
-sudo $ADD install -y zsh python-pip
+sudo $ADD install -y zsh python3-pip
 sudo groupadd dev
 sudo $ADD install -y git vim curl lrzip iputils-ping
 
