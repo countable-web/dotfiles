@@ -10,7 +10,7 @@ fi
 
 sudo $ADD install -y zsh python3-pip
 sudo groupadd dev
-sudo $ADD install -y git vim curl lrzip iputils-ping
+sudo $ADD install -y git vim curl lrzip iputils-ping import swappy xclip
 
 echo "Setting passwordless sudo..."
 sudo bash -c "echo \"$(whoami) ALL=(ALL:ALL) NOPASSWD: ALL\" > /etc/sudoers.d/$(whoami)"
