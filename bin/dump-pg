@@ -5,5 +5,5 @@ set -euxo pipefail
 docker-compose up -d db
 docker-compose exec db pg_dump -f /tmp/db.sql -U postgres postgres
 docker_compose_id=$(pwd | grep -oh "[^/]*$")
-docker cp ${docker_compose_id}_db_1:/tmp/db.sql ./
+docker-compose cp db:/tmp/db.sql ./
 
