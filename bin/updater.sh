@@ -19,7 +19,7 @@ do
     echo ''
     echo '*************************'
     echo "Checking db container for $environment"
-    name=${dir}_db_1
+    name=${dir}-db-1
     db_container=$(docker ps -q -f "name=$name")
 
     if [ -z $db_container ]; then
