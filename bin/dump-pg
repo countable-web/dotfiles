@@ -4,7 +4,7 @@ compose_output=$(docker compose version 2>&1)
 
 set -euxo pipefail
 
-if [[ $compose_output == "Docker Compose version v2"* ]]; then      
+if [[ $compose_output == "Docker Compose version v"* ]]; then      
     echo "You are using the new docker compose"
 
     docker compose up -d db
