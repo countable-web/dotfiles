@@ -9,7 +9,6 @@ if [[ $compose_output == "Docker Compose version v2"* ]]; then
 
     docker compose up -d db
     docker compose exec db pg_dump -f /tmp/db.sql -U postgres postgres
-    docker_compose_id=$(pwd | grep -oh "[^/]*$")
     docker compose cp db:/tmp/db.sql ./
 
 elif [[ $compose_output == "docker: 'compose' is not a docker command."* ]]; then
@@ -17,8 +16,7 @@ elif [[ $compose_output == "docker: 'compose' is not a docker command."* ]]; the
 
     docker-compose up -d db
     docker-compose exec db pg_dump -f /tmp/db.sql -U postgres postgres
-    docker_compose_id=$(pwd | grep -oh "[^/]*$")
-    docker cp "$docker_compose_id"_db_1:/tmp/db.sql ./
+    docker cp "$(docker-compose ps -q db)":/tmp/db.sql ./
 
 else
     echo "neither docker-compose nor docker compose were found! failed!"
