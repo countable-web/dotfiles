@@ -1,8 +1,8 @@
 #!/bin/bash
 
-set -euxo pipefail
+compose_output=$(docker compose version 2>&1)
 
-compose_output=$(docker compose version)
+set -euxo pipefail
 
 if [[ $compose_output == "Docker Compose version v2"* ]]; then      
     echo "You are using the new docker compose"
@@ -12,13 +12,13 @@ if [[ $compose_output == "Docker Compose version v2"* ]]; then
     docker_compose_id=$(pwd | grep -oh "[^/]*$")
     docker compose cp db:/tmp/db.sql ./
 
-elif [[ $compose_output == "docker: 'compose' is not a docker command." ]]; then
+elif [[ $compose_output == "docker: 'compose' is not a docker command."* ]]; then
     echo "You are using the old docker-compose"
 
     docker-compose up -d db
     docker-compose exec db pg_dump -f /tmp/db.sql -U postgres postgres
     docker_compose_id=$(pwd | grep -oh "[^/]*$")
-    docker-compose cp db:/tmp/db.sql ./
+    docker cp "$docker_compose_id"_db:/tmp/db.sql ./
 
 else
     echo "neither docker-compose nor docker compose were found! failed!"

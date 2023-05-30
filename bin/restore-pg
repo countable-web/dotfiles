@@ -1,14 +1,14 @@
 #!/bin/bash
 
-set -euxo pipefail
-
 filename=${1:-db.sql}
 
-compose_output=$(docker compose version)
+compose_output=$(docker compose version 2>&1)
+
+set -euxo pipefail
 
 if [[ $compose_output == "Docker Compose version v2"* ]]; then      
     echo "You are using the new docker compose"
-
+    exit 1
     #docker cp $filename "$(docker-compose ps -q db)":/tmp/
     docker compose stop
     docker compose up -d db
@@ -21,9 +21,9 @@ if [[ $compose_output == "Docker Compose version v2"* ]]; then
     docker compose exec db createdb -U postgres postgres
     docker compose exec db psql -U postgres -f /tmp/$filename postgres
 
-elif [[ $compose_output == "docker: 'compose' is not a docker command." ]]; then
+elif [[ $compose_output == "docker: 'compose' is not a docker command."* ]]; then
     echo "You are using the old docker-compose"
-
+    exit 1
     #docker cp $filename "$(docker-compose ps -q db)":/tmp/
     docker-compose stop
     docker-compose up -d db
