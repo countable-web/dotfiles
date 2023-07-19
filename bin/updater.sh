@@ -7,7 +7,7 @@ aws_bucket=${2:-countable}
 aws_folder=${3:-backups}
 
 cd $workspace
-folders=$(ls -d * | grep -vE '*@tmp|ARCH')
+folders=$(ls -d cortico-* | grep -vE '*@tmp|ARCH')
 
 for environment in $folders
 do

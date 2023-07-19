@@ -1,3 +1,4 @@
+*.pem
 services/accounting/token.json
 services/accounting/.vscode
 services/accounting/PAYMENTS.xlsx
