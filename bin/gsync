@@ -7,6 +7,6 @@ else
   git commit -a -m "$1"
 fi
 
-pull
+git pull --no-ff
 push
 
