@@ -23,23 +23,23 @@ function fetch {
     get fetch --all
 }
 
+function dc() {
+    if command -v docker-compose >/dev/null 2>&1; then
+        echo "docker-compose"
+    else
+        echo "docker compose"
+    fi
+}
+
 function dx {
     remaining="${@:2}"
-    docker-compose exec $1 sh -c "${remaining:-bash -c \"stty cols $COLUMNS rows $LINES && bash\"}"
+    dc exec $1 sh -c "${remaining:-bash -c \"stty cols $COLUMNS rows $LINES && bash\"}"
 }
 
 function dcp {
     id=$(dcid)
     docker cp $1 ${id}_${2}_1:/tmp/
     dx $2
-}
-
-function dsh {
-    docker-compose exec $1 python manage.py shell
-}
-
-function dstop {
-    docker stop `docker ps -q`
 }
 
 function fullpath {

@@ -1,11 +1,19 @@
 
+dc() {
+    if command -v docker-compose >/dev/null 2>&1; then
+        echo "docker-compose"
+    else
+        echo "docker compose"
+    fi
+}
+
 # Strip whitespace
 alias wstrip="sed 's/[\n ]//g'"
 alias fiddle="sudo tcpdump -s 1024 -l -A dst"
 alias detach-monitor="xrandr --output DP1 --off"
 
-alias d="docker compose"
-alias dl="docker compose logs --tail=0 -f"
+alias d="$(dc)"
+alias dl="$(dc) logs --tail=0 -f"
 alias ls="ls --color=auto"
 alias ll="ls -lh"
 alias la="ls -lha"
