@@ -33,7 +33,7 @@ function dc() {
 
 function dx {
     remaining="${@:2}"
-    dc exec $1 sh -c "${remaining:-bash -c \"stty cols $COLUMNS rows $LINES && bash\"}"
+    $(dc) exec $1 sh -c "${remaining:-bash -c \"stty cols $COLUMNS rows $LINES && bash\"}"
 }
 
 function dcp {
