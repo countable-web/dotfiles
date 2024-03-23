@@ -7,14 +7,12 @@ set -euxo pipefail
 if [[ $compose_output == "Docker Compose version v"* ]]; then      
     echo "You are using the new docker compose"
 
-    docker compose up -d db
     docker compose exec db pg_dump -f /tmp/db.sql -U postgres postgres
     docker compose cp db:/tmp/db.sql ./
 
 elif [[ $compose_output == "docker: 'compose' is not a docker command."* ]]; then
     echo "You are using the old docker-compose"
 
-    docker-compose up -d db
     docker-compose exec db pg_dump -f /tmp/db.sql -U postgres postgres
     docker cp "$(docker-compose ps -q db)":/tmp/db.sql ./
 
