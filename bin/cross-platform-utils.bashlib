@@ -1,0 +1,82 @@
+# Bash utility functions for BSD (Mac) and GNU (Linux, Mingw, CygWin)
+# that shouldn't be necessary to reimplement
+#
+# We use aliases defined at startup rather than functions to avoid
+# repeating the overhead of runtime detection each time a command is invoked
+#
+# Depends on is_mac from the startup functions
+
+# marker that can be used to avoid re-import
+export XPLATFORM_UTILS=1
+
+# to make aliases expand in non-interactive sub-shells
+shopt -s expand_aliases
+
+# @returns 0 if running on mac, 1 if not 
+function is_mac() {
+  local cmd=`which uname`
+  if [ -z $cmd ];then
+    return 1
+  else
+    # dynamically redefines the function definition to avoid recomputing 
+    if $cmd |grep Darwin 1>/dev/null; then
+        is_mac(){ return 0; };
+    else 
+        is_mac(){ return 1; };
+    fi
+    is_mac
+  fi
+}
+
+# Check if running Windows Subsystem for Linux
+# @returns 0 if running WSL, 1 if not
+function is_wsl() {
+    local cmd=`which uname`
+    # no point in checking further if uname is not present
+    if [ -z $cmd ];then
+        return 1
+    else
+        # dynamically redefines the function definition to avoid recomputing 
+        if uname -a | grep microsoft 1>/dev/null; then
+            is_wsl(){ return 0; };
+        else 
+            is_wsl(){ return 1; };
+        fi
+        is_wsl
+    fi
+}
+
+
+if ! is_mac; then
+
+    # Interpret regular expressions as extended (modern) regular expressions 
+    # rather than basic regular expressions (BRE's).  The re_format(7) manual page fully describes both formats.
+    alias util.esed='sed -r '
+
+    # size in bytes
+    alias util.size='stat -c %s -- '
+else
+    alias util.esed='sed -E '
+    alias util.size='stat -Lf %z -- '
+fi
+
+alias text.delete_empty_line="sed '/^[[:space:]]*$/d'"
+alias text.trim="util.esed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'"
+
+function text.count(){
+    grep -o "$1" | wc -l
+}
+
+# Based on https://stackoverflow.com/a/12579554/200987
+function text.remove-last-newline(){
+    local file=$(mktemp)
+    cat > $file
+    if [[ $(tail -c1 $file | wc -l) == 1 ]]; then
+        head -c -1 $file > $file.tmp
+        mv $file.tmp $file
+    fi
+    cat $file
+    rm $file&
+}
+
+# vim: ft=sh
