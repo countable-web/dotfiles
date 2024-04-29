@@ -7,7 +7,7 @@ if [ "$#" -lt 1 ]; then
     echo "Error: Incorrect number of arguments"
     echo "Usage: DOCKER_VOLUMES=[quoted, space delimited volume list] $0 <NEW_SERVER_IP> [FOLDER_NAME]"
 
-echo "Transfer docker compose projects with their volumes across servers, faster, with no temp storage, and in one step. Run as root."
+echo "Transfer docker compose projects with their volumes across servers, faster, with no temp storage, and in one step. Run as jenkins user."
 echo "To set this up, you must:"
 echo "1. Create jenkins user on both systems"
 echo "2. Generate jenkins ssh key on sender, and install jenkins ssh public key into ~/.ssh/authorized_keys on recipient system."
