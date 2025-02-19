@@ -18,7 +18,7 @@ for file in *.log.zst; do
     if [[ -f "$file" ]]; then
         echo "moving"
         # Construct the S3 destination path
-        s3_destination="s3://${bucket_name}/${current_directory}/${file}"
+        s3_destination="s3://${bucket_name}/${current_directory}/logs/${file}"
 
         # Copy the file to S3
         aws s3 cp "$file" "$s3_destination"
