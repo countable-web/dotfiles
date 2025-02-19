@@ -11,9 +11,9 @@ bucket_name="countable/backups"
 current_directory=$(basename "$PWD")
 
 # Iterate over all log.gz files in the current directory
-ls *202*.log 2>/dev/null | xargs -r gzip
+ls *202*.log 2>/dev/null | xargs -r zstd --rm
 
-for file in *.log.gz; do
+for file in *.log.zst; do
     echo $file
     if [[ -f "$file" ]]; then
         echo "moving"
