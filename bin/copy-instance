@@ -1,0 +1,158 @@
+#!/bin/bash
+
+# Database Migration Script
+# Usage: ./migrate_db.sh <cortico-instance> <destination> <nginx_port>
+
+set -e
+
+# Check if required arguments are provided
+if [ $# -lt 3 ]; then
+    echo "Error: Missing required arguments"
+    echo "Usage: $0 <cortico-instance> <destination> <nginx_port>"
+    exit 1
+fi
+
+CORTICO_INSTANCE=$1
+DESTINATION=$2
+NGINX_PORT=$3
+
+CURRENT_HOST=$(hostname)
+
+# Define paths
+
+# Set source path to current directory
+SOURCE_PATH="."
+
+# Check if current directory name matches CORTICO_INSTANCE
+CURRENT_DIR=$(basename "$(pwd)")
+if [ "$CURRENT_DIR" != "$CORTICO_INSTANCE" ]; then
+    echo "WARNING: Current directory ($CURRENT_DIR) does not match the specified cortico-instance ($CORTICO_INSTANCE)"
+    echo "This may cause issues with the migration. Consider running this script from the correct directory."
+    read -p "Are you SURE you want to continue? (y/n): " confirm
+    if [ "$confirm" != "y" ]; then
+        echo "Migration aborted."
+        exit 1
+    fi
+fi
+
+# Check if user wants to proceed with the copy operation
+echo "WARNING: You will be copying from ${CURRENT_HOST} to ${DESTINATION} the ${CORTICO_INSTANCE} instance"
+echo "Are you SURE you want to continue? This WILL delete information in the destination."
+read -p "Press 'y' to confirm or any other key to abort: " confirm
+if [ "$confirm" != "y" ]; then
+    echo "Migration aborted."
+    exit 1
+fi
+
+REMOTE_WORKSPACE_PATH="/home/jenkins/workspace/${CORTICO_INSTANCE}"
+TEMP_PATH="/tmp"
+
+# Log function for better output
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
+}
+
+# Error handling function
+handle_error() {
+    log "ERROR: $1"
+    exit 1
+}
+
+# Check if source directory exists
+if [ ! -d "${SOURCE_PATH}" ]; then
+    handle_error "Source directory ${SOURCE_PATH} does not exist"
+fi
+
+# Execute commands on source machine
+log "Starting database export process"
+cd "${SOURCE_PATH}" || handle_error "Failed to change to source directory"
+
+if docker compose exec db test -f /tmp/db.sql; then
+    echo "WARNING: A previous database dump exists at /tmp/db.sql in the container."
+    read -p "Do you want to delete it and continue? (y/n): " confirm
+    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        echo "Removing previous dump file..."
+        docker compose exec db rm -f /tmp/db.sql
+    else
+        echo "Operation cancelled."
+        exit 1
+    fi
+fi
+
+log "Dumping PostgreSQL database"
+dump-pg || handle_error "Failed to dump database"
+
+log "Compressing database dump"
+zstd db.sql || handle_error "Failed to compress database dump"
+
+log "Checking SSH key authentication jenkins@${DESTINATION}.countable.ca"
+ssh -o BatchMode=yes -o ConnectTimeout=5 "jenkins@${DESTINATION}.countable.ca" exit &>/dev/null || handle_error "SSH key authentication not enabled. Please set up SSH keys on destination server"
+
+log "Copying compressed dump to destination"
+scp db.sql.zst "${DESTINATION}.countable.ca:${TEMP_PATH}/" || handle_error "Failed to copy database dump to destination"
+
+# Execute commands on destination machine
+log "Connecting to destination server"
+
+ssh "${DESTINATION}.countable.ca" "zsh -l -c '
+    # Check if destination directory exists
+    if [ ! -d \"${REMOTE_WORKSPACE_PATH}\" ]; then
+        echo \"ERROR: Destination directory ${REMOTE_WORKSPACE_PATH} does not exist. You need to point jenkins master to the new server and run a deploy before running the copy operation\"
+        exit 1
+    fi
+    
+    # Move and extract database dump
+    cd \"${REMOTE_WORKSPACE_PATH}\" || { echo \"ERROR: Failed to change directory to ${REMOTE_WORKSPACE_PATH}\"; exit 1; }
+    mv ${TEMP_PATH}/db.sql.zst ./ || { echo \"ERROR: Failed to move database dump from ${TEMP_PATH}/db.sql.zst\"; exit 1; }
+    zstd -d db.sql.zst || { echo \"ERROR: Failed to decompress db.sql.zst\"; exit 1; }
+    
+    cd ${REMOTE_WORKSPACE_PATH}
+
+    # Restore database
+    /home/jenkins/dotfiles/bin/restore-pg || { echo \"ERROR: Database restoration failed with restore-pg command\"; exit 1; }
+    
+    # Clean up
+    rm db.sql || { echo \"WARNING: Failed to remove db.sql file\"; }
+    
+    # Restart services
+    docker compose up -d || { echo \"ERROR: Failed to start docker services\"; exit 1; }
+    echo \"Waiting for services to start...\"
+    sleep 10
+    docker compose restart nginx || { echo \"ERROR: Failed to restart nginx\"; exit 1; }
+    sleep 2
+
+    # Check if the response contains \"Bad Request (400)\"
+    echo \"Testing connection to localhost:${NGINX_PORT}...\"
+    curl -v \"localhost:${NGINX_PORT}\" 2>&1 | tee curl_output.txt
+
+    # Check if the file contains the expected text
+    if grep -q \"Bad Request (400)\" curl_output.txt; then
+        echo \"SUCCESS: Service is running on port ${NGINX_PORT} and returning expected 400 Bad Request\"
+        rm -f \"${TEMP_RESPONSE_FILE}\"
+    else
+        echo \"ERROR: Service check failed - response did not contain Bad Request (400)\"
+    fi
+    rm -f curl_output.txt
+
+'" || handle_error "Remote operations failed: Check the output above for specific error messages"
+
+docker compose cp django:/media/ ./
+
+scp -r ./media "${DESTINATION}.countable.ca:${TEMP_PATH}/media/" || handle_error "Failed to copy media backup to destination"
+
+
+ssh "${DESTINATION}.countable.ca" "zsh -l -c '
+    if [ ! -d \"${REMOTE_WORKSPACE_PATH}\" ]; then
+        echo \"ERROR: Destination directory ${REMOTE_WORKSPACE_PATH} does not exist. You need to point jenkins master to the new server and run a deploy before running the copy operation\"
+        exit 1
+    fi
+
+    cd \"${REMOTE_WORKSPACE_PATH}\" || { echo \"ERROR: Failed to change directory to ${REMOTE_WORKSPACE_PATH}\"; exit 1; }
+    
+    docker compose cp /tmp/media/. django:/media/ || { echo \"ERROR: Failed to copy media files to Docker container\"; exit 1; }
+
+    echo \"Media files successfully extracted to ${REMOTE_WORKSPACE_PATH}/media/\"
+'"
+
+
+log "Database migration completed successfully!"
