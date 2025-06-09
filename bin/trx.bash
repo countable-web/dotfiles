@@ -23,23 +23,24 @@ echo jenkins@whitehead:~/workspace % DOCKER_VOLUMES="cortico-kmc_prescriptions" 
 echo transfers cortico-kmc /docker-vols/cortico-kmc_prescriptions
 echo
 echo Example 3: send the folder and all associated docker volumes
-echo jenkins@whitehead:~/workspace % trx.bash fermat.countable.ca cortico-kmc
+echo jenkins@whitehead:~/workspace % DOCKER_VOLUMES=ALL trx.bash fermat.countable.ca cortico-kmc
 echo transfers cortico-kmc /docker-vols/cortico-kmc_media_volume /docker-vols/cortico-kmc_patient_files /docker-vols/cortico-kmc_pg-data /docker-vols/cortico-kmc_prescriptions /docker-vols/cortico-kmc_redis
 echo
 echo Example 4: send only the specified folder.
-echo jenkins@whitehead:~/workspace % DOCKER_VOLUMES= trx.bash fermat.countable.ca cortico-kmc
+echo jenkins@whitehead:~/workspace % trx.bash fermat.countable.ca cortico-kmc
 echo transfers cortico-kmc
 
     exit 1
 fi
 
-
+DOCKER_VOLUMES=${DOCKER_VOLUMES:-}
 NEW_SERVER_IP=$1
 TAR_INPUTS="${@:2}"
 
 # Detect volume names
-if [ -z ${DOCKER_VOLUMES+x} ]; then
+if [ "${DOCKER_VOLUMES}" = "ALL" ]; then
  echo "Detecting docker volumes"
+ DOCKER_VOLUMES=
  for PARENT_FOLDER_NAME in $TAR_INPUTS
  do
   VOLUMES=$(docker volume ls -q | grep $PARENT_FOLDER_NAME | tr '\n' ' ')

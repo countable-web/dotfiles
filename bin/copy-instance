@@ -100,7 +100,6 @@ ssh "${DESTINATION}.countable.ca" "zsh -l -c '
         echo \"ERROR: Destination directory ${REMOTE_WORKSPACE_PATH} does not exist. You need to point jenkins master to the new server and run a deploy before running the copy operation\"
         exit 1
     fi
-    
     # Move and extract database dump
     cd \"${REMOTE_WORKSPACE_PATH}\" || { echo \"ERROR: Failed to change directory to ${REMOTE_WORKSPACE_PATH}\"; exit 1; }
     mv ${TEMP_PATH}/db.sql.zst ./ || { echo \"ERROR: Failed to move database dump from ${TEMP_PATH}/db.sql.zst\"; exit 1; }
@@ -149,6 +148,7 @@ ssh "${DESTINATION}.countable.ca" "zsh -l -c '
 
     cd \"${REMOTE_WORKSPACE_PATH}\" || { echo \"ERROR: Failed to change directory to ${REMOTE_WORKSPACE_PATH}\"; exit 1; }
     
+
     docker compose cp /tmp/media/. django:/media/ || { echo \"ERROR: Failed to copy media files to Docker container\"; exit 1; }
 
     echo \"Media files successfully extracted to ${REMOTE_WORKSPACE_PATH}/media/\"
