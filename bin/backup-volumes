@@ -1,0 +1,81 @@
+#!/bin/bash
+
+set -e
+
+# Check if required arguments are provided
+if [ $# -lt 1 ]; then
+    echo "Error: Missing required arguments"
+    echo "Usage: $0 <cortico-instance>"
+    exit 1
+fi
+
+CORTICO_INSTANCE=$1
+
+# Set source path to current directory
+SOURCE_PATH="."
+
+# Check if current directory name matches CORTICO_INSTANCE
+CURRENT_DIR=$(basename "$(pwd)")
+if [ "$CURRENT_DIR" != "$CORTICO_INSTANCE" ]; then
+    echo "WARNING: Current directory ($CURRENT_DIR) does not match the specified cortico-instance ($CORTICO_INSTANCE)"
+    echo "This may cause issues with the migration. Consider running this script from the correct directory."
+    read -p "Are you SURE you want to continue? (y/n): " confirm
+    if [ "$confirm" != "y" ]; then
+        echo "Volume backup aborted."
+        exit 1
+    fi
+fi
+
+# List all volumes that match the pattern
+echo "Listing all Docker volumes with names matching: ${CORTICO_INSTANCE}"
+matching_volumes=$(docker volume ls --filter "name=${CORTICO_INSTANCE}" --format "{{.Name}}")
+
+if [ -z "$matching_volumes" ]; then
+    echo "No Docker volumes found matching the pattern: ${CORTICO_INSTANCE}"
+    exit 0
+fi
+
+# Display found volumes
+echo "Found the following Docker volumes:"
+echo "$matching_volumes" | nl
+
+# Process each volume with individual confirmation
+for source_volume in $matching_volumes; do
+    read -p "Do you want to backup volume $source_volume? (y/n): " confirm
+    if [ "$confirm" != "y" ]; then
+        echo "Skipping backup of $source_volume"
+        continue
+    fi
+
+    backup_volume="backup_${source_volume}"
+    echo "Creating backup volume: $backup_volume"
+
+    # Check if backup volume already exists
+    if docker volume inspect "$backup_volume" &> /dev/null; then
+        echo "WARNING: Backup volume $backup_volume already exists"
+        read -p "Do you want to overwrite it? (y/n): " overwrite
+        if [ "$overwrite" != "y" ]; then
+            echo "Skipping backup of $source_volume"
+            continue
+        fi
+
+        # Remove existing backup volume
+        echo "Removing existing backup volume: $backup_volume"
+        docker volume rm "$backup_volume"
+    fi
+
+    # Create new backup volume
+    echo "Creating new backup volume: $backup_volume"
+    docker volume create "$backup_volume"
+
+    # Copy data from source to backup using a temporary container
+    echo "Copying data from $source_volume to $backup_volume..."
+    docker run --rm -v "$source_volume":/source -v "$backup_volume":/backup \
+        alpine ash -c "cd /source && cp -av . /backup/"
+
+    echo "Backup of $source_volume completed successfully"
+done
+
+for vol in $(docker volume list | grep ${CORTICO_INSTANCE} | awk '{print $2}'); do echo -n "$vol: " && docker run --rm -v $vol:/vol alpine du -sh /vol | awk '{print $1}'; done
+
+echo "Docker volume backup process completed."
