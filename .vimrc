@@ -2,7 +2,6 @@
 filetype plugin on
 set ofu=syntaxcomplete#Complete
 set ruler
-syntax on
 set incsearch
 set hlsearch
 

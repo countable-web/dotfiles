@@ -9,33 +9,48 @@ set -euxo pipefail
 
 if [[ $compose_output == "Docker Compose version v"* ]]; then      
     echo "You are using the new docker compose"
-
-    docker compose stop
-    docker compose up -d db
-
-    # give DB a chance to initialize
-    sleep 3
-
-    docker compose cp $filename db:/tmp/
-    docker compose exec db dropdb -U postgres postgres
-    docker compose exec db createdb -U postgres postgres
-    docker compose exec db psql -U postgres -f /tmp/$filename postgres
-
+    dc="docker compose"
 elif [[ $compose_output == "docker: 'compose' is not a docker command."* ]]; then
     echo "You are using the old docker-compose"
-
-    docker-compose stop
-    docker-compose up -d db
-
-    # give DB a chance to initialize
-    sleep 3
-
-    docker cp $filename "$(docker-compose ps -q db)":/tmp/
-    docker-compose exec db dropdb -U postgres postgres
-    docker-compose exec db createdb -U postgres postgres
-    docker-compose exec db psql -U postgres -f /tmp/$filename postgres
-
+    dc="docker-compose"
 else
     echo "neither docker-compose nor docker compose were found! failed!"
     exit 1
 fi
+
+#!/bin/bash
+set -e
+
+# Determine input file
+INPUT="${1:-}"
+if [ -z "$INPUT" ]; then
+  if [ -f "db.sql.zst" ]; then
+    INPUT="db.sql.zst"
+  elif [ -f "db.sql" ]; then
+    INPUT="db.sql"
+  else
+    echo "Error: No input file provided and db.sql(.zst) not found." >&2
+    exit 1
+  fi
+fi
+
+docker compose stop
+docker compose up -d db
+
+sleep 1
+
+$dc exec db dropdb -U postgres postgres
+$dc exec db createdb -U postgres postgres
+$dc exec -T db psql -U postgres -c "ALTER SYSTEM SET synchronous_commit = 'off';"
+$dc exec -T db psql -U postgres -c "SELECT pg_reload_conf();"
+
+# Choose restore command based on file extension
+if [[ "$INPUT" == *.zst ]]; then
+  zstd -dc "$INPUT" | $dc exec -T db psql -U postgres postgres
+else
+  cat "$INPUT" | $dc exec -T db psql -U postgres postgres
+fi
+
+$dc exec -T db psql -U postgres -c "ALTER SYSTEM RESET synchronous_commit;"
+$dc exec -T db psql -U postgres -c "SELECT pg_reload_conf();"
+
