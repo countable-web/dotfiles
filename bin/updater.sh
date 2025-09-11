@@ -3,11 +3,15 @@
 set -x
 
 workspace=${1:-/home/jenkins/workspace}
-aws_bucket=${2:-countable}
+aws_bucket=${2:-cortico-backups}
 aws_folder=${3:-backups}
 
 cd $workspace
+<<<<<<< HEAD
+folders=$(ls | grep -E "(cerebro|cortico)" | grep -vE '*@tmp|ARCH')
+=======
 folders=$(ls -d cortico-* | grep -vE '*@tmp|ARCH')
+>>>>>>> 36e96d1661571bf13e8fd10afd4902393a44d921
 
 for environment in $folders
 do
