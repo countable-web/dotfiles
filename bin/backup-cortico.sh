@@ -3,7 +3,7 @@
 set -x
 
 workspace=${1:-/home/jenkins/workspace}
-aws_bucket=${2:-countable}
+aws_bucket=${2:-cortico-backups}
 aws_folder=${3:-backups}
 
 cd $workspace
