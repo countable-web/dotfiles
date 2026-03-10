@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# git-what: Show diff between branch and its merge-base with develop
+# Usage: git-what [branch-name]
+# If no branch provided, uses current branch
+
+set -e
+
+# Determine branch name
+if [ $# -eq 0 ]; then
+    # No argument provided, get current branch
+    BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    echo "Using current branch: $BRANCH"
+else
+    BRANCH=$1
+    echo "Using specified branch: $BRANCH"
+fi
+
+# Check if branch exists
+if ! git show-ref --verify --quiet refs/heads/$BRANCH; then
+    echo "Error: Branch '$BRANCH' does not exist"
+    exit 1
+fi
+
+# Find merge-base with develop
+echo "Finding merge-base with develop..."
+MERGE_BASE=$(git merge-base develop $BRANCH)
+
+if [ -z "$MERGE_BASE" ]; then
+    echo "Error: Could not find merge-base between develop and $BRANCH"
+    exit 1
+fi
+
+echo "Merge-base commit: $MERGE_BASE"
+echo "Showing diff from merge-base to $BRANCH..."
+echo "================================================================================"
+
+# Show the diff
+git diff $MERGE_BASE $BRANCH
+
+echo "================================================================================"
+echo "Summary:"
+echo "- Branch: $BRANCH"
+echo "- Merge-base: $MERGE_BASE"
+echo "- Commits ahead: $(git rev-list --count $MERGE_BASE..$BRANCH)"
+echo "- Files changed: $(git diff --name-only $MERGE_BASE $BRANCH | wc -l)"
