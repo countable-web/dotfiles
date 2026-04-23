@@ -79,4 +79,3 @@ done
 for vol in $(docker volume list | grep ${CORTICO_INSTANCE} | awk '{print $2}'); do echo -n "$vol: " && docker run --rm -v $vol:/vol alpine du -sh /vol | awk '{print $1}'; done
 
 echo "Docker volume backup process completed."
-

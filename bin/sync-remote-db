@@ -1,0 +1,101 @@
+#!/bin/bash
+set -euo pipefail
+
+usage() {
+  echo "Usage: sync-remote-db <server> <instance>"
+  echo ""
+  echo "Streams a Postgres dump from a remote server's Docker db container"
+  echo "into your local Docker db container. Run from your local project dir."
+  echo ""
+  echo "  server    — remote hostname (e.g. tesla.countable.ca)"
+  echo "  instance  — workspace folder name (e.g. cortico-develop)"
+  echo ""
+  echo "Conventions:"
+  echo "  Remote path: /home/jenkins/workspace/<instance>/"
+  echo "  SSH user: current local user"
+  echo "  DB service: db, user: postgres, database: postgres"
+  exit 1
+}
+
+if [ $# -lt 2 ]; then
+  usage
+fi
+
+SERVER="$1"
+INSTANCE="$2"
+REMOTE_DIR="/home/jenkins/workspace/${INSTANCE}"
+SSH_USER="$(whoami)"
+DB_USER="postgres"
+DB_NAME="postgres"
+LOGFILE="/tmp/sync-remote-db-$$.log"
+
+echo "Log: ${LOGFILE}"
+
+# Run a step with a spinner. Output goes to log, spinner shows on terminal.
+# On failure, tails the log and exits.
+step() {
+  local msg="$1"
+  shift
+  printf "  %-50s " "$msg"
+  if "$@" >>"$LOGFILE" 2>&1; then
+    printf "✓\n"
+  else
+    printf "FAILED\n"
+    echo ""
+    echo "==> Last 30 lines of ${LOGFILE}:"
+    tail -30 "$LOGFILE"
+    exit 1
+  fi
+}
+
+# Ensure docker compose works locally
+if ! docker compose version &>/dev/null; then
+  echo "Error: docker compose not available locally" >&2
+  exit 1
+fi
+
+echo "==> Syncing db from ${SERVER}:${INSTANCE}"
+start=$(date +%s)
+
+step "Stopping local services..."            docker compose stop
+step "Starting local db..."                   docker compose up -d db
+step "Waiting for db to be ready..."          sleep 2
+step "Dropping local database..."             docker compose exec -T db dropdb -U "$DB_USER" --if-exists "$DB_NAME"
+step "Creating local database..."             docker compose exec -T db createdb -U "$DB_USER" "$DB_NAME"
+step "Disabling synchronous_commit..."        docker compose exec -T db psql -U "$DB_USER" -c "ALTER SYSTEM SET synchronous_commit = 'off';"
+step "Reloading config..."                    docker compose exec -T db psql -U "$DB_USER" -c "SELECT pg_reload_conf();"
+
+# Streaming step with progress
+echo "  Streaming remote dump (compressed)..."
+if command -v pv &>/dev/null; then
+  PV="pv -f -pterb -i 0.5"
+else
+  echo "  (tip: install pv for transfer progress — apt install pv / brew install pv)"
+  PV="cat"
+fi
+ssh "${SSH_USER}@${SERVER}" \
+  "sudo -u jenkins bash -c 'cd ${REMOTE_DIR} && docker compose exec -T db pg_dump -U ${DB_USER} ${DB_NAME} | zstd -T0'" \
+  | $PV \
+  | zstd -dc \
+  | docker compose exec -T db psql -U "$DB_USER" "$DB_NAME" >>"$LOGFILE" 2>&1
+if [ $? -ne 0 ]; then
+  echo "  Streaming FAILED"
+  echo ""
+  echo "==> Last 30 lines of ${LOGFILE}:"
+  tail -30 "$LOGFILE"
+  exit 1
+fi
+echo "  Streaming ✓"
+
+step "Restoring synchronous_commit..."        docker compose exec -T db psql -U "$DB_USER" -c "ALTER SYSTEM RESET synchronous_commit;"
+step "Reloading config..."                    docker compose exec -T db psql -U "$DB_USER" -c "SELECT pg_reload_conf();"
+
+# Restart pgbouncer if it exists in this compose file
+if docker compose config --services 2>/dev/null | grep -q pgbouncer; then
+  step "Restarting pgbouncer..."              docker compose restart pgbouncer
+fi
+
+end=$(date +%s)
+elapsed=$(( end - start ))
+echo ""
+echo "==> Done in ${elapsed}s"

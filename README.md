@@ -46,6 +46,12 @@ To install docker.
 ./dotfiles/deploy/setup-docker
 ```
 
+To install ollama
+```
+./dotfiles/deploy/setup-inference/inference-node-setup-step1.sh
+./dotfiles/deploy/setup-inference/inference-node-setup-step2.sh
+```
+
 ## Scripts
 These dotfiles come bundled with several useful scripts.
 

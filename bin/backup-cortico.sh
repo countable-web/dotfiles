@@ -3,7 +3,7 @@
 set -x
 
 workspace=${1:-/home/jenkins/workspace}
-aws_bucket=${2:-countable}
+aws_bucket=${2:-cortico-backups}
 aws_folder=${3:-backups}
 
 cd $workspace
@@ -27,7 +27,7 @@ do
         continue
     fi
 
-    docker exec -t ${name} pg_dump -U postgres postgres | zstd -T0 -o dump.sql.zst
+    docker exec -t ${name} pg_dump -U postgres postgres | zstd -f -T0 -o dump.sql.zst
 
     
     filename=$dir.$(date +%Y%m%d-%H%M%S).sql
