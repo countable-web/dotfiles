@@ -1,32 +1,13 @@
-#!/bin/bash
-set -euxo
-
-filename=${1:-db.sql}
-
-compose_output=$(docker compose version 2>&1)
-
+#!/usr/bin/env bash
 set -euxo pipefail
-
-if [[ $compose_output == "Docker Compose version v"* ]]; then      
-    echo "You are using the new docker compose"
-    dc="docker compose"
-elif [[ $compose_output == "docker: 'compose' is not a docker command."* ]]; then
-    echo "You are using the old docker-compose"
-    dc="docker-compose"
-else
-    echo "neither docker-compose nor docker compose were found! failed!"
-    exit 1
-fi
-
-#!/bin/bash
-set -e
 
 # Determine input file
 INPUT="${1:-}"
-if [ -z "$INPUT" ]; then
-  if [ -f "db.sql.zst" ]; then
+
+if [[ -z "$INPUT" ]]; then
+  if [[ -f "db.sql.zst" ]]; then
     INPUT="db.sql.zst"
-  elif [ -f "db.sql" ]; then
+  elif [[ -f "db.sql" ]]; then
     INPUT="db.sql"
   else
     echo "Error: No input file provided and db.sql(.zst) not found." >&2
@@ -34,23 +15,63 @@ if [ -z "$INPUT" ]; then
   fi
 fi
 
-docker compose stop
-docker compose up -d db
+# Detect compose command
+if command -v docker >/dev/null 2>&1; then
+  if docker compose version >/dev/null 2>&1; then
+    dc="docker compose"
+  elif command -v docker-compose >/dev/null 2>&1; then
+    dc="docker-compose"
+  else
+    echo "Docker found, but no compose support detected"
+    exit 1
+  fi
 
-sleep 1
+elif command -v podman >/dev/null 2>&1; then
+  if podman compose version >/dev/null 2>&1; then
+    dc="podman compose"
+  elif command -v podman-compose >/dev/null 2>&1; then
+    dc="podman-compose"
+  else
+    echo "Podman found, but no compose support detected"
+    exit 1
+  fi
 
-$dc exec db dropdb -U postgres postgres
+else
+  echo "Neither docker nor podman found"
+  exit 1
+fi
+
+echo "Using compose command: $dc"
+
+# Restart db container
+$dc stop
+$dc up -d db
+
+sleep 2
+
+# Recreate database
+$dc exec db dropdb -U postgres postgres || true
 $dc exec db createdb -U postgres postgres
-$dc exec -T db psql -U postgres -c "ALTER SYSTEM SET synchronous_commit = 'off';"
-$dc exec -T db psql -U postgres -c "SELECT pg_reload_conf();"
 
-# Choose restore command based on file extension
+# Speed up restore
+$dc exec -T db psql -U postgres -c \
+  "ALTER SYSTEM SET synchronous_commit = 'off';"
+
+$dc exec -T db psql -U postgres -c \
+  "SELECT pg_reload_conf();"
+
+# Restore dump
 if [[ "$INPUT" == *.zst ]]; then
   zstd -dc "$INPUT" | $dc exec -T db psql -U postgres postgres
 else
   cat "$INPUT" | $dc exec -T db psql -U postgres postgres
 fi
 
-$dc exec -T db psql -U postgres -c "ALTER SYSTEM RESET synchronous_commit;"
-$dc exec -T db psql -U postgres -c "SELECT pg_reload_conf();"
+# Restore normal settings
+$dc exec -T db psql -U postgres -c \
+  "ALTER SYSTEM RESET synchronous_commit;"
 
+$dc exec -T db psql -U postgres -c \
+  "SELECT pg_reload_conf();"
+
+echo "Database restore complete"
