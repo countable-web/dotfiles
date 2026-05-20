@@ -22,4 +22,23 @@ alias forensic="git log --graph --all --decorate --stat --date=iso"
 # remove alread-merged remote branches
 alias git_cleanup_remote="git fetch --all && git remote prune origin && git branch -r --merged | grep -v master | grep -v develop | sed 's/origin\///' | xargs -n 1 git push --delete origin"
 
+# --- Cortico parallel-checkout nav ---
+# k1/k2/k3 jump to kmc_shifts in cortico/cortico2/cortico3.
+# w1/w2/w3 jump to cortico-website in cortico/cortico2/cortico3.
+# If running as clark, switches to the claude account first (matches clark's
+# usual "cd then sudo su claude" muscle memory) and lands in the target dir.
+_gotree() {
+  if [ "$USER" = "clark" ]; then
+    sudo su claude -c "cd $1 && exec zsh"
+  else
+    cd "$1"
+  fi
+}
+k1() { _gotree /home/claude/cortico/kmc_shifts }
+k2() { _gotree /home/claude/cortico2/kmc_shifts }
+k3() { _gotree /home/claude/cortico3/kmc_shifts }
+w1() { _gotree /home/claude/cortico/cortico-website }
+w2() { _gotree /home/claude/cortico2/cortico-website }
+w3() { _gotree /home/claude/cortico3/cortico-website }
+
 

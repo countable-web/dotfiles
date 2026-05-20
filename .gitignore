@@ -5,9 +5,12 @@ services/accounting/PAYMENTS.xlsx
 services/accounting/ENV
 services/accounting/tmp
 .DS_Store
-.vim/.netrwhist
+.vim/
 nohup.out
 node_modules
 err.log
 out.log
 services/accounting/client_id.json
+
+# Auto-curated, gitignored agent memory (per reflecting-on-sessions skill)
+CLAUDE.local.md

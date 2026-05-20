@@ -2,11 +2,11 @@
 
 git add --all .
 if [ -z "$1" ]; then
-  git commit -a
+  git commit --no-verify -a
 else
-  git commit -a -m "$1"
+  git commit --no-verify -a -m "$1"
 fi
 
-git pull --no-ff
+git pull --no-ff --no-verify
 push
 

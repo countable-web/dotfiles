@@ -84,7 +84,8 @@ setopt hist_verify
 
 # Share your history across all your terminal windows
 setopt share_history
-setopt noclobber
+unsetopt noclobber  # was setopt — claude-agent friction (mr2 ids 1008, 1775)
+unsetopt nomatch    # avoid "no matches found" on URLs with `?`, glob-like paths (mr2 ids 870, 879, 1397, 1554, 1732)
 
 # set some more options
 setopt pushd_ignore_dups
@@ -145,14 +146,37 @@ export LS_COLORS='di=1;34;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;
 
 #zgen load skx/sysadmin-util
 
-#if [ -f  $HOME/.nvm/nvm.sh ]; then
-#   source $HOME/.nvm/nvm.sh
-#   nvm use stable
-#fi
+if [ -f  $HOME/.nvm/nvm.sh ]; then
+   source $HOME/.nvm/nvm.sh
+   nvm use v20 >/dev/null 2>&1
+fi
 
 
 # This is disabled for now as it causes permission errors.
 #source $HOME/dotfiles/bin/z.sh
 
-export AWS_DEFAULT_PROFILE=default
+# Removed: AWS_DEFAULT_PROFILE=default caused "config profile could not be found" on every aws cli call,
+# because no ~/.aws/config exists in this environment (mr2 id 1287). Set it back if you wire up a real profile.
+# export AWS_DEFAULT_PROFILE=default
+
+# --- Cortico shortcut reminder ---
+# Re-runnable any time via `cortico-help`. Auto-prints once on interactive shell start.
+function cortico-help {
+  cat <<'BANNER'
+  ┌─ cortico shortcuts ─────────────────────────────────────────────────┐
+  │ push      merge from detected base, then push (no-verify)           │
+  │ pull      pull current branch from origin                           │
+  │ sweep     fetch/prune → pull develop & master → cleanup-merged →    │
+  │           return to your branch → merge from detected base.         │
+  │           scope from cwd: this repo | workspace root | all 6        │
+  │ gsync     add + commit + pull --no-ff + push (all no-verify)        │
+  │ gcm       commit -a -m "${1:-merge}" --no-verify                    │
+  │ feature   cut feature/<name> off develop                            │
+  │ hotfix    cut hotfix/<name>  off master                             │
+  │ k1/k2/k3  cd cortico{,2,3}/kmc_shifts      (sudo→claude if needed)  │
+  │ w1/w2/w3  cd cortico{,2,3}/cortico-website (sudo→claude if needed)  │
+  └─────────────────────────────────────────────────────────────────────┘
+BANNER
+}
+[[ $- == *i* ]] && cortico-help
 

@@ -54,3 +54,6 @@ fi
 $dc exec -T db psql -U postgres -c "ALTER SYSTEM RESET synchronous_commit;"
 $dc exec -T db psql -U postgres -c "SELECT pg_reload_conf();"
 
+# Restart pgbouncer to flush stale connection pool
+$dc restart pgbouncer 2>/dev/null || true
+

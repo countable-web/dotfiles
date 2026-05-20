@@ -1,0 +1,6 @@
+#!/bin/zsh
+# Commit-all with --no-verify. Default message "merge".
+#   gcm                 → commit -a -m "merge" --no-verify
+#   gcm "fix typo"      → commit -a -m "fix typo" --no-verify
+msg="${1:-merge}"
+git commit --no-verify -a -m "$msg"

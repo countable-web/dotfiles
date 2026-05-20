@@ -1,0 +1,160 @@
+#!/bin/zsh
+# sweep — Cortico workspace sync. One op, scope auto-detected from cwd.
+#
+# Scope:
+#   inside a git repo                 → that one repo
+#   at a workspace root (cortico*/)   → both sub-repos under it
+#   anywhere else                     → all known cortico repos (3 × 2 = 6)
+#
+# Per repo:
+#   1. skip if dirty
+#   2. fetch --all --prune
+#   3. for each of develop, master: checkout, pull --ff-only, git-cleanup-merged
+#   4. checkout original branch
+#   5. if it's not itself a base, merge --no-verify origin/<detected base>
+#      (base = the one whose merge-base with HEAD is most recent in time)
+
+WORKSPACE_ROOTS=(/home/claude/cortico /home/claude/cortico2 /home/claude/cortico3)
+SUB_REPOS=(kmc_shifts cortico-website)
+
+# --- Determine scope ---
+cwd=$(pwd)
+scope=()
+
+# If we're inside a sub-repo (kmc_shifts / cortico-website), just that one.
+# Workspace-root git repos (cortico*/) don't count as "in a sub-repo" — they
+# expand to all sub-repos under that root.
+toplevel=""
+if git rev-parse --show-toplevel >/dev/null 2>&1; then
+  toplevel=$(git rev-parse --show-toplevel)
+fi
+
+is_workspace_root=false
+for root in "${WORKSPACE_ROOTS[@]}"; do
+  if [ "$cwd" = "$root" ] || [ "$toplevel" = "$root" ]; then
+    is_workspace_root=true
+    matched_root=${toplevel:-$cwd}
+    break
+  fi
+done
+
+if [ "$is_workspace_root" = true ]; then
+  for sub in "${SUB_REPOS[@]}"; do
+    [ -d "$matched_root/$sub/.git" ] && scope+=("$matched_root/$sub")
+  done
+elif [ -n "$toplevel" ]; then
+  scope=("$toplevel")
+else
+  for root in "${WORKSPACE_ROOTS[@]}"; do
+    for sub in "${SUB_REPOS[@]}"; do
+      [ -d "$root/$sub/.git" ] && scope+=("$root/$sub")
+    done
+  done
+fi
+
+if [ ${#scope[@]} -eq 0 ]; then
+  echo "sweep: nothing in scope from $cwd" >&2
+  exit 1
+fi
+
+echo "sweep: ${#scope[@]} repo(s) in scope"
+for r in "${scope[@]}"; do echo "  - ${r#/home/claude/}"; done
+
+# --- Per-repo op ---
+sweep_one() {
+  local repo="$1"
+  local label="${repo#/home/claude/}"
+  echo
+  echo "════════ $label ════════"
+  cd "$repo" || { echo "  ✗ cd failed" >&2; return 1; }
+
+  if [ -n "$(git status --porcelain)" ]; then
+    echo "  ⚠ dirty tree — skipping"
+    git status --short
+    return 1
+  fi
+
+  local orig
+  orig=$(git branch --show-current)
+  if [ -z "$orig" ]; then
+    echo "  ⚠ detached HEAD — skipping"
+    return 1
+  fi
+
+  git fetch --all --prune --quiet
+
+  local swept_lines=()
+  for b in develop master; do
+    git show-ref --verify --quiet "refs/heads/$b" || continue
+    git checkout --quiet "$b" || { swept_lines+=("$b: checkout failed"); continue; }
+    local before after pulled
+    before=$(git rev-parse HEAD)
+    if git pull --ff-only --quiet origin "$b" 2>/dev/null; then
+      after=$(git rev-parse HEAD)
+      pulled=$(git rev-list --count "$before..$after" 2>/dev/null || echo 0)
+    else
+      pulled="diverged"
+    fi
+    local pre_n post_n pruned
+    pre_n=$(git branch --merged | grep -Ev '^\*|master|develop' | wc -l | tr -d ' ')
+    git-cleanup-merged >/dev/null 2>&1 || true
+    post_n=$(git branch --merged | grep -Ev '^\*|master|develop' | wc -l | tr -d ' ')
+    pruned=$(( pre_n - post_n ))
+    swept_lines+=("$b: +$pulled commits, $pruned pruned")
+  done
+
+  git checkout --quiet "$orig"
+
+  local merge_line
+  if [ "$orig" = "develop" ] || [ "$orig" = "master" ] || [ "$orig" = "release" ]; then
+    merge_line="on $orig — no merge"
+  else
+    local best_base="" best_ts=0
+    for cand in develop master release; do
+      git show-ref --verify --quiet "refs/remotes/origin/$cand" || continue
+      local sha; sha=$(git merge-base HEAD "origin/$cand" 2>/dev/null) || continue
+      [ -z "$sha" ] && continue
+      local ts; ts=$(git log -1 --format=%ct "$sha" 2>/dev/null) || continue
+      if [ "$ts" -gt "$best_ts" ]; then best_ts=$ts; best_base=$cand; fi
+    done
+    if [ -z "$best_base" ]; then
+      merge_line="no base detected"
+    else
+      local before after
+      before=$(git rev-parse HEAD)
+      if git merge --no-verify --quiet "origin/$best_base" 2>&1 | tail -5; then
+        after=$(git rev-parse HEAD)
+        if [ "$before" = "$after" ]; then
+          merge_line="$orig ← origin/$best_base: up to date"
+        else
+          merge_line="$orig ← origin/$best_base: +$(git rev-list --count "$before..$after") commits"
+        fi
+      else
+        merge_line="$orig ← origin/$best_base: MERGE FAILED"
+        return 1
+      fi
+    fi
+  fi
+
+  for line in "${swept_lines[@]}"; do echo "  ✓ $line"; done
+  echo "  ✓ $merge_line"
+  RECAP+=("$label — $merge_line")
+}
+
+RECAP=()
+failed=()
+start_cwd="$cwd"
+for repo in "${scope[@]}"; do
+  if ! sweep_one "$repo"; then
+    failed+=("${repo#/home/claude/}")
+  fi
+done
+cd "$start_cwd" 2>/dev/null
+
+echo
+echo "════════ recap ════════"
+for line in "${RECAP[@]}"; do echo "  ✓ $line"; done
+if [ ${#failed[@]} -gt 0 ]; then
+  echo "  ✗ failed: ${failed[*]}"
+  exit 1
+fi
