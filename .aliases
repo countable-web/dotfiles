@@ -41,4 +41,5 @@ w1() { _gotree /home/claude/cortico/cortico-website }
 w2() { _gotree /home/claude/cortico2/cortico-website }
 w3() { _gotree /home/claude/cortico3/cortico-website }
 
+alias safeclaude="docker run -it --network host -v $(pwd):/workspace -v devcontainer:/home/node -v /var/run/docker.sock:/var/run/docker.sock safeclaude claude --dangerously-skip-permissions"
 
