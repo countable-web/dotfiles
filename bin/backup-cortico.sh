@@ -30,13 +30,12 @@ do
     docker exec -t ${name} pg_dump -U postgres postgres | zstd -f -T0 -o dump.sql.zst
 
     
-    filename=$dir.$(date +%Y%m%d-%H%M%S).sql
+    filename=$dir.$(date +%Y%m%d-%H%M%S).sql.zst
     folder=$(date +%Y%m)
 
-    aws s3 mv ./dump.sql.zst s3://$aws_bucket/$aws_folder/$dir/$folder/$filename.sql.zst
+    aws s3 mv ./dump.sql.zst s3://$aws_bucket/$aws_folder/$dir/$folder/$filename
 
     echo ""
     echo "Successfully backed up $environment"
     echo "*************************"
 done
-
